@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>本月账单 - 财务管家</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#f0f0f5;color:#1a1a1a}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;background:#fff;border-bottom:.5px solid #e8e8e8;position:sticky;top:0;z-index:10}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.back-home{font-size:20px;color:#888;text-decoration:none;line-height:1}
+.topbar-title{font-size:16px;font-weight:700;color:#1a1a1a}
+.topbar-month{font-size:12px;color:#888;margin-left:4px}
+.settbtn{font-size:11px;color:#378ADD;background:none;border:1px solid #a8cdf0;border-radius:8px;padding:4px 10px;cursor:pointer}
+.scroll-body{flex:1;padding:12px 12px 32px;overflow-y:auto}
+
+/* 提醒横幅 */
+.alert-banner{background:#FFF3E0;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:12px;color:#E65100;font-weight:500}
+
+/* 净余卡片 */
+.hero-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.hero-row{display:flex;justify-content:space-between;align-items:flex-start}
+.hero-lbl{font-size:11px;color:#888;margin-bottom:4px;font-weight:500;letter-spacing:.03em}
+.hero-val{font-size:26px;font-weight:700}
+.hero-val.good{color:#2e7d32}
+.hero-val.warn{color:#e65100}
+.hero-val.bad{color:#c62828}
+.hero-sub{font-size:11px;color:#aaa;margin-top:3px}
+.hero-right{text-align:right}
+.month-progress{margin-top:12px}
+.mp-row{display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-bottom:5px}
+.mp-bar{height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.mp-fill{height:100%;border-radius:3px;background:#378ADD;transition:width .5s}
+
+/* 区块标题 */
+.section-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 8px;margin-top:6px}
+.section-title{font-size:12px;font-weight:700;color:#888;letter-spacing:.05em}
+.section-btn{font-size:11px;color:#378ADD;background:none;border:none;cursor:pointer;padding:2px 0}
+
+/* 固定账单卡片 */
+.bill-card{background:#fff;border-radius:14px;margin-bottom:7px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.bill-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid #f5f5f5;cursor:pointer;transition:background .1s}
+.bill-item:last-child{border-bottom:none}
+.bill-item:active{background:#f9f9f9}
+.bill-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.bill-body{flex:1;min-width:0}
+.bill-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.bill-due{font-size:11px;color:#aaa;margin-top:2px}
+.bill-due.urgent{color:#e65100}
+.bill-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.bill-amt{font-size:15px;font-weight:700;color:#1a1a1a}
+.bill-status{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;cursor:pointer}
+.bill-status.paid{background:#e8f5e9;color:#2e7d32}
+.bill-status.unpaid{background:#fff3e0;color:#e65100}
+
+/* 水电追踪卡片 */
+.utility-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:7px;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer}
+.utility-card:active{background:#f9f9f9}
+.uc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.uc-left{display:flex;align-items:center;gap:10px}
+.uc-icon{width:36px;height:36px;border-radius:10px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:16px}
+.uc-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.uc-sub{font-size:11px;color:#aaa;margin-top:2px}
+.uc-balance{font-size:18px;font-weight:700}
+.uc-balance.ok{color:#2e7d32}
+.uc-balance.warn{color:#e65100}
+.uc-balance.low{color:#c62828}
+.uc-detail{display:flex;gap:0;border-top:.5px solid #f5f5f5;padding-top:10px}
+.uc-d-item{flex:1;text-align:center;border-right:.5px solid #f5f5f5}
+.uc-d-item:last-child{border-right:none}
+.uc-dl{font-size:10px;color:#aaa;margin-bottom:3px}
+.uc-dv{font-size:13px;font-weight:600;color:#1a1a1a}
+.uc-dv.warn{color:#e65100}
+
+/* 浮动预算卡片 */
+.budget-card{background:#fff;border-radius:14px;margin-bottom:7px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.budget-item{padding:12px 14px;border-bottom:.5px solid #f5f5f5}
+.budget-item:last-child{border-bottom:none}
+.bi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bi-left{display:flex;align-items:center;gap:8px}
+.bi-icon{font-size:16px}
+.bi-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.bi-right{text-align:right}
+.bi-remain{font-size:15px;font-weight:700}
+.bi-remain.good{color:#2e7d32}
+.bi-remain.warn{color:#e65100}
+.bi-remain.over{color:#c62828}
+.bi-total{font-size:11px;color:#aaa;margin-top:1px}
+.bi-bar-bg{height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.bi-bar-fill{height:100%;border-radius:3px;transition:width .4s}
+.bi-detail{font-size:11px;color:#aaa;margin-top:5px;display:flex;justify-content:space-between}
+
+/* 模态框 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:flex-end;z-index:100}
+.modal-sheet{background:#fff;border-radius:20px 20px 0 0;padding:18px 16px 32px;max-height:88%;overflow-y:auto}
+.mhandle{width:32px;height:4px;border-radius:2px;background:#e0e0e0;margin:0 auto 14px}
+.mtitle{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px}
+.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.mfield{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f7f7f7;border-radius:10px;border:.5px solid #e8e8e8}
+.mflbl{font-size:11px;color:#aaa;width:60px;flex-shrink:0}
+.mfield input,.mfield select{flex:1;background:none;border:none;outline:none;font-size:13px;color:#1a1a1a;font-family:inherit}
+.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.msub.green{background:#2e7d32}
+.msub.orange{background:#e65100}
+.mdel{width:100%;height:38px;border-radius:10px;border:none;background:#ffebee;color:#c62828;font-size:13px;cursor:pointer}
+.msec-title{font-size:12px;font-weight:600;color:#aaa;margin:12px 0 8px;letter-spacing:.04em}
+.mpaid-row{display:flex;gap:8px;margin-bottom:14px}
+.mpaid-btn{flex:1;height:40px;border-radius:10px;border:1.5px solid #e8e8e8;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:#888}
+.mpaid-btn.sel-paid{border-color:#2e7d32;background:#e8f5e9;color:#2e7d32}
+.mpaid-btn.sel-unpaid{border-color:#e65100;background:#fff3e0;color:#e65100}
+.empty-hint{text-align:center;color:#bbb;font-size:12px;padding:20px 0}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="back-home" href="../">←</a>
+      <span class="topbar-title">本月账单</span>
+      <span class="topbar-month" id="month-label"></span>
+    </div>
+    <button class="settbtn" onclick="openSettings()">设置</button>
+  </div>
+  <div class="scroll-body" id="scroll-body">
+    <div id="main-content"></div>
+  </div>
+</div>
+
+<script>
+// ─── 数据 key ───
+const SK = 'monthly_v1';
+const DIARY_SK = 'bav7'; // 记账日记的数据
+
+// ─── 工具函数 ───
+function ld(key){ try{ return JSON.parse(localStorage.getItem(key)||'{}') }catch(e){ return {} } }
+function sv(d){ localStorage.setItem(SK, JSON.stringify(d)) }
+function pad2(n){ return String(n).padStart(2,'0') }
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()) }
+function monthKey(){ const d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1) }
+function fmt(n,dec=0){ return '¥'+Number(Math.abs(n)).toFixed(dec) }
+function daysInMonth(){ const d=new Date(); return new Date(d.getFullYear(),d.getMonth()+1,0).getDate() }
+function todayDay(){ return new Date().getDate() }
+function daysLeftInMonth(){ return daysInMonth()-todayDay() }
+
+// ─── 默认配置 ───
+const DEFAULT_SETTINGS = {
+  // 固定账单
+  bills: [
+    { id:'rent',   name:'房租',   amount:1200, dueDay:15, icon:'🏠', iconBg:'#E3F2FD' },
+    { id:'park',   name:'停车费', amount:330,  dueDay:15, icon:'🚗', iconBg:'#FFF3E0' },
+    { id:'phone',  name:'电话费', amount:100,  dueDay:15, icon:'📱', iconBg:'#F3E5F5' },
+  ],
+  // 水电默认配置
+  utility: {
+    monthlyAvg: 350,  // 月均消耗
+    balance: 250,     // 当前余额（用户手动更新）
+    lastUpdate: '',
+  },
+  // 浮动预算
+  budgets: [
+    { id:'food',      name:'伙食费', icon:'🍜', amount:1500, diaryCategory:'餐饮' },
+    { id:'transport', name:'车油费', icon:'🚗', amount:350,  diaryCategory:'交通' },
+    { id:'pocket',    name:'零花',   icon:'🎯', amount:170,  diaryCategory:'零花' },
+  ],
+  // 结算日
+  settleDay: 16,
+  // 发薪日提醒提前天数
+  alertDays: 3,
+};
+
+// ─── 状态 ───
+let CFG = {};
+let BILLS_STATUS = {}; // { [monthKey]: { [billId]: { paid, paidDate, actualAmount } } }
+let modal = null;
+let editTarget = null;
+
+function loadData(){
+  const s = ld(SK);
+  // 合并默认设置（保留用户已改的）
+  CFG = {
+    bills: s.bills || DEFAULT_SETTINGS.bills,
+    utility: Object.assign({}, DEFAULT_SETTINGS.utility, s.utility||{}),
+    budgets: s.budgets || DEFAULT_SETTINGS.budgets,
+    settleDay: s.settleDay || DEFAULT_SETTINGS.settleDay,
+    alertDays: s.alertDays || DEFAULT_SETTINGS.alertDays,
+  };
+  BILLS_STATUS = s.billsStatus || {};
+}
+function saveData(){
+  const s = ld(SK);
+  s.bills = CFG.bills;
+  s.utility = CFG.utility;
+  s.budgets = CFG.budgets;
+  s.settleDay = CFG.settleDay;
+  s.alertDays = CFG.alertDays;
+  s.billsStatus = BILLS_STATUS;
+  sv(s);
+}
+
+// ─── 读取记账日记数据 ───
+function getDiarySpending(){
+  const diary = ld(DIARY_SK);
+  const records = diary.records || [];
+  const mk = monthKey();
+  // 本月所有支出记录
+  const monthRecs = records.filter(r => r.type==='expense' && r.date && r.date.startsWith(mk));
+  // 按分类汇总
+  const byCategory = {};
+  monthRecs.forEach(r => {
+    byCategory[r.cat] = (byCategory[r.cat]||0) + r.amount;
+  });
+  return byCategory;
+}
+
+// ─── 计算本月账单状态 ───
+function getBillStatus(billId){
+  const mk = monthKey();
+  if(!BILLS_STATUS[mk]) BILLS_STATUS[mk] = {};
+  return BILLS_STATUS[mk][billId] || { paid: false, paidDate:'', actualAmount: null };
+}
+function setBillStatus(billId, status){
+  const mk = monthKey();
+  if(!BILLS_STATUS[mk]) BILLS_STATUS[mk] = {};
+  BILLS_STATUS[mk][billId] = status;
+  saveData();
+}
+
+// ─── 提醒逻辑 ───
+function getAlerts(){
+  const alerts = [];
+  const today = todayDay();
+  const alertDays = CFG.alertDays || 3;
+  CFG.bills.forEach(bill => {
+    const status = getBillStatus(bill.id);
+    if(!status.paid){
+      const daysUntil = bill.dueDay - today;
+      if(daysUntil >= 0 && daysUntil <= alertDays){
+        alerts.push(`${bill.name} ¥${bill.amount} 还有 ${daysUntil===0?'今天':daysUntil+'天'} 到期`);
+      } else if(daysUntil < 0){
+        alerts.push(`${bill.name} ¥${bill.amount} 已逾期 ${Math.abs(daysUntil)} 天`);
+      }
+    }
+  });
+  // 水电余额预警
+  const util = CFG.utility;
+  if(util.balance > 0 && util.monthlyAvg > 0){
+    const daysLeft = Math.floor(util.balance / (util.monthlyAvg / 30));
+    if(daysLeft <= 10){
+      alerts.push(`水电余额仅剩 ${fmt(util.balance)} 预计还能用 ${daysLeft} 天`);
+    }
+  }
+  return alerts;
+}
+
+// ─── 汇总计算 ───
+function getSummary(){
+  const spending = getDiarySpending();
+  const mk = monthKey();
+  // 固定账单总额
+  const totalFixed = CFG.bills.reduce((s,b)=>{
+    const st = getBillStatus(b.id);
+    return s + (st.actualAmount != null ? st.actualAmount : b.amount);
+  },0);
+  const paidFixed = CFG.bills.reduce((s,b)=>{
+    const st = getBillStatus(b.id);
+    if(!st.paid) return s;
+    return s + (st.actualAmount != null ? st.actualAmount : b.amount);
+  },0);
+  const unpaidFixed = totalFixed - paidFixed;
+  // 浮动预算已花
+  const totalBudget = CFG.budgets.reduce((s,b)=>s+b.amount, 0);
+  const totalSpent = CFG.budgets.reduce((s,b)=>s+(spending[b.diaryCategory]||0), 0);
+  // 月总预算（固定+浮动）
+  const monthTotal = totalFixed + totalBudget + (CFG.utility.monthlyAvg||0);
+  const monthSpent = paidFixed + totalSpent;
+  const monthRemain = monthTotal - monthSpent - unpaidFixed;
+  return { totalFixed, paidFixed, unpaidFixed, totalBudget, totalSpent, monthTotal, monthSpent, monthRemain };
+}
+
+// ─── 渲染主界面 ───
+function renderMain(){
+  const today = todayDay();
+  const dim = daysInMonth();
+  const pctDay = Math.round(today/dim*100);
+  const spending = getDiarySpending();
+  const summary = getSummary();
+  const alerts = getAlerts();
+  const util = CFG.utility;
+  const daysLeftUtil = util.monthlyAvg>0 ? Math.floor(util.balance/(util.monthlyAvg/30)) : 999;
+  const utilStatus = daysLeftUtil>20?'ok':daysLeftUtil>10?'warn':'low';
+
+  // 月份标签
+  const d = new Date();
+  document.getElementById('month-label').textContent = `${d.getMonth()+1}月`;
+
+  // 提醒横幅
+  let alertHtml = alerts.map(a=>`<div class="alert-banner">⚠️ ${a}</div>`).join('');
+
+  // 总览卡片
+  const remainColor = summary.monthRemain>0?'good':summary.monthRemain>-200?'warn':'bad';
+  const heroHtml = `
+    <div class="hero-card">
+      <div class="hero-row">
+        <div>
+          <div class="hero-lbl">本月预估结余</div>
+          <div class="hero-val ${remainColor}">${summary.monthRemain>=0?'':'-'}${fmt(Math.abs(summary.monthRemain))}</div>
+          <div class="hero-sub">总预算 ${fmt(summary.monthTotal)} · 已花 ${fmt(summary.monthSpent)}</div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-lbl">待付账单</div>
+          <div class="hero-val ${summary.unpaidFixed>0?'warn':'good'}">${summary.unpaidFixed>0?fmt(summary.unpaidFixed):'已全付'}</div>
+          <div class="hero-sub">${dim}天月份，今天第${today}天</div>
+        </div>
+      </div>
+      <div class="month-progress">
+        <div class="mp-row"><span>月度进度</span><span>${pctDay}%</span></div>
+        <div class="mp-bar"><div class="mp-fill" style="width:${pctDay}%"></div></div>
+      </div>
+    </div>`;
+
+  // 固定账单
+  let billsHtml = CFG.bills.map(bill=>{
+    const st = getBillStatus(bill.id);
+    const amt = st.actualAmount != null ? st.actualAmount : bill.amount;
+    const daysUntil = bill.dueDay - today;
+    const dueStr = st.paid ? `已付 ${st.paidDate||''}` :
+      daysUntil<0 ? `逾期 ${Math.abs(daysUntil)} 天` :
+      daysUntil===0 ? '今天到期！' :
+      `${bill.dueDay}号付 · 还有${daysUntil}天`;
+    const dueClass = (!st.paid && daysUntil<=3) ? 'urgent' : '';
+    return `<div class="bill-item" onclick="openBillEdit('${bill.id}')">
+      <div class="bill-icon" style="background:${bill.iconBg||'#f0f0f5'}">${bill.icon||'💰'}</div>
+      <div class="bill-body">
+        <div class="bill-name">${bill.name}</div>
+        <div class="bill-due ${dueClass}">${dueStr}</div>
+      </div>
+      <div class="bill-right">
+        <div class="bill-amt">${fmt(amt)}</div>
+        <div class="bill-status ${st.paid?'paid':'unpaid'}" onclick="event.stopPropagation();toggleBillPaid('${bill.id}')">${st.paid?'✓ 已付':'待付'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // 水电追踪
+  const utilHtml = `
+    <div class="utility-card" onclick="openUtilityEdit()">
+      <div class="uc-top">
+        <div class="uc-left">
+          <div class="uc-icon">💡</div>
+          <div>
+            <div class="uc-name">水电余额</div>
+            <div class="uc-sub">月均消耗 ${fmt(util.monthlyAvg)}${util.lastUpdate?' · 更新于'+util.lastUpdate:''}</div>
+          </div>
+        </div>
+        <div class="uc-balance ${utilStatus}">${fmt(util.balance)}</div>
+      </div>
+      <div class="uc-detail">
+        <div class="uc-d-item">
+          <div class="uc-dl">预计可用</div>
+          <div class="uc-dv ${utilStatus==='low'?'warn':''}">${daysLeftUtil>999?'充足':daysLeftUtil+'天'}</div>
+        </div>
+        <div class="uc-d-item">
+          <div class="uc-dl">建议充值日</div>
+          <div class="uc-dv">${daysLeftUtil>999?'暂不需要':getRechargeDate(daysLeftUtil)}</div>
+        </div>
+        <div class="uc-d-item">
+          <div class="uc-dl">月均消耗</div>
+          <div class="uc-dv">${fmt(util.monthlyAvg)}</div>
+        </div>
+      </div>
+    </div>`;
+
+  // 浮动预算
+  let budgetsHtml = CFG.budgets.map(b=>{
+    const spent = spending[b.diaryCategory] || 0;
+    const remain = b.amount - spent;
+    const pct = b.amount>0 ? Math.min(100, Math.round(spent/b.amount*100)) : 0;
+    const remainClass = remain>b.amount*0.3?'good':remain>0?'warn':'over';
+    const barColor = pct>100?'#c62828':pct>80?'#e65100':'#378ADD';
+    const dayAvg = today>0 ? (spent/today).toFixed(1) : 0;
+    const predictEnd = today>0 ? Math.round(spent/today*daysInMonth()) : 0;
+    return `<div class="budget-item">
+      <div class="bi-top">
+        <div class="bi-left">
+          <span class="bi-icon">${b.icon}</span>
+          <span class="bi-name">${b.name}</span>
+        </div>
+        <div class="bi-right">
+          <div class="bi-remain ${remainClass}">${remain>=0?'剩 ':'-'}${fmt(Math.abs(remain))}</div>
+          <div class="bi-total">月额度 ${fmt(b.amount)} · 已花 ${fmt(spent)}</div>
+        </div>
+      </div>
+      <div class="bi-bar-bg"><div class="bi-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="bi-detail">
+        <span>日均 ¥${dayAvg}</span>
+        <span>按此速度月末预计花 ${fmt(predictEnd)}${predictEnd>b.amount?' ⚠️超支':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('main-content').innerHTML = `
+    ${alertHtml}
+    ${heroHtml}
+    <div class="section-hdr">
+      <span class="section-title">固定账单</span>
+      <button class="section-btn" onclick="openAddBill()">+ 新增</button>
+    </div>
+    <div class="bill-card">${billsHtml}</div>
+    <div class="section-hdr">
+      <span class="section-title">水电追踪</span>
+    </div>
+    ${utilHtml}
+    <div class="section-hdr">
+      <span class="section-title">浮动预算</span>
+      <span style="font-size:10px;color:#bbb">联动记账日记</span>
+    </div>
+    <div class="budget-card">${budgetsHtml}</div>
+  `;
+  checkModal();
+}
+
+function getRechargeDate(daysLeft){
+  const d = new Date();
+  d.setDate(d.getDate() + Math.max(0, daysLeft-5));
+  return (d.getMonth()+1)+'月'+d.getDate()+'日前';
+}
+
+// ─── 一键切换账单状态 ───
+function toggleBillPaid(billId){
+  const st = getBillStatus(billId);
+  if(!st.paid){
+    setBillStatus(billId, { paid:true, paidDate:todayStr(), actualAmount:st.actualAmount });
+  } else {
+    setBillStatus(billId, { paid:false, paidDate:'', actualAmount:st.actualAmount });
+  }
+  renderMain();
+}
+
+// ─── 模态框 ───
+function checkModal(){
+  document.querySelectorAll('.modal-overlay').forEach(e=>e.remove());
+  if(modal==='bill-edit') renderBillEditModal();
+  else if(modal==='bill-add') renderBillAddModal();
+  else if(modal==='utility') renderUtilityModal();
+  else if(modal==='settings') renderSettingsModal();
+}
+function mkOverlay(){
+  const ov=document.createElement('div');
+  ov.className='modal-overlay';
+  ov.addEventListener('click',e=>{ if(e.target===ov){ modal=null; editTarget=null; renderMain(); } });
+  return ov;
+}
+
+function openBillEdit(billId){
+  modal='bill-edit'; editTarget=billId; renderMain();
+}
+function openAddBill(){
+  modal='bill-add'; editTarget=null; renderMain();
+}
+function openUtilityEdit(){
+  modal='utility'; renderMain();
+}
+function openSettings(){
+  modal='settings'; renderMain();
+}
+
+function renderBillEditModal(){
+  const bill = CFG.bills.find(b=>b.id===editTarget);
+  if(!bill) return;
+  const st = getBillStatus(bill.id);
+  const ov = mkOverlay();
+  ov.innerHTML = `<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">${bill.name}</div>
+    <div class="msec-title">付款状态</div>
+    <div class="mpaid-row">
+      <button class="mpaid-btn ${!st.paid?'sel-unpaid':''}" onclick="setBillPaid('${bill.id}',false)">待付</button>
+      <button class="mpaid-btn ${st.paid?'sel-paid':''}" onclick="setBillPaid('${bill.id}',true)">✓ 已付</button>
+    </div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">本月金额</span><input id="b-amt" type="number" min="0" step="0.01" value="${st.actualAmount!=null?st.actualAmount:bill.amount}" placeholder="${bill.amount}"></div>
+      <div class="mfield"><span class="mflbl">付款日期</span><input id="b-date" type="date" value="${st.paidDate||todayStr()}"></div>
+    </div>
+    <button class="msub" onclick="saveBillEdit('${bill.id}')">保存</button>
+    <div class="msec-title">账单设置</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">账单名称</span><input id="b-name" value="${bill.name}"></div>
+      <div class="mfield"><span class="mflbl">默认金额</span><input id="b-default" type="number" min="0" step="0.01" value="${bill.amount}"></div>
+      <div class="mfield"><span class="mflbl">付款日</span><input id="b-due" type="number" min="1" max="31" value="${bill.dueDay}"> <span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
+    </div>
+    <button class="msub" style="background:#888" onclick="saveBillConfig('${bill.id}')">保存账单设置</button>
+    <button class="mdel" onclick="deleteBill('${bill.id}')">删除此账单</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+
+function setBillPaid(billId, paid){
+  const st = getBillStatus(billId);
+  const newSt = {...st, paid, paidDate: paid ? todayStr() : ''};
+  setBillStatus(billId, newSt);
+  // 刷新modal里的按钮状态
+  document.querySelectorAll('.mpaid-btn').forEach((b,i)=>{
+    b.className = 'mpaid-btn ' + (i===0&&!paid?'sel-unpaid':i===1&&paid?'sel-paid':'');
+  });
+}
+function saveBillEdit(billId){
+  const amt = parseFloat(document.getElementById('b-amt')?.value);
+  const date = document.getElementById('b-date')?.value||'';
+  const st = getBillStatus(billId);
+  setBillStatus(billId, {...st, actualAmount: amt||null, paidDate: date});
+  modal=null; editTarget=null; renderMain();
+}
+function saveBillConfig(billId){
+  const idx = CFG.bills.findIndex(b=>b.id===billId);
+  if(idx<0) return;
+  CFG.bills[idx].name = document.getElementById('b-name')?.value.trim()||CFG.bills[idx].name;
+  CFG.bills[idx].amount = parseFloat(document.getElementById('b-default')?.value)||CFG.bills[idx].amount;
+  CFG.bills[idx].dueDay = parseInt(document.getElementById('b-due')?.value)||CFG.bills[idx].dueDay;
+  saveData(); modal=null; editTarget=null; renderMain();
+}
+function deleteBill(billId){
+  if(!confirm('确认删除这个账单？')) return;
+  CFG.bills = CFG.bills.filter(b=>b.id!==billId);
+  saveData(); modal=null; editTarget=null; renderMain();
+}
+
+function renderBillAddModal(){
+  const ov = mkOverlay();
+  ov.innerHTML = `<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">新增固定账单</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">账单名称</span><input id="nb-name" placeholder="如：宽带费"></div>
+      <div class="mfield"><span class="mflbl">每月金额</span><input id="nb-amt" type="number" min="0" step="0.01" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">每月几号付</span><input id="nb-due" type="number" min="1" max="31" placeholder="15"> <span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
+      <div class="mfield"><span class="mflbl">图标</span><input id="nb-icon" placeholder="输入emoji，如 📺" maxlength="2"></div>
+    </div>
+    <button class="msub" onclick="submitAddBill()">添加</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function submitAddBill(){
+  const name = document.getElementById('nb-name')?.value.trim();
+  const amt = parseFloat(document.getElementById('nb-amt')?.value);
+  const due = parseInt(document.getElementById('nb-due')?.value)||15;
+  const icon = document.getElementById('nb-icon')?.value||'💰';
+  if(!name||!amt||amt<=0){ alert('请填写名称和金额'); return; }
+  CFG.bills.push({ id:'bill_'+Date.now(), name, amount:amt, dueDay:due, icon, iconBg:'#F5F5F5' });
+  saveData(); modal=null; renderMain();
+}
+
+function renderUtilityModal(){
+  const util = CFG.utility;
+  const ov = mkOverlay();
+  ov.innerHTML = `<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">水电余额追踪</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">当前余额</span><input id="u-bal" type="number" min="0" step="0.01" value="${util.balance}" placeholder="账户当前剩余金额"></div>
+      <div class="mfield"><span class="mflbl">月均消耗</span><input id="u-avg" type="number" min="0" step="0.01" value="${util.monthlyAvg}" placeholder="350"></div>
+    </div>
+    <button class="msub green" onclick="submitUtility()">更新余额</button>
+    <div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px">充值后更新余额，系统自动重新估算可用天数</div>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function submitUtility(){
+  const bal = parseFloat(document.getElementById('u-bal')?.value);
+  const avg = parseFloat(document.getElementById('u-avg')?.value);
+  if(bal==null||isNaN(bal)){ alert('请填写当前余额'); return; }
+  CFG.utility.balance = bal;
+  if(avg>0) CFG.utility.monthlyAvg = avg;
+  CFG.utility.lastUpdate = todayStr();
+  saveData(); modal=null; renderMain();
+}
+
+function renderSettingsModal(){
+  const ov = mkOverlay();
+  ov.innerHTML = `<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">设置</div>
+    <div class="msec-title">浮动预算额度</div>
+    <div class="mfields">
+      ${CFG.budgets.map((b,i)=>`<div class="mfield"><span class="mflbl">${b.icon} ${b.name}</span><input id="budget-${i}" type="number" min="0" step="1" value="${b.amount}"><span style="font-size:12px;color:#aaa;margin-left:4px">元/月</span></div>`).join('')}
+    </div>
+    <div class="msec-title">提醒设置</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">提前提醒</span><input id="s-alert" type="number" min="1" max="14" value="${CFG.alertDays}"><span style="font-size:12px;color:#aaa;margin-left:4px">天</span></div>
+    </div>
+    <button class="msub" onclick="saveSettings()">保存设置</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function saveSettings(){
+  CFG.budgets.forEach((b,i)=>{
+    const v = parseFloat(document.getElementById(`budget-${i}`)?.value);
+    if(v>0) b.amount = v;
+  });
+  CFG.alertDays = parseInt(document.getElementById('s-alert')?.value)||3;
+  saveData(); modal=null; renderMain();
+}
+
+// ─── 启动 ───
+loadData();
+renderMain();
+</script>
+</body>
+</html>

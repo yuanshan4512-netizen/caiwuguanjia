@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>财务总览 - 财务管家</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#0f1117;color:#e8eaf0}
+.shell{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;background:#0f1117;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a2030}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.back-home{font-size:20px;color:#556;text-decoration:none;line-height:1}
+.topbar-title{font-size:16px;font-weight:700;color:#e8eaf0}
+.refresh-btn{font-size:11px;color:#378ADD;background:none;border:1px solid #1e3a5f;border-radius:8px;padding:4px 10px;cursor:pointer;transition:opacity .2s}
+.refresh-btn.loading{opacity:.4;pointer-events:none}
+.scroll-body{flex:1;padding:12px 12px 32px;overflow-y:auto}
+
+/* 总资产英雄卡 */
+.hero{background:linear-gradient(135deg,#1a2744,#0f1a2e);border:1px solid #1e3a5f;border-radius:18px;padding:20px;margin-bottom:10px}
+.hero-lbl{font-size:11px;color:#556;letter-spacing:.06em;margin-bottom:6px}
+.hero-amt{font-size:34px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px}
+.hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hg-item{background:rgba(255,255,255,.04);border-radius:10px;padding:8px}
+.hg-lbl{font-size:10px;color:#445;margin-bottom:3px}
+.hg-val{font-size:13px;font-weight:600}
+.hg-val.pos{color:#4caf50}
+.hg-val.neg{color:#ef5350}
+.hg-val.neu{color:#e8eaf0}
+.update-lbl{font-size:10px;color:#334;margin-top:10px}
+
+/* 净资产行 */
+.net-row{background:#161b26;border:1px solid #1e2a3a;border-radius:12px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.net-lbl{font-size:12px;color:#556}
+.net-val{font-size:18px;font-weight:700}
+.net-val.pos{color:#4caf50}
+.net-val.neg{color:#ef5350}
+
+/* 配置饼图 */
+.pie-card{background:#161b26;border:1px solid #1e2a3a;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;gap:14px;align-items:center}
+.pie-leg{flex:1;display:flex;flex-direction:column;gap:7px}
+.pie-li{display:flex;align-items:center;gap:6px}
+.pie-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pie-name{font-size:12px;color:#aaa;flex:1}
+.pie-pct{font-size:12px;font-weight:600;color:#e8eaf0}
+.pie-amt{font-size:10px;color:#556;margin-left:4px}
+
+/* 区块标题 */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 8px;margin-top:4px}
+.sec-title{font-size:12px;font-weight:700;color:#556;letter-spacing:.05em}
+.sec-btn{font-size:11px;color:#378ADD;background:none;border:none;cursor:pointer}
+
+/* 资产卡片 */
+.asset-card{background:#161b26;border:1px solid #1e2a3a;border-radius:14px;padding:14px;margin-bottom:8px}
+.ac-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ac-left{display:flex;align-items:center;gap:10px}
+.ac-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ac-name{font-size:14px;font-weight:600;color:#e8eaf0}
+.ac-meta{font-size:11px;color:#445;margin-top:2px;display:flex;align-items:center;gap:6px}
+.price-tag{font-size:10px;padding:1px 6px;border-radius:4px}
+.price-tag.ok{background:#1e3a5f;color:#378ADD}
+.price-tag.err{background:#3a1a1a;color:#ef5350}
+.price-tag.pending{background:#2a2a1a;color:#888}
+.ac-right{text-align:right}
+.ac-val{font-size:16px;font-weight:700;color:#e8eaf0}
+.ac-pnl{font-size:11px;margin-top:2px}
+.ac-pnl.pos{color:#4caf50}
+.ac-pnl.neg{color:#ef5350}
+.ac-pnl.neu{color:#556}
+.ac-stats{display:flex;border-top:1px solid #1e2a3a;padding-top:10px;gap:0}
+.ac-stat{flex:1;text-align:center;border-right:1px solid #1e2a3a}
+.ac-stat:last-child{border-right:none}
+.ac-sl{font-size:10px;color:#445;margin-bottom:3px}
+.ac-sv{font-size:12px;font-weight:600;color:#e8eaf0}
+.ac-sv.pos{color:#4caf50}
+.ac-sv.neg{color:#ef5350}
+.ac-btns{display:flex;gap:6px;margin-top:10px}
+.ac-btn{flex:1;height:30px;border-radius:8px;border:1px solid #1e2a3a;background:transparent;color:#556;font-size:11px;cursor:pointer;transition:all .12s}
+.ac-btn:active{border-color:#378ADD;color:#378ADD}
+
+/* 负债卡片 */
+.debt-card{background:#1a1520;border:1px solid #2a1e2a;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer}
+.debt-card:active{opacity:.8}
+.dc-row{display:flex;align-items:center;justify-content:space-between}
+.dc-name{font-size:14px;font-weight:600;color:#e8eaf0}
+.dc-amt{font-size:15px;font-weight:700;color:#ef5350}
+.dc-note{font-size:11px;color:#445;margin-top:4px}
+.empty-hint{text-align:center;color:#334;font-size:12px;padding:20px 0}
+
+/* 模态框 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:flex-end;z-index:100}
+.modal-sheet{background:#1a1f2e;border-radius:20px 20px 0 0;padding:18px 16px 32px;max-height:88%;overflow-y:auto}
+.mhandle{width:32px;height:4px;border-radius:2px;background:#2a3040;margin:0 auto 14px}
+.mtitle{font-size:15px;font-weight:700;color:#e8eaf0;margin-bottom:14px}
+.msec{font-size:11px;font-weight:600;color:#445;letter-spacing:.04em;margin:12px 0 8px}
+.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.mfield{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0f1117;border-radius:10px;border:1px solid #1e2a3a}
+.mflbl{font-size:11px;color:#445;width:56px;flex-shrink:0}
+.mfield input,.mfield select{flex:1;background:none;border:none;outline:none;font-size:13px;color:#e8eaf0;font-family:inherit}
+.mfield select option{background:#1a1f2e;color:#e8eaf0}
+.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.mdel{width:100%;height:38px;border-radius:10px;border:1px solid #3a1a1a;background:transparent;color:#ef5350;font-size:13px;cursor:pointer}
+.minfo{font-size:11px;color:#445;text-align:center;margin-bottom:10px;line-height:1.6}
+.record-list{max-height:200px;overflow-y:auto;margin-bottom:12px}
+.rec-item{display:flex;justify-content:space-between;padding:7px 4px;border-bottom:1px solid #1e2a3a;font-size:12px;color:#778}
+.rec-item:last-child{border-bottom:none}
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+  <div class="topbar">
+    <div class="topbar-left">
+      <a class="back-home" href="../">←</a>
+      <span class="topbar-title">财务总览</span>
+    </div>
+    <button class="refresh-btn" id="refresh-btn" onclick="fetchAllPrices()">↻ 刷新价格</button>
+  </div>
+  <div class="scroll-body">
+    <div id="main-content"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+const SK='finance_v1';
+const COLORS=['#378ADD','#4caf50','#FFD700','#ef5350','#9c27b0','#ff9800','#00bcd4'];
+const TYPES=[
+  {k:'fund', label:'基金', icon:'📈', bg:'#1a2744'},
+  {k:'etf',  label:'ETF', icon:'📊', bg:'#1a2a1a'},
+  {k:'gold', label:'积存金', icon:'🥇', bg:'#2a2410'},
+  {k:'cash', label:'现金', icon:'💵', bg:'#1a2520'},
+];
+
+function ld(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
+function sv(d){localStorage.setItem(SK,JSON.stringify(d))}
+function pad2(n){return String(n).padStart(2,'0')}
+function nowStr(){const d=new Date();return (d.getMonth()+1)+'/'+d.getDate()+' '+pad2(d.getHours())+':'+pad2(d.getMinutes())}
+function fmt2(n){return Number(Math.abs(n)).toFixed(2)}
+function fmtY(n){return '¥'+fmt2(n)}
+function fmtPct(n){return (n>=0?'+':'')+Number(n).toFixed(2)+'%'}
+function genId(){return 'a'+Date.now().toString(36)}
+
+let D={assets:[],debts:[],prices:{},lastUpdate:''};
+let modal=null,editId=null;
+let pieChart=null;
+
+function load(){
+  const s=ld();
+  D.assets=s.assets||[];D.debts=s.debts||[];
+  D.prices=s.prices||{};D.lastUpdate=s.lastUpdate||'';
+}
+function save(){
+  const s=ld();
+  s.assets=D.assets;s.debts=D.debts;
+  s.prices=D.prices;s.lastUpdate=D.lastUpdate;
+  sv(s);
+}
+
+function getPrice(asset){
+  if(asset.type==='cash')return{p:1,status:'ok'};
+  const r=D.prices[asset.id];
+  if(!r)return{p:null,status:'none'};
+  return{p:r.price,status:r.status||'ok',time:r.time};
+}
+function calcVal(asset){
+  if(asset.type==='cash')return{value:asset.quantity,cost:asset.quantity,pnl:0,pct:0};
+  const {p}=getPrice(asset);
+  if(!p)return{value:null,cost:asset.quantity*asset.costPrice,pnl:null,pct:null};
+  const value=asset.quantity*p;
+  const cost=asset.quantity*asset.costPrice;
+  const pnl=value-cost;
+  const pct=cost>0?(pnl/cost*100):0;
+  return{value,cost,pnl,pct};
+}
+function totalAssets(){return D.assets.reduce((s,a)=>{const{value}=calcVal(a);return s+(value||0)},0)}
+function totalDebts(){return D.debts.reduce((s,d)=>s+d.amount,0)}
+function totalCost(){return D.assets.reduce((s,a)=>{const{cost}=calcVal(a);return s+(cost||0)},0)}
+
+// ─── 价格获取 ───
+async function fetchFundNav(code){
+  try{
+    // 天天基金实时估值
+    const r=await fetch(`https://fundgz.1234567.com.cn/z/gz.js?rt=${Date.now()}&codes=${code}`);
+    const t=await r.text();
+    const m=t.match(/"gsz":"([0-9.]+)"/);
+    if(m)return parseFloat(m[1]);
+  }catch(e){}
+  try{
+    // 备用：天天基金历史净值
+    const r=await fetch(`https://api.fund.eastmoney.com/f10/lsjz?fundCode=${code}&pageIndex=1&pageSize=1`,
+      {headers:{'Referer':'https://fund.eastmoney.com/'}});
+    const j=await r.json();
+    const nav=j?.Data?.LSJZList?.[0]?.DWJZ;
+    if(nav)return parseFloat(nav);
+  }catch(e){}
+  return null;
+}
+
+async function fetchStockPrice(code){
+  // 新浪财经，ETF 代码格式如 sh512880
+  try{
+    const r=await fetch(`https://hq.sinajs.cn/list=${code}`);
+    const t=await r.text();
+    // 格式：var hq_str_sh512880="...,当前价,...";
+    const parts=t.split('"')[1]?.split(',');
+    if(parts&&parts[3])return parseFloat(parts[3]);
+  }catch(e){}
+  return null;
+}
+
+async function fetchGoldPrice(){
+  // 上海金交所 Au9999 现货
+  try{
+    const r=await fetch(`https://hq.sinajs.cn/list=Au9999`);
+    const t=await r.text();
+    const parts=t.split('"')[1]?.split(',');
+    if(parts&&parts[0])return parseFloat(parts[0]);
+  }catch(e){}
+  return null;
+}
+
+async function fetchAllPrices(){
+  const btn=document.getElementById('refresh-btn');
+  if(btn){btn.textContent='刷新中...';btn.classList.add('loading');}
+  const now=nowStr();
+  for(const a of D.assets){
+    if(a.type==='cash')continue;
+    let price=null;
+    try{
+      if(a.type==='fund')price=await fetchFundNav(a.code);
+      else if(a.type==='etf')price=await fetchStockPrice(a.code);
+      else if(a.type==='gold')price=await fetchGoldPrice();
+    }catch(e){}
+    D.prices[a.id]={price,status:price?'ok':'err',time:now};
+  }
+  D.lastUpdate=now;save();
+  if(btn){btn.textContent='↻ 刷新价格';btn.classList.remove('loading');}
+  renderMain();
+}
+
+// ─── 渲染 ───
+function renderMain(){
+  if(pieChart){try{pieChart.destroy()}catch(e){}pieChart=null;}
+  const total=totalAssets();
+  const totalD=totalDebts();
+  const netWorth=total-totalD;
+  const totalC=totalCost();
+  const totalPnl=total-totalC;
+  const totalPct=totalC>0?(totalPnl/totalC*100):0;
+
+  // 按类型分组
+  const groups={};
+  D.assets.forEach(a=>{
+    if(!groups[a.type])groups[a.type]={label:'',value:0,list:[]};
+    const t=TYPES.find(t=>t.k===a.type);
+    groups[a.type].label=t?.label||a.type;
+    const{value}=calcVal(a);groups[a.type].value+=(value||0);
+    groups[a.type].list.push(a);
+  });
+  const gEntries=Object.entries(groups).sort((a,b)=>b[1].value-a[1].value);
+
+  // 饼图
+  const pieData=gEntries.map(([,g])=>g.value);
+  const pieLabels=gEntries.map(([,g])=>g.label);
+
+  // 资产卡片
+  let assetsHtml='';
+  gEntries.forEach(([type,group])=>{
+    const t=TYPES.find(t=>t.k===type);
+    group.list.forEach(a=>{
+      const{value,cost,pnl,pct}=calcVal(a);
+      const pr=D.prices[a.id];
+      const priceTagHtml=a.type==='cash'?'':
+        pr?.status==='err'?`<span class="price-tag err">获取失败</span>`:
+        pr?.price?`<span class="price-tag ok">${a.type==='fund'?'估值 ':'价格 '}${pr.price}</span>`:
+        `<span class="price-tag pending">待刷新</span>`;
+      const pnlStr=pnl!=null?(pnl>=0?`+${fmtY(pnl)} (${fmtPct(pct)})`:
+        `-${fmtY(Math.abs(pnl))} (${fmtPct(pct)})`):a.type==='cash'?'':'—';
+      const pnlClass=pnl==null?'neu':pnl>=0?'pos':'neg';
+      const unitLabel=a.type==='fund'?'份':a.type==='gold'?'克':a.type==='etf'?'股':'元';
+      const recsHtml=a.records?.length?
+        `<div class="ac-stat"><div class="ac-sl">定投次数</div><div class="ac-sv">${a.records.length}次</div></div>`:'';
+      assetsHtml+=`<div class="asset-card">
+        <div class="ac-top">
+          <div class="ac-left">
+            <div class="ac-icon" style="background:${t?.bg||'#1a2744'}">${t?.icon||'💰'}</div>
+            <div>
+              <div class="ac-name">${a.name}</div>
+              <div class="ac-meta">${a.code||''}${priceTagHtml}</div>
+            </div>
+          </div>
+          <div class="ac-right">
+            <div class="ac-val">${value!=null?fmtY(value):'—'}</div>
+            <div class="ac-pnl ${pnlClass}">${pnlStr}</div>
+          </div>
+        </div>
+        <div class="ac-stats">
+          <div class="ac-stat"><div class="ac-sl">持有量</div><div class="ac-sv">${a.quantity}${unitLabel}</div></div>
+          <div class="ac-stat"><div class="ac-sl">均摊成本</div><div class="ac-sv">${fmtY(a.costPrice)}</div></div>
+          <div class="ac-stat"><div class="ac-sl">持仓成本</div><div class="ac-sv">${fmtY(cost||0)}</div></div>
+          ${recsHtml}
+        </div>
+        <div class="ac-btns">
+          <button class="ac-btn" onclick="openEditAsset('${a.id}')">编辑</button>
+          ${a.type!=='cash'?`<button class="ac-btn" onclick="openAddRecord('${a.id}')">+ 记录定投</button>`:''}
+        </div>
+      </div>`;
+    });
+  });
+
+  // 负债
+  let debtHtml=D.debts.map(d=>`<div class="debt-card" onclick="openEditDebt('${d.id}')">
+    <div class="dc-row"><span class="dc-name">${d.name}</span><span class="dc-amt">-${fmtY(d.amount)}</span></div>
+    ${d.note?`<div class="dc-note">${d.note}</div>`:''}
+  </div>`).join('');
+  if(!D.debts.length)debtHtml=`<div class="empty-hint">暂无负债记录</div>`;
+
+  document.getElementById('main-content').innerHTML=`
+    <div class="hero">
+      <div class="hero-lbl">总资产</div>
+      <div class="hero-amt">¥${fmt2(total)}</div>
+      <div class="hero-grid">
+        <div class="hg-item"><div class="hg-lbl">总盈亏</div><div class="hg-val ${totalPnl>=0?'pos':'neg'}">${totalPnl>=0?'+':''}¥${fmt2(Math.abs(totalPnl))}</div></div>
+        <div class="hg-item"><div class="hg-lbl">收益率</div><div class="hg-val ${totalPct>=0?'pos':'neg'}">${fmtPct(totalPct)}</div></div>
+        <div class="hg-item"><div class="hg-lbl">投入成本</div><div class="hg-val neu">¥${fmt2(totalC)}</div></div>
+      </div>
+      ${D.lastUpdate?`<div class="update-lbl">价格更新：${D.lastUpdate}</div>`:''}
+    </div>
+    <div class="net-row">
+      <span class="net-lbl">净资产（总资产 − 负债）</span>
+      <span class="net-val ${netWorth>=0?'pos':'neg'}">${netWorth>=0?'':'-'}¥${fmt2(Math.abs(netWorth))}</span>
+    </div>
+    ${pieData.length?`<div class="pie-card">
+      <canvas id="pie-c" width="110" height="110" style="flex-shrink:0"></canvas>
+      <div class="pie-leg">${gEntries.map(([,g],i)=>`
+        <div class="pie-li">
+          <div class="pie-dot" style="background:${COLORS[i%7]}"></div>
+          <span class="pie-name">${g.label}</span>
+          <span class="pie-pct">${total>0?Number(g.value/total*100).toFixed(1):0}%</span>
+          <span class="pie-amt">${fmtY(g.value)}</span>
+        </div>`).join('')}
+      </div>
+    </div>`:''}
+    <div class="sec-hdr">
+      <span class="sec-title">我的资产</span>
+      <button class="sec-btn" onclick="openAddAsset()">+ 添加</button>
+    </div>
+    ${assetsHtml||`<div class="empty-hint">还没有资产，点右上角添加</div>`}
+    <div class="sec-hdr" style="margin-top:6px">
+      <span class="sec-title">负债</span>
+      <button class="sec-btn" onclick="openAddDebt()">+ 添加</button>
+    </div>
+    ${debtHtml}
+  `;
+
+  setTimeout(()=>{
+    const pc=document.getElementById('pie-c');
+    if(pc&&pieData.length&&window.Chart){
+      pieChart=new Chart(pc,{type:'doughnut',data:{
+        labels:pieLabels,
+        datasets:[{data:pieData,backgroundColor:COLORS.slice(0,pieData.length),borderWidth:0}]
+      },options:{cutout:'65%',plugins:{legend:{display:false},tooltip:{enabled:false}},animation:{duration:400}}});
+    }
+    checkModal();
+  },30);
+}
+
+// ─── 模态框 ───
+function checkModal(){
+  document.querySelectorAll('.modal-overlay').forEach(e=>e.remove());
+  if(modal==='add-asset')renderAssetModal();
+  else if(modal==='add-debt')renderDebtModal();
+  else if(modal==='add-record')renderRecordModal();
+}
+function mkOv(){
+  const ov=document.createElement('div');ov.className='modal-overlay';
+  ov.addEventListener('click',e=>{if(e.target===ov){modal=null;editId=null;renderMain()}});
+  return ov;
+}
+
+function openAddAsset(){modal='add-asset';editId=null;renderMain()}
+function openEditAsset(id){modal='add-asset';editId=id;renderMain()}
+function openAddDebt(){modal='add-debt';editId=null;renderMain()}
+function openEditDebt(id){modal='add-debt';editId=id;renderMain()}
+function openAddRecord(id){modal='add-record';editId=id;renderMain()}
+
+function renderAssetModal(){
+  const ex=editId?D.assets.find(a=>a.id===editId):null;
+  const type=ex?.type||'fund';
+  const ov=mkOv();
+  const typeOpts=TYPES.map(t=>`<option value="${t.k}" ${type===t.k?'selected':''}>${t.icon} ${t.label}</option>`).join('');
+  const codeHint={fund:'如 110011（易方达优质精选）',etf:'如 sh512880（证券ETF）',gold:'工行积存金无需填代码',cash:'如：支付宝、招行储蓄卡'};
+  const isCash=type==='cash';
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">${ex?'编辑资产':'添加资产'}</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">类型</span>
+        <select id="a-type" onchange="updateAssetTypeUI()">${typeOpts}</select></div>
+      <div class="mfield"><span class="mflbl">名称</span>
+        <input id="a-name" placeholder="如：易方达优质精选" value="${ex?.name||''}"></div>
+      <div class="mfield" id="f-code" style="${isCash?'display:none':''}"><span class="mflbl">代码</span>
+        <input id="a-code" placeholder="${codeHint[type]||''}" value="${ex?.code||''}"></div>
+      <div class="mfield"><span class="mflbl">${type==='gold'?'克数':type==='etf'?'股数':type==='fund'?'份额':'金额'}</span>
+        <input id="a-qty" type="number" min="0" step="0.0001" placeholder="0" value="${ex?.quantity||''}"></div>
+      <div class="mfield" id="f-cost" style="${isCash?'display:none':''}"><span class="mflbl">成本均价</span>
+        <input id="a-cost" type="number" min="0" step="0.0001" placeholder="买入均价" value="${ex?.costPrice||''}"></div>
+    </div>
+    <div class="minfo" id="a-hint">${codeHint[type]||''}</div>
+    <button class="msub" onclick="submitAsset()">${ex?'保存修改':'添加资产'}</button>
+    ${ex?`<button class="mdel" onclick="deleteAsset('${ex.id}')">删除此资产</button>`:''}
+  </div>`;
+  document.body.appendChild(ov);
+}
+function updateAssetTypeUI(){
+  const type=document.getElementById('a-type')?.value;
+  const isCash=type==='cash';
+  document.getElementById('f-code').style.display=isCash?'none':'';
+  document.getElementById('f-cost').style.display=isCash?'none':'';
+  const hints={fund:'如 110011（易方达优质精选）',etf:'如 sh512880（证券ETF，需加市场前缀 sh/sz）',gold:'工行积存金无需填代码',cash:'如：支付宝余额、招行储蓄卡'};
+  const hint=document.getElementById('a-hint');
+  if(hint)hint.textContent=hints[type]||'';
+  const codeHintMap={fund:'如 110011',etf:'如 sh512880',gold:'不需要',cash:''};
+  const ci=document.getElementById('a-code');
+  if(ci)ci.placeholder=codeHintMap[type]||'';
+}
+function submitAsset(){
+  const type=document.getElementById('a-type')?.value;
+  const name=document.getElementById('a-name')?.value.trim();
+  const code=document.getElementById('a-code')?.value.trim()||'';
+  const qty=parseFloat(document.getElementById('a-qty')?.value);
+  const cost=type==='cash'?1:parseFloat(document.getElementById('a-cost')?.value);
+  if(!name||isNaN(qty)||qty<=0){alert('请填写名称和数量');return;}
+  if(type!=='cash'&&(isNaN(cost)||cost<=0)){alert('请填写成本均价');return;}
+  if(editId){
+    const idx=D.assets.findIndex(a=>a.id===editId);
+    if(idx>=0)D.assets[idx]={...D.assets[idx],type,name,code,quantity:qty,costPrice:cost||1};
+  }else{
+    D.assets.push({id:genId(),type,name,code,quantity:qty,costPrice:cost||1,records:[]});
+  }
+  save();modal=null;editId=null;
+  fetchAllPrices();
+}
+function deleteAsset(id){
+  if(!confirm('确认删除？'))return;
+  D.assets=D.assets.filter(a=>a.id!==id);
+  delete D.prices[id];save();modal=null;editId=null;renderMain();
+}
+
+function renderDebtModal(){
+  const ex=editId?D.debts.find(d=>d.id===editId):null;
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">${ex?'编辑负债':'添加负债'}</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">名称</span><input id="d-name" placeholder="如：信用卡、花呗" value="${ex?.name||''}"></div>
+      <div class="mfield"><span class="mflbl">金额</span><input id="d-amt" type="number" min="0" step="0.01" placeholder="0" value="${ex?.amount||''}"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="d-note" placeholder="如：还款日25号" value="${ex?.note||''}"></div>
+    </div>
+    <button class="msub" onclick="submitDebt()">${ex?'保存修改':'添加'}</button>
+    ${ex?`<button class="mdel" onclick="deleteDebt('${ex.id}')">删除</button>`:''}
+  </div>`;
+  document.body.appendChild(ov);
+}
+function submitDebt(){
+  const name=document.getElementById('d-name')?.value.trim();
+  const amt=parseFloat(document.getElementById('d-amt')?.value);
+  const note=document.getElementById('d-note')?.value.trim()||'';
+  if(!name||isNaN(amt)||amt<=0){alert('请填写名称和金额');return;}
+  if(editId){
+    const idx=D.debts.findIndex(d=>d.id===editId);
+    if(idx>=0)D.debts[idx]={...D.debts[idx],name,amount:amt,note};
+  }else{
+    D.debts.push({id:genId(),name,amount:amt,note});
+  }
+  save();modal=null;editId=null;renderMain();
+}
+function deleteDebt(id){
+  if(!confirm('确认删除？'))return;
+  D.debts=D.debts.filter(d=>d.id!==id);save();modal=null;editId=null;renderMain();
+}
+
+function renderRecordModal(){
+  const a=D.assets.find(a=>a.id===editId);if(!a)return;
+  const unitLabel=a.type==='fund'?'份':a.type==='gold'?'克':a.type==='etf'?'股':'元';
+  const recs=(a.records||[]).slice().reverse().slice(0,5);
+  const recsHtml=recs.length?`<div class="msec">最近定投记录</div>
+    <div class="record-list">${recs.map(r=>`<div class="rec-item">
+      <span>${r.date}</span>
+      <span>+${r.quantity}${unitLabel}</span>
+      <span>¥${r.amount.toFixed(2)}</span>
+      <span>均价 ${r.price.toFixed(4)}</span>
+    </div>`).join('')}</div>`:'';
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">记录定投 · ${a.name}</div>
+    <div class="minfo">每次定投后自动更新加权平均成本</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">日期</span>
+        <input id="r-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+      <div class="mfield"><span class="mflbl">买入金额</span>
+        <input id="r-amt" type="number" min="0" step="0.01" placeholder="本次定投金额（元）" oninput="calcRecordPrice()"></div>
+      <div class="mfield"><span class="mflbl">买入${unitLabel}</span>
+        <input id="r-qty" type="number" min="0" step="0.0001" placeholder="买入的${unitLabel}数" oninput="calcRecordPrice()"></div>
+      <div class="mfield"><span class="mflbl">成交价格</span>
+        <input id="r-price" type="number" step="0.0001" placeholder="自动计算" readonly style="color:#556"></div>
+    </div>
+    ${recsHtml}
+    <button class="msub" onclick="submitRecord()">确认记录</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function calcRecordPrice(){
+  const amt=parseFloat(document.getElementById('r-amt')?.value)||0;
+  const qty=parseFloat(document.getElementById('r-qty')?.value)||0;
+  if(amt>0&&qty>0){
+    const priceInput=document.getElementById('r-price');
+    if(priceInput)priceInput.value=(amt/qty).toFixed(4);
+  }
+}
+function submitRecord(){
+  const a=D.assets.find(a=>a.id===editId);if(!a)return;
+  const amt=parseFloat(document.getElementById('r-amt')?.value);
+  const qty=parseFloat(document.getElementById('r-qty')?.value);
+  const date=document.getElementById('r-date')?.value||new Date().toISOString().slice(0,10);
+  if(isNaN(amt)||isNaN(qty)||amt<=0||qty<=0){alert('请填写买入金额和份数');return;}
+  // 加权平均成本
+  const oldTotal=a.quantity*a.costPrice;
+  const newQty=a.quantity+qty;
+  const newCost=(oldTotal+amt)/newQty;
+  if(!a.records)a.records=[];
+  a.records.push({date,amount:amt,quantity:qty,price:amt/qty});
+  a.quantity=newQty;
+  a.costPrice=newCost;
+  save();modal=null;editId=null;renderMain();
+}
+
+load();
+renderMain();
+if(D.assets.some(a=>a.type!=='cash'))fetchAllPrices();
+</script>
+</body>
+</html>

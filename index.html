@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>财务管家</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;background:#0f1117}
+.home{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 16px 40px}
+.header{padding:44px 0 28px;text-align:center}
+.header-icon{font-size:44px;margin-bottom:10px}
+.header-title{font-size:22px;font-weight:700;color:#e8eaf0;margin-bottom:4px}
+.header-sub{font-size:12px;color:#445}
+.date-str{font-size:12px;color:#334;margin-top:6px}
+.modules{display:flex;flex-direction:column;gap:10px}
+.module-card{display:flex;align-items:center;gap:14px;background:#161b26;border:1px solid #1e2a3a;border-radius:16px;padding:18px 16px;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.module-card:active{background:#1e2535}
+.module-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.module-body{flex:1;min-width:0}
+.module-title{font-size:15px;font-weight:700;color:#e8eaf0;margin-bottom:3px}
+.module-desc{font-size:11px;color:#445;line-height:1.5}
+.module-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.module-tag{font-size:10px;padding:2px 7px;border-radius:6px;background:#1e2a3a;color:#556}
+.module-arrow{font-size:16px;color:#2a3a4a;flex-shrink:0}
+.footer{text-align:center;padding-top:28px;font-size:11px;color:#2a3040;line-height:1.8}
+/* 快速状态预览 */
+.quick-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.qs-item{background:#161b26;border:1px solid #1e2a3a;border-radius:12px;padding:10px;text-align:center}
+.qs-val{font-size:14px;font-weight:700;color:#e8eaf0}
+.qs-lbl{font-size:10px;color:#445;margin-top:3px}
+.qs-val.good{color:#4caf50}
+.qs-val.warn{color:#ff9800}
+.qs-val.bad{color:#ef5350}
+</style>
+</head>
+<body>
+<div class="home">
+  <div class="header">
+    <div class="header-icon">💼</div>
+    <div class="header-title">财务管家</div>
+    <div class="header-sub">个人财务中心</div>
+    <div class="date-str" id="date-str"></div>
+  </div>
+
+  <div class="quick-stats" id="quick-stats">
+    <div class="qs-item"><div class="qs-val" id="qs-daily">—</div><div class="qs-lbl">今日剩余</div></div>
+    <div class="qs-item"><div class="qs-val" id="qs-unpaid">—</div><div class="qs-lbl">待付账单</div></div>
+    <div class="qs-item"><div class="qs-val" id="qs-utility">—</div><div class="qs-lbl">水电余额</div></div>
+  </div>
+
+  <div class="modules">
+    <a class="module-card" href="./diary/">
+      <div class="module-icon" style="background:#1a2744">📒</div>
+      <div class="module-body">
+        <div class="module-title">记账日记</div>
+        <div class="module-desc">记录每日收支，追踪预算进度</div>
+        <div class="module-tags">
+          <span class="module-tag">日常收支</span>
+          <span class="module-tag">预算管理</span>
+          <span class="module-tag">报销跟踪</span>
+        </div>
+      </div>
+      <div class="module-arrow">›</div>
+    </a>
+
+    <a class="module-card" href="./monthly/">
+      <div class="module-icon" style="background:#1a2a1a">📋</div>
+      <div class="module-body">
+        <div class="module-title">本月账单</div>
+        <div class="module-desc">固定账单、水电追踪、预算进度</div>
+        <div class="module-tags">
+          <span class="module-tag">房租停车</span>
+          <span class="module-tag">水电余额</span>
+          <span class="module-tag">伙食预算</span>
+        </div>
+      </div>
+      <div class="module-arrow">›</div>
+    </a>
+
+    <a class="module-card" href="./finance/">
+      <div class="module-icon" style="background:#2a1a10">📈</div>
+      <div class="module-body">
+        <div class="module-title">财务总览</div>
+        <div class="module-desc">基金、ETF、积存金、净资产</div>
+        <div class="module-tags">
+          <span class="module-tag">场外基金</span>
+          <span class="module-tag">ETF</span>
+          <span class="module-tag">积存金</span>
+        </div>
+      </div>
+      <div class="module-arrow">›</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    数据保存在本地浏览器<br>仅供个人使用 · yuanshan4512-netizen
+  </div>
+</div>
+
+<script>
+const wds=['日','一','二','三','四','五','六'];
+const d=new Date();
+document.getElementById('date-str').textContent=
+  d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 周'+wds[d.getDay()];
+
+// 读取快速状态
+function pad2(n){return String(n).padStart(2,'0')}
+function monthKey(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+function ld(key){try{return JSON.parse(localStorage.getItem(key)||'{}')}catch(e){return{}}}
+
+try{
+  // 今日剩余（来自记账日记）
+  const diary=ld('bav7');
+  const st=diary.settings||{};
+  if(st.purpose==='budget'&&st.budget){
+    const today=todayStr();
+    const recs=(diary.records||[]).filter(r=>r.date===today&&r.type==='expense');
+    const spent=recs.reduce((s,r)=>s+r.amount,0);
+    const remain=parseFloat(st.budget)-spent;
+    const el=document.getElementById('qs-daily');
+    el.textContent=(remain>=0?'¥':'-¥')+Math.abs(remain).toFixed(0);
+    el.className='qs-val '+(remain>st.budget*0.3?'good':remain>0?'warn':'bad');
+  }
+}catch(e){}
+
+try{
+  // 待付账单（来自本月账单）
+  const monthly=ld('monthly_v1');
+  const mk=monthKey();
+  const bills=monthly.bills||[
+    {id:'rent',amount:1200},{id:'park',amount:330},{id:'phone',amount:100}
+  ];
+  const billsStatus=(monthly.billsStatus||{})[mk]||{};
+  const unpaid=bills.filter(b=>!billsStatus[b.id]?.paid).reduce((s,b)=>s+b.amount,0);
+  const el=document.getElementById('qs-unpaid');
+  el.textContent=unpaid>0?'¥'+unpaid:'已全付';
+  el.className='qs-val '+(unpaid>0?'warn':'good');
+}catch(e){}
+
+try{
+  // 水电余额
+  const monthly=ld('monthly_v1');
+  const util=monthly.utility||{balance:0,monthlyAvg:350};
+  const daysLeft=util.monthlyAvg>0?Math.floor(util.balance/(util.monthlyAvg/30)):0;
+  const el=document.getElementById('qs-utility');
+  el.textContent='¥'+Math.round(util.balance||0);
+  el.className='qs-val '+(daysLeft>20?'good':daysLeft>10?'warn':'bad');
+}catch(e){}
+</script>
+</body>
+</html>
