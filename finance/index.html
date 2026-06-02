@@ -11,26 +11,29 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;background:#0f1117;position:sticky;top:0;z-index:10;border-bottom:1px solid #1a2030}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .back-home{font-size:20px;color:#556;text-decoration:none}
-.topbar-title{font-size:16px;font-weight:700;color:#e8eaf0}
+.topbar-title{font-size:16px;font-weight:700}
 .topbar-right{display:flex;gap:8px}
 .tbtn{font-size:11px;color:#378ADD;background:none;border:1px solid #1e3a5f;border-radius:8px;padding:4px 10px;cursor:pointer}
 .tbtn.green{color:#4caf50;border-color:#1e3a1e}
-.scroll-body{flex:1;padding:12px 12px 32px}
+.scroll-body{flex:1;padding:12px 12px 32px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+/* 英雄卡 */
 .hero{background:linear-gradient(135deg,#1a2744,#0f1a2e);border:1px solid #1e3a5f;border-radius:18px;padding:18px;margin-bottom:10px}
 .hero-lbl{font-size:11px;color:#445;letter-spacing:.06em;margin-bottom:5px}
-.hero-amt{font-size:32px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px}
+.hero-amt{font-size:30px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px}
 .hero-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
 .hg{background:rgba(255,255,255,.04);border-radius:10px;padding:8px;text-align:center}
 .hg-l{font-size:10px;color:#445;margin-bottom:3px}
 .hg-v{font-size:13px;font-weight:600}
-.hg-v.pos{color:#4caf50}.hg-v.neu{color:#e8eaf0}.hg-v.warn{color:#ff9800}
-.overall-bar{height:6px;background:#1e2a3a;border-radius:3px;overflow:hidden}
+.hg-v.pos{color:#4caf50}.hg-v.neg{color:#ef5350}.hg-v.neu{color:#e8eaf0}.hg-v.warn{color:#ff9800}
+.overall-bar{height:5px;background:#1e2a3a;border-radius:3px;overflow:hidden}
 .overall-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#378ADD,#4caf50);transition:width .6s}
 .overall-lbl{display:flex;justify-content:space-between;font-size:10px;color:#445;margin-top:5px}
+/* 分组 */
 .group-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 8px;margin-top:8px}
 .group-title{font-size:12px;font-weight:700;color:#556;letter-spacing:.05em}
-.group-total{font-size:11px;color:#445}
-.inv-card{background:#161b26;border:1px solid #1e2a3a;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.group-sub{font-size:11px;color:#445}
+/* 投资卡 */
+.inv-card{background:#161b26;border:1px solid #1e2a3a;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;-webkit-tap-highlight-color:transparent}
 .inv-card:active{border-color:#378ADD}
 .inv-card.completed{border-color:#2e5e2e;background:#131a13}
 .ic-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
@@ -40,45 +43,106 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .ic-badge.done{background:#1e3a1e;color:#4caf50}
 .ic-badge.active{background:#1e3a5f;color:#378ADD}
 .ic-badge.saving{background:#2a2010;color:#ff9800}
-.ic-badge.stock{background:#2a1a2a;color:#9c27b0}
+.ic-badge.stock{background:#2a1a2a;color:#ce93d8}
 .ic-meta{font-size:11px;color:#445;margin-top:3px}
 .ic-right{text-align:right;flex-shrink:0;margin-left:10px}
-.ic-remain{font-size:15px;font-weight:700;color:#e8eaf0}
+.ic-remain{font-size:15px;font-weight:700}
 .ic-remain.done{color:#4caf50}
 .ic-sub{font-size:10px;color:#445;margin-top:2px}
 .ic-bar-bg{height:5px;background:#1e2a3a;border-radius:3px;overflow:hidden;margin-bottom:8px}
 .ic-bar-fill{height:100%;border-radius:3px;transition:width .5s}
-.ic-stats{display:flex;gap:0}
+.ic-stats{display:flex}
 .ic-stat{flex:1;text-align:center;border-right:1px solid #1e2a3a}
 .ic-stat:last-child{border-right:none}
 .ic-sl{font-size:10px;color:#445;margin-bottom:2px}
 .ic-sv{font-size:12px;font-weight:600;color:#e8eaf0}
+.ic-sv.pos{color:#4caf50}.ic-sv.neg{color:#ef5350}
+/* 股票卡 */
+.stock-card{background:#161b26;border:1px solid #1e2a3a;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.stock-card:active{border-color:#ce93d8}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.sc-name{font-size:14px;font-weight:700;color:#e8eaf0}
+.sc-meta{font-size:11px;color:#445;margin-top:3px}
+.sc-right{text-align:right}
+.sc-cost{font-size:13px;font-weight:600;color:#e8eaf0}
+.sc-pnl{font-size:11px;margin-top:2px}
+.sc-pnl.pos{color:#4caf50}.sc-pnl.neg{color:#ef5350}.sc-pnl.neu{color:#556}
+/* 止盈止损线 */
+.sl-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.sl-item{background:#0f1117;border-radius:10px;padding:8px 10px;border:1px solid #1e2a3a}
+.sl-item.tp{border-color:#1e3a1e}
+.sl-item.sl{border-color:#3a1a1a}
+.sl-label{font-size:10px;color:#556;margin-bottom:3px}
+.sl-price{font-size:14px;font-weight:700}
+.sl-price.tp{color:#4caf50}
+.sl-price.sl{color:#ef5350}
+.sl-pct{font-size:10px;margin-top:1px}
+.sl-pct.tp{color:#2e7d32}.sl-pct.sl{color:#c62828}
+/* 止盈计划列表 */
+.tp-plan-list{margin-bottom:10px}
+.tp-plan-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #1e2a3a}
+.tp-plan-item:last-child{border-bottom:none}
+.tp-tag{font-size:10px;padding:2px 7px;border-radius:6px;background:#1e3a1e;color:#4caf50;flex-shrink:0}
+.tp-tag.done{background:#1a2030;color:#556;text-decoration:line-through}
+.tp-info{flex:1;font-size:12px;color:#778}
+.tp-profit{font-size:12px;font-weight:600;color:#4caf50;flex-shrink:0}
+.tp-profit.done{color:#556}
+/* 买入记录 */
+.buy-list{margin-bottom:8px}
+.buy-item{display:flex;justify-content:space-between;align-items:center;padding:6px 4px;border-bottom:1px solid #1e2a3a;font-size:12px;color:#778}
+.buy-item:last-child{border-bottom:none}
+.buy-date{color:#445;min-width:72px}
+.buy-qty{color:#e8eaf0;font-weight:600;min-width:52px}
+.buy-price{color:#e8eaf0}
+.buy-total{color:#4caf50}
+/* 账户资金卡 */
+.account-card{background:#1a2030;border:1px solid #1e3a5f;border-radius:14px;padding:14px;margin-bottom:8px}
+.ac-title{font-size:12px;font-weight:700;color:#556;letter-spacing:.05em;margin-bottom:10px}
+.ac-main{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ac-avail{font-size:24px;font-weight:700;color:#e8eaf0}
+.ac-avail-lbl{font-size:11px;color:#445;margin-bottom:4px}
+.ac-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ac-stat{background:#0f1117;border-radius:8px;padding:8px;text-align:center}
+.ac-sl{font-size:10px;color:#445;margin-bottom:3px}
+.ac-sv{font-size:13px;font-weight:600}
+/* 模态框 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;flex-direction:column;justify-content:flex-end;z-index:100}
-.modal-sheet{background:#1a1f2e;border-radius:20px 20px 0 0;padding:18px 16px 32px;max-height:90%;overflow-y:auto}
+.modal-sheet{background:#1a1f2e;border-radius:20px 20px 0 0;padding:18px 16px 32px;max-height:92%;overflow-y:auto}
 .mhandle{width:32px;height:4px;border-radius:2px;background:#2a3040;margin:0 auto 14px}
 .mtitle{font-size:15px;font-weight:700;color:#e8eaf0;margin-bottom:4px}
 .msub-title{font-size:12px;color:#445;margin-bottom:14px}
-.msec{font-size:11px;font-weight:600;color:#445;letter-spacing:.04em;margin:14px 0 8px}
-.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.msec{font-size:11px;font-weight:600;color:#445;letter-spacing:.04em;margin:14px 0 8px;padding-top:8px;border-top:1px solid #1e2a3a}
+.msec:first-of-type{border-top:none;padding-top:0}
+.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
 .mfield{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#0f1117;border-radius:10px;border:1px solid #1e2a3a}
-.mflbl{font-size:11px;color:#445;width:56px;flex-shrink:0}
-.mfield input,.mfield select{flex:1;background:none;border:none;outline:none;font-size:13px;color:#e8eaf0;font-family:inherit}
+.mflbl{font-size:11px;color:#445;width:60px;flex-shrink:0}
+.mfield input,.mfield select{flex:1;background:none;border:none;outline:none;font-size:13px;color:#e8eaf0;font-family:inherit;min-width:0}
 .mfield select option{background:#1a1f2e}
-.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.mfield-note{font-size:11px;color:#445;padding:0 4px;flex-shrink:0}
+.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;-webkit-tap-highlight-color:transparent}
 .msub.green{background:#2e7d32}
+.msub.orange{background:#e65100}
 .msub.gray{background:#1e2a3a;color:#778}
 .mdel{width:100%;height:38px;border-radius:10px;border:1px solid #3a1a1a;background:transparent;color:#ef5350;font-size:13px;cursor:pointer}
-.minfo{font-size:11px;color:#e8eaf0;text-align:center;margin-bottom:12px;line-height:1.8;padding:10px 12px;background:#0f1117;border-radius:10px}
-.rec-list{margin-bottom:12px;max-height:200px;overflow-y:auto}
-.rec-item{display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid #1e2a3a;font-size:12px;color:#778}
-.rec-item:last-child{border-bottom:none}
-.rec-del{background:none;border:none;color:#445;cursor:pointer;font-size:15px;padding:0 4px}
-.no-rec{text-align:center;color:#334;font-size:12px;padding:16px 0}
+.minfo{font-size:11px;color:#778;background:#0f1117;border-radius:8px;padding:8px 12px;margin-bottom:10px;line-height:1.7}
+.calc-box{background:#0f1117;border-radius:10px;padding:10px 12px;margin-bottom:10px;border:1px solid #1e3a1e}
+.calc-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.calc-lbl{color:#445}
+.calc-val{color:#4caf50;font-weight:600}
+.calc-val.neg{color:#ef5350}
+.tp-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.tp-row-item{background:#0f1117;border-radius:10px;padding:10px;border:1px solid #1e2a3a;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tp-row-label{font-size:11px;color:#556;width:100%}
+.tp-row-fields{display:flex;gap:6px;align-items:center;width:100%}
+.tp-row-input{flex:1;background:#1e2a3a;border:1px solid #2a3a4a;border-radius:8px;padding:7px 10px;font-size:13px;color:#e8eaf0;outline:none;min-width:0}
+.tp-row-del{background:none;border:none;color:#445;cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0}
+.add-tp-btn{width:100%;height:36px;border-radius:10px;border:1px dashed #1e3a5f;background:transparent;color:#378ADD;font-size:12px;cursor:pointer;margin-bottom:10px}
 .data-btns{display:flex;flex-direction:column;gap:8px}
 .data-btn{width:100%;height:44px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;border:none}
 .data-btn.export{background:#1e3a5f;color:#378ADD}
 .data-btn.import{background:#1e2a1e;color:#4caf50}
 .data-btn.danger{background:#3a1a1a;color:#ef5350}
+.empty-hint{text-align:center;color:#334;font-size:12px;padding:20px 0}
 </style>
 </head>
 <body>
@@ -90,13 +154,23 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
     </div>
     <div class="topbar-right">
       <button class="tbtn green" onclick="openData()">备份</button>
-      <button class="tbtn" onclick="openAddItem()">+ 添加</button>
+      <button class="tbtn" onclick="openAddInv()">+ 添加</button>
     </div>
   </div>
   <div class="scroll-body"><div id="main-content"></div></div>
 </div>
+
 <script>
 const SK='finance_v1';
+const COLORS=['#378ADD','#4caf50','#FFD700','#ef5350','#9c27b0','#ff9800','#00bcd4'];
+const GROUP_INFO={
+  fund:{label:'基金定投',icon:'📈',badgeClass:'active'},
+  gold:{label:'黄金积存金',icon:'🥇',badgeClass:'active'},
+  saving:{label:'储蓄目标',icon:'🎯',badgeClass:'saving'},
+  stock:{label:'股票账户',icon:'📊',badgeClass:'stock'},
+};
+
+// ── 默认数据 ──
 const DEFAULT_ITEMS=[
   {id:'f1',group:'fund',name:'沪深300',target:11650,invested:5595,monthly:865,platform:'支付宝',note:'华泰柏瑞沪深300，每月16日',records:[]},
   {id:'f2',group:'fund',name:'中证500',target:11650,invested:5681.5,monthly:865,platform:'支付宝',note:'南方中证500，每月16日',records:[]},
@@ -106,43 +180,200 @@ const DEFAULT_ITEMS=[
   {id:'f6',group:'fund',name:'工银瑞信',target:7000,invested:3160,monthly:600,platform:'理财通',note:'每月16日',records:[]},
   {id:'g1',group:'gold',name:'黄金积存金',target:25500,invested:11123.7,monthly:2050,platform:'工商银行',note:'积存金，每月16日',records:[]},
   {id:'s1',group:'saving',name:'现金安全垫',target:25000,invested:20500,monthly:500,platform:'支付宝',note:'支持4-5个月生活',records:[]},
-  {id:'s2',group:'saving',name:'Pocket3 + 内存卡',target:3500,invested:3500,monthly:500,platform:'微信定期',note:'618活动已达标，可购入',records:[]},
+  {id:'s2',group:'saving',name:'Pocket3 + 内存卡',target:3500,invested:3500,monthly:500,platform:'微信定期',note:'618活动已达标',records:[]},
   {id:'s3',group:'saving',name:'阿勒泰滑雪',target:16000,invested:1500,monthly:0,platform:'微信定期',note:'Pocket3完成后每月500转入',records:[]},
-  {id:'k1',group:'stock',name:'光伏板块',target:5000,invested:3000,monthly:0,platform:'中泰证券',note:'',records:[]},
-  {id:'k2',group:'stock',name:'通信板块',target:5000,invested:3000,monthly:0,platform:'中泰证券',note:'',records:[]},
 ];
-const GROUP_INFO={
-  fund:{label:'基金定投',icon:'📈',badgeClass:'active'},
-  gold:{label:'黄金积存金',icon:'🥇',badgeClass:'active'},
-  saving:{label:'储蓄目标',icon:'🎯',badgeClass:'saving'},
-  stock:{label:'股票持仓',icon:'📊',badgeClass:'stock'},
+
+// 股票账户默认数据
+const DEFAULT_STOCK_ACCOUNT={
+  initialCapital:10000,   // 初始资金
+  deposits:[],            // 追加资金记录 [{date,amount,note}]
+  stocks:[
+    {
+      id:'st1',code:'通信ETF',name:'通信ETF',
+      buyRecords:[
+        {id:'b1',date:'2026-03-10',price:1.082,qty:3000,amount:3246,note:'初始买入'}
+      ],
+      sellRecords:[
+        {id:'sl1',date:'2026-04-20',price:1.35,qty:1000,amount:1350,profit:268,note:'止盈①25%'},
+        {id:'sl2',date:'2026-06-02',price:1.64,qty:1000,amount:1640,profit:558,note:'止盈②51%'},
+      ],
+      tpPlans:[
+        {id:'tp1',price:2.164,qty:1000,note:'止盈③+100%',done:false},
+      ],
+      tpPct:100,  // 止盈百分比（最新设置）
+      slPct:-15,  // 止损百分比
+      note:'算力中心需求驱动，分批止盈',
+    },
+    {
+      id:'st2',code:'光伏ETF',name:'光伏龙头ETF',
+      buyRecords:[
+        {id:'b1',date:'2026-03-10',price:0.87,qty:3000,amount:2610,note:'初始买入'},
+        {id:'b2',date:'2026-04-01',price:0.778,qty:1500,amount:1167,note:'补仓跌8%'},
+      ],
+      sellRecords:[],
+      tpPlans:[
+        {id:'tp1',price:1.0,qty:1500,note:'止盈①',done:false},
+        {id:'tp2',price:1.1,qty:1500,note:'止盈②',done:false},
+        {id:'tp3',price:1.2,qty:1500,note:'止盈③',done:false},
+      ],
+      tpPct:20,
+      slPct:-15,
+      note:'光伏赛道，分批止盈',
+    },
+  ],
 };
+
 function ld(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
 function sv(d){localStorage.setItem(SK,JSON.stringify(d))}
-function fmt(n,dec=0){return'¥'+Number(Math.abs(n)).toFixed(dec)}
-function fmtN(n,dec=2){return Number(Math.abs(n)).toFixed(dec)}
+function fmt2(n){return Number(Math.abs(n)).toFixed(2)}
+function fmtY(n,dec=2){return'¥'+fmt2(n)}
+function fmtPct(n){return(n>=0?'+':'')+Number(n).toFixed(1)+'%'}
 function pad2(n){return String(n).padStart(2,'0')}
 function todayStr(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
-function genId(){return'i'+Date.now().toString(36)}
-let ITEMS=[],modal=null,editId=null;
-function loadData(){const s=ld();ITEMS=s.items||JSON.parse(JSON.stringify(DEFAULT_ITEMS));}
-function saveData(){const s=ld();s.items=ITEMS;sv(s);}
+function genId(){return'i'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+
+let ITEMS=[],STOCK_ACCOUNT={},modal=null,editId=null,editSub=null;
+
+function loadData(){
+  const s=ld();
+  ITEMS=s.items||JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+  STOCK_ACCOUNT=s.stockAccount||JSON.parse(JSON.stringify(DEFAULT_STOCK_ACCOUNT));
+}
+function saveData(){
+  const s=ld();s.items=ITEMS;s.stockAccount=STOCK_ACCOUNT;sv(s);
+}
+
+// ── 股票计算 ──
+function calcStock(st){
+  const totalBought=st.buyRecords.reduce((s,r)=>s+r.qty,0);
+  const totalSold=st.sellRecords.reduce((s,r)=>s+r.qty,0);
+  const holdQty=totalBought-totalSold;
+  const totalCost=st.buyRecords.reduce((s,r)=>s+r.amount,0);
+  const totalSoldAmt=st.sellRecords.reduce((s,r)=>s+r.amount,0);
+  const totalProfit=st.sellRecords.reduce((s,r)=>s+r.profit,0);
+  // 当前持仓成本（按比例）
+  const avgCost=totalBought>0?totalCost/totalBought:0;
+  const holdCost=avgCost*holdQty;
+  // 止盈止损价格
+  const tpPrice=avgCost>0?avgCost*(1+(st.tpPct||20)/100):0;
+  const slPrice=avgCost>0?avgCost*(1+(st.slPct||-15)/100):0;
+  return{holdQty,totalBought,totalSold,totalCost,totalSoldAmt,totalProfit,avgCost,holdCost,tpPrice,slPrice};
+}
+
+// ── 账户资金 ──
+function calcAccount(){
+  const initial=STOCK_ACCOUNT.initialCapital||10000;
+  const deposited=STOCK_ACCOUNT.deposits.reduce((s,d)=>s+d.amount,0);
+  const totalIn=initial+deposited;
+  // 买入总花费
+  const totalBought=STOCK_ACCOUNT.stocks.reduce((s,st)=>s+st.buyRecords.reduce((a,r)=>a+r.amount,0),0);
+  // 卖出总收回
+  const totalSold=STOCK_ACCOUNT.stocks.reduce((s,st)=>s+st.sellRecords.reduce((a,r)=>a+r.amount,0),0);
+  // 总利润
+  const totalProfit=STOCK_ACCOUNT.stocks.reduce((s,st)=>s+st.sellRecords.reduce((a,r)=>a+r.profit,0),0);
+  // 当前持仓成本（还在场内的钱）
+  const holdCost=STOCK_ACCOUNT.stocks.reduce((s,st)=>{const c=calcStock(st);return s+c.holdCost},0);
+  // 可用资金 = 总投入 - 总买入 + 总卖出
+  const available=totalIn-totalBought+totalSold;
+  return{initial,deposited,totalIn,totalBought,totalSold,totalProfit,holdCost,available};
+}
+
+// ── 投资项计算 ──
 function getTotalInvested(item){return item.invested+(item.records||[]).reduce((s,r)=>s+r.amount,0)}
 function getRemain(item){return Math.max(0,item.target-getTotalInvested(item))}
 function getPct(item){return Math.min(100,Math.round(getTotalInvested(item)/item.target*100))}
 function isCompleted(item){return getTotalInvested(item)>=item.target}
 
 function renderMain(){
+  // 投资进度总计
   const nonStock=ITEMS.filter(i=>i.group!=='stock');
   const totalTarget=nonStock.reduce((s,i)=>s+i.target,0);
   const totalInvested=nonStock.reduce((s,i)=>s+getTotalInvested(i),0);
   const totalRemain=totalTarget-totalInvested;
   const overallPct=totalTarget>0?Math.round(totalInvested/totalTarget*100):0;
-  const stockTotal=ITEMS.filter(i=>i.group==='stock').reduce((s,i)=>s+getTotalInvested(i),0);
+
+  // 股票账户汇总
+  const acc=calcAccount();
+  const totalStockProfit=acc.totalProfit;
+
+  // 英雄卡
+  const heroHtml=`
+    <div class="hero">
+      <div class="hero-lbl">定投目标总额（不含股票）</div>
+      <div class="hero-amt">¥${fmt2(totalTarget)}</div>
+      <div class="hero-grid">
+        <div class="hg"><div class="hg-l">已投入</div><div class="hg-v neu">¥${fmt2(totalInvested)}</div></div>
+        <div class="hg"><div class="hg-l">还差</div><div class="hg-v warn">¥${fmt2(totalRemain)}</div></div>
+        <div class="hg"><div class="hg-l">股票已获利</div><div class="hg-v pos">+¥${fmt2(totalStockProfit)}</div></div>
+      </div>
+      <div class="overall-bar"><div class="overall-fill" style="width:${overallPct}%"></div></div>
+      <div class="overall-lbl"><span>整体完成度 ${overallPct}%</span><span>¥${fmt2(totalInvested)} / ¥${fmt2(totalTarget)}</span></div>
+    </div>`;
+
+  // 股票账户卡
+  const accHtml=`
+    <div class="account-card" onclick="openAccountEdit()">
+      <div class="ac-title">📊 股票账户</div>
+      <div class="ac-main">
+        <div>
+          <div class="ac-avail-lbl">可用资金</div>
+          <div class="ac-avail" style="color:${acc.available>=0?'#e8eaf0':'#ef5350'}">${fmtY(acc.available)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:#445;margin-bottom:3px">累计止盈利润</div>
+          <div style="font-size:18px;font-weight:700;color:#4caf50">+${fmtY(acc.totalProfit)}</div>
+        </div>
+      </div>
+      <div class="ac-stats">
+        <div class="ac-stat"><div class="ac-sl">初始资金</div><div class="ac-sv neu">${fmtY(acc.initial)}</div></div>
+        <div class="ac-stat"><div class="ac-sl">追加资金</div><div class="ac-sv neu">${fmtY(acc.deposited)}</div></div>
+        <div class="ac-stat"><div class="ac-sl">当前持仓</div><div class="ac-sv warn">${fmtY(acc.holdCost)}</div></div>
+      </div>
+    </div>`;
+
+  // 股票列表
+  let stocksHtml=STOCK_ACCOUNT.stocks.map(st=>{
+    const c=calcStock(st);
+    const pnlTxt=c.totalProfit>0?`已获利 +${fmtY(c.totalProfit)}`:'暂无止盈记录';
+    const holdPct=c.holdQty>0&&c.totalBought>0?Math.round(c.holdQty/c.totalBought*100):0;
+    return`<div class="stock-card" onclick="openStockDetail('${st.id}')">
+      <div class="sc-top">
+        <div class="ic-left">
+          <div class="sc-name">📊 ${st.name}</div>
+          <div class="sc-meta">均价 ${fmtY(c.avgCost)} · 持仓${c.holdQty}股 · 成本${fmtY(c.holdCost)}</div>
+        </div>
+        <div class="sc-right">
+          <div class="sc-cost" style="color:#4caf50">+${fmtY(c.totalProfit)}</div>
+          <div class="sc-pnl ${c.totalProfit>0?'pos':'neu'}">${pnlTxt}</div>
+        </div>
+      </div>
+      <div class="sl-grid">
+        <div class="sl-item tp">
+          <div class="sl-label">止盈价（+${st.tpPct||20}%）</div>
+          <div class="sl-price tp">${fmtY(c.tpPrice)}</div>
+          <div class="sl-pct tp">均价 ${fmtY(c.avgCost)}</div>
+        </div>
+        <div class="sl-item sl">
+          <div class="sl-label">止损价（${st.slPct||-15}%）</div>
+          <div class="sl-price sl">${fmtY(c.slPrice)}</div>
+          <div class="sl-pct sl">若触发损失 ${fmtY(c.holdCost*Math.abs((st.slPct||-15)/100))}</div>
+        </div>
+      </div>
+      <div class="tp-plan-list">${st.tpPlans.map((tp,i)=>`
+        <div class="tp-plan-item">
+          <span class="tp-tag ${tp.done?'done':''}">${tp.done?'已完成':'计划'}</span>
+          <span class="ic-sl" style="flex:1;font-size:11px;color:#778">${tp.note||'止盈'} · ${tp.qty}股 @ ${fmtY(tp.price)}</span>
+          <span class="tp-profit ${tp.done?'done':''}">${tp.done?'已完成':'+'+fmtY((tp.price-c.avgCost)*tp.qty)}</span>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  // 投资定投分组
   let groupsHtml='';
-  ['fund','gold','saving','stock'].forEach(g=>{
-    const items=ITEMS.filter(i=>i.group===g);
-    if(!items.length)return;
+  ['fund','gold','saving'].forEach(g=>{
+    const items=ITEMS.filter(i=>i.group===g);if(!items.length)return;
     const gi=GROUP_INFO[g];
     const gInv=items.reduce((s,i)=>s+getTotalInvested(i),0);
     const gTgt=items.reduce((s,i)=>s+i.target,0);
@@ -152,202 +383,575 @@ function renderMain(){
       const pct=getPct(item);
       const done=isCompleted(item);
       const barColor=done?'#4caf50':pct>80?'#ff9800':'#378ADD';
-      const badgeClass=done?'done':gi.badgeClass;
-      const badgeLabel=done?'✓ 已达标':gi.label;
-      let statsHtml='';
-      if(g==='stock'){
-        statsHtml=`<div class="ic-stat"><div class="ic-sl">持仓成本</div><div class="ic-sv">${fmt(totalInv)}</div></div><div class="ic-stat"><div class="ic-sl">目标金额</div><div class="ic-sv">${fmt(item.target)}</div></div><div class="ic-stat"><div class="ic-sl">平台</div><div class="ic-sv" style="font-size:10px">${item.platform}</div></div>`;
-      }else{
-        statsHtml=`<div class="ic-stat"><div class="ic-sl">已投入</div><div class="ic-sv">${fmt(totalInv)}</div></div><div class="ic-stat"><div class="ic-sl">目标</div><div class="ic-sv">${fmt(item.target)}</div></div>${item.monthly>0?`<div class="ic-stat"><div class="ic-sl">基准月投</div><div class="ic-sv">${fmt(item.monthly)}</div></div>`:`<div class="ic-stat"><div class="ic-sl">平台</div><div class="ic-sv" style="font-size:10px">${item.platform}</div></div>`}`;
-      }
       return`<div class="inv-card ${done?'completed':''}" onclick="openItemDetail('${item.id}')">
         <div class="ic-top">
           <div class="ic-left">
-            <div class="ic-name">${gi.icon} ${item.name}<span class="ic-badge ${badgeClass}">${badgeLabel}</span></div>
+            <div class="ic-name">${gi.icon} ${item.name}<span class="ic-badge ${done?'done':gi.badgeClass}">${done?'✓ 已达标':gi.label}</span></div>
             <div class="ic-meta">${item.platform}${item.note?' · '+item.note:''}</div>
           </div>
           <div class="ic-right">
-            <div class="ic-remain ${done?'done':''}">${done?'已达标':fmt(remain)}</div>
+            <div class="ic-remain ${done?'done':''}">${done?'已达标':fmtY(remain)}</div>
             <div class="ic-sub">${pct}% 完成</div>
           </div>
         </div>
         <div class="ic-bar-bg"><div class="ic-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
-        <div class="ic-stats">${statsHtml}</div>
+        <div class="ic-stats">
+          <div class="ic-stat"><div class="ic-sl">已投入</div><div class="ic-sv">${fmtY(totalInv)}</div></div>
+          <div class="ic-stat"><div class="ic-sl">目标</div><div class="ic-sv">${fmtY(item.target)}</div></div>
+          ${item.monthly>0?`<div class="ic-stat"><div class="ic-sl">基准月投</div><div class="ic-sv">${fmtY(item.monthly)}</div></div>`:`<div class="ic-stat"><div class="ic-sl">平台</div><div class="ic-sv" style="font-size:10px">${item.platform}</div></div>`}
+        </div>
       </div>`;
     }).join('');
-    groupsHtml+=`<div class="group-hdr"><span class="group-title">${gi.icon} ${gi.label}</span><span class="group-total">${fmt(gInv)} / ${fmt(gTgt)}</span></div>${itemsHtml}`;
+    groupsHtml+=`<div class="group-hdr"><span class="group-title">${gi.icon} ${gi.label}</span><span class="group-sub">${fmtY(gInv)} / ${fmtY(gTgt)}</span></div>${itemsHtml}`;
   });
+
   document.getElementById('main-content').innerHTML=`
-    <div class="hero">
-      <div class="hero-lbl">目标总投入（不含股票）</div>
-      <div class="hero-amt">¥${fmtN(totalTarget,0)}</div>
-      <div class="hero-grid">
-        <div class="hg"><div class="hg-l">已投入</div><div class="hg-v neu">¥${fmtN(totalInvested,0)}</div></div>
-        <div class="hg"><div class="hg-l">还差</div><div class="hg-v warn">¥${fmtN(totalRemain,0)}</div></div>
-        <div class="hg"><div class="hg-l">股票持仓</div><div class="hg-v neu">¥${fmtN(stockTotal,0)}</div></div>
-      </div>
-      <div class="overall-bar"><div class="overall-fill" style="width:${overallPct}%"></div></div>
-      <div class="overall-lbl"><span>整体完成度 ${overallPct}%</span><span>¥${fmtN(totalInvested,0)} / ¥${fmtN(totalTarget,0)}</span></div>
-    </div>
+    ${heroHtml}
+    <div class="group-hdr"><span class="group-title">📊 股票账户</span><button class="tbtn" style="font-size:10px;padding:3px 8px" onclick="openAddStock()">+ 添加股票</button></div>
+    ${accHtml}
+    ${stocksHtml||'<div class="empty-hint">还没有股票，点右上角添加</div>'}
     ${groupsHtml}`;
   checkModal();
 }
 
-function openItemDetail(id){modal='detail';editId=id;renderMain()}
-function openAddItem(){modal='add';editId=null;renderMain()}
-function openData(){modal='data';renderMain()}
+// ── 模态框 ──
 function checkModal(){
   document.querySelectorAll('.modal-overlay').forEach(e=>e.remove());
-  if(modal==='detail')renderDetailModal();
-  else if(modal==='add')renderAddModal();
-  else if(modal==='edit')renderEditModal();
+  if(modal==='stock-detail')renderStockDetailModal();
+  else if(modal==='stock-add')renderStockAddModal();
+  else if(modal==='stock-edit')renderStockEditModal();
+  else if(modal==='buy-add')renderBuyAddModal();
+  else if(modal==='sell-add')renderSellAddModal();
+  else if(modal==='account-edit')renderAccountEditModal();
+  else if(modal==='item-detail')renderItemDetailModal();
+  else if(modal==='item-edit')renderItemEditModal();
+  else if(modal==='item-add')renderItemAddModal();
   else if(modal==='data')renderDataModal();
 }
 function mkOv(){
   const ov=document.createElement('div');ov.className='modal-overlay';
-  ov.addEventListener('click',e=>{if(e.target===ov){modal=null;editId=null;renderMain()}});
+  ov.addEventListener('click',e=>{if(e.target===ov){modal=null;editId=null;editSub=null;renderMain()}});
   return ov;
 }
 
-function renderDetailModal(){
+// ── 股票详情弹窗 ──
+function openStockDetail(id){modal='stock-detail';editId=id;renderMain()}
+function openAddStock(){modal='stock-add';editId=null;renderMain()}
+function openAccountEdit(){modal='account-edit';renderMain()}
+
+function renderStockDetailModal(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const ov=mkOv();
+  const buyRows=st.buyRecords.map((r,i)=>`
+    <div class="buy-item">
+      <span class="buy-date">${r.date}</span>
+      <span class="buy-qty">${r.qty}股</span>
+      <span class="buy-price">@${fmtY(r.price)}</span>
+      <span class="buy-total">-${fmtY(r.amount)}</span>
+    </div>`).join('');
+  const sellRows=st.sellRecords.map((r,i)=>`
+    <div class="buy-item">
+      <span class="buy-date">${r.date}</span>
+      <span class="buy-qty" style="color:#4caf50">${r.qty}股</span>
+      <span class="buy-price">@${fmtY(r.price)}</span>
+      <span class="buy-total" style="color:#4caf50">+${fmtY(r.profit)}</span>
+    </div>`).join('');
+  const tpRows=st.tpPlans.map((tp,i)=>`
+    <div class="tp-plan-item">
+      <span class="tp-tag ${tp.done?'done':''}">${tp.done?'✓':i+1}</span>
+      <span style="flex:1;font-size:12px;color:#778">${tp.note} · ${tp.qty}股 @ ${fmtY(tp.price)}</span>
+      <span style="font-size:12px;font-weight:600;color:${tp.done?'#556':'#4caf50'}">${tp.done?'已完成':'预期+'+fmtY((tp.price-c.avgCost)*tp.qty)}</span>
+    </div>`).join('');
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">${st.name}</div>
+    <div class="msub-title">${st.note||''}</div>
+    <div class="minfo">
+      均价 <b style="color:#e8eaf0">${fmtY(c.avgCost)}</b> · 持仓 <b style="color:#e8eaf0">${c.holdQty}股</b> · 持仓成本 <b style="color:#ff9800">${fmtY(c.holdCost)}</b><br>
+      累计已获利 <b style="color:#4caf50">+${fmtY(c.totalProfit)}</b>
+    </div>
+    <div class="sl-grid" style="margin-bottom:12px">
+      <div class="sl-item tp">
+        <div class="sl-label">止盈价（+${st.tpPct}%）</div>
+        <div class="sl-price tp">${fmtY(c.tpPrice)}</div>
+        <div class="sl-pct tp">预期利润 +${fmtY((c.tpPrice-c.avgCost)*c.holdQty)}</div>
+      </div>
+      <div class="sl-item sl">
+        <div class="sl-label">止损价（${st.slPct}%）</div>
+        <div class="sl-price sl">${fmtY(c.slPrice)}</div>
+        <div class="sl-pct sl">最大损失 -${fmtY(c.holdCost*Math.abs(st.slPct/100))}</div>
+      </div>
+    </div>
+    <div class="msec">止盈计划</div>
+    <div class="tp-plan-list">${tpRows||'<div class="empty-hint">还没有止盈计划</div>'}</div>
+    <div class="msec">操作</div>
+    <button class="msub green" onclick="modal='buy-add';renderMain()">+ 记录买入 / 补仓</button>
+    <button class="msub orange" onclick="modal='sell-add';renderMain()">+ 记录止盈卖出</button>
+    <button class="msub gray" onclick="modal='stock-edit';renderMain()">编辑基本信息</button>
+    <div class="msec">买入记录</div>
+    <div class="buy-list">${buyRows}</div>
+    <div class="msec">卖出记录</div>
+    <div class="buy-list">${sellRows||'<div class="empty-hint">暂无卖出记录</div>'}</div>
+    <button class="mdel" style="margin-top:8px" onclick="deleteStock('${st.id}')">删除这只股票</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+
+// ── 买入补仓 ──
+function renderBuyAddModal(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">买入 / 补仓 · ${st.name}</div>
+    <div class="minfo">当前均价 ${fmtY(c.avgCost)} · 持仓${c.holdQty}股<br>买入后自动重新计算加权均价</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">买入日期</span><input id="b-date" type="date" value="${todayStr()}"></div>
+      <div class="mfield"><span class="mflbl">买入价格</span><input id="b-price" type="number" inputmode="decimal" step="0.001" placeholder="0.000" oninput="calcBuyTotal()"></div>
+      <div class="mfield"><span class="mflbl">买入股数</span><input id="b-qty" type="number" inputmode="numeric" step="100" placeholder="0" oninput="calcBuyTotal()"></div>
+      <div class="mfield"><span class="mflbl">买入金额</span><input id="b-amt" type="number" inputmode="decimal" step="0.01" placeholder="自动计算" oninput="calcBuyAvg()"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="b-note" placeholder="如：补仓跌10%"></div>
+    </div>
+    <div class="calc-box" id="buy-calc" style="display:none">
+      <div class="calc-row"><span class="calc-lbl">买入后总股数</span><span class="calc-val" id="bc-qty">—</span></div>
+      <div class="calc-row"><span class="calc-lbl">新加权均价</span><span class="calc-val" id="bc-avg">—</span></div>
+    </div>
+    <button class="msub green" onclick="submitBuy('${st.id}')">确认买入</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function calcBuyTotal(){
+  const price=parseFloat(document.getElementById('b-price')?.value)||0;
+  const qty=parseFloat(document.getElementById('b-qty')?.value)||0;
+  if(price>0&&qty>0){
+    const amt=document.getElementById('b-amt');
+    if(amt&&!amt.dataset.manual)amt.value=(price*qty).toFixed(2);
+  }
+  calcBuyAvg();
+}
+function calcBuyAvg(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const qty=parseFloat(document.getElementById('b-qty')?.value)||0;
+  const amt=parseFloat(document.getElementById('b-amt')?.value)||0;
+  const price=parseFloat(document.getElementById('b-price')?.value)||0;
+  const actualAmt=amt||(price*qty);
+  if(qty>0&&actualAmt>0){
+    const newQty=c.totalBought+qty;
+    const newAvg=(c.totalCost+actualAmt)/newQty;
+    document.getElementById('buy-calc').style.display='';
+    document.getElementById('bc-qty').textContent=(c.holdQty+qty)+'股';
+    document.getElementById('bc-avg').textContent=fmtY(newAvg);
+  }
+}
+function submitBuy(stId){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===stId);if(!st)return;
+  const date=document.getElementById('b-date')?.value||todayStr();
+  const price=parseFloat(document.getElementById('b-price')?.value);
+  const qty=parseFloat(document.getElementById('b-qty')?.value);
+  const amt=parseFloat(document.getElementById('b-amt')?.value)||(price*qty);
+  const note=document.getElementById('b-note')?.value.trim()||'';
+  if(!price||!qty||!amt){alert('请填写价格和股数');return;}
+  st.buyRecords.push({id:genId(),date,price,qty,amount:amt,note});
+  saveData();modal='stock-detail';renderMain();
+}
+
+// ── 止盈卖出 ──
+function renderSellAddModal(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const pendingPlans=st.tpPlans.filter(tp=>!tp.done);
+  const planOpts=pendingPlans.map(tp=>`<option value="${tp.id}">${tp.note} · ${tp.qty}股 @ ${fmtY(tp.price)}</option>`).join('');
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">止盈卖出 · ${st.name}</div>
+    <div class="minfo">均价 ${fmtY(c.avgCost)} · 持仓${c.holdQty}股<br>卖出利润自动计入账户可用资金</div>
+    ${pendingPlans.length?`<div class="mfield" style="margin-bottom:10px"><span class="mflbl">对应计划</span><select id="s-plan"><option value="">不对应计划</option>${planOpts}</select></div>`:''}
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">卖出日期</span><input id="s-date" type="date" value="${todayStr()}"></div>
+      <div class="mfield"><span class="mflbl">卖出价格</span><input id="s-price" type="number" inputmode="decimal" step="0.001" placeholder="0.000" oninput="calcSellProfit()"></div>
+      <div class="mfield"><span class="mflbl">卖出股数</span><input id="s-qty" type="number" inputmode="numeric" step="100" placeholder="0" oninput="calcSellProfit()"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="s-note" placeholder="如：止盈①"></div>
+    </div>
+    <div class="calc-box" id="sell-calc" style="display:none">
+      <div class="calc-row"><span class="calc-lbl">卖出金额</span><span class="calc-val" id="sc-amt">—</span></div>
+      <div class="calc-row"><span class="calc-lbl">本次利润</span><span class="calc-val" id="sc-profit">—</span></div>
+      <div class="calc-row"><span class="calc-lbl">卖出后剩余</span><span class="calc-val" id="sc-remain">—</span></div>
+    </div>
+    <button class="msub green" onclick="submitSell('${st.id}')">确认卖出</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function calcSellProfit(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const price=parseFloat(document.getElementById('s-price')?.value)||0;
+  const qty=parseFloat(document.getElementById('s-qty')?.value)||0;
+  if(price>0&&qty>0){
+    const sellAmt=price*qty;
+    const costAmt=c.avgCost*qty;
+    const profit=sellAmt-costAmt;
+    document.getElementById('sell-calc').style.display='';
+    document.getElementById('sc-amt').textContent=fmtY(sellAmt);
+    document.getElementById('sc-profit').textContent=(profit>=0?'+':'')+fmtY(profit);
+    document.getElementById('sc-profit').className='calc-val'+(profit>=0?'':' neg');
+    document.getElementById('sc-remain').textContent=(c.holdQty-qty)+'股';
+  }
+}
+function submitSell(stId){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===stId);if(!st)return;
+  const c=calcStock(st);
+  const date=document.getElementById('s-date')?.value||todayStr();
+  const price=parseFloat(document.getElementById('s-price')?.value);
+  const qty=parseFloat(document.getElementById('s-qty')?.value);
+  const note=document.getElementById('s-note')?.value.trim()||'';
+  const planId=document.getElementById('s-plan')?.value||'';
+  if(!price||!qty){alert('请填写价格和股数');return;}
+  if(qty>c.holdQty){alert(`持仓只有${c.holdQty}股，无法卖出${qty}股`);return;}
+  const sellAmt=price*qty;
+  const profit=sellAmt-c.avgCost*qty;
+  st.sellRecords.push({id:genId(),date,price,qty,amount:sellAmt,profit,note});
+  // 标记对应止盈计划为已完成
+  if(planId){const tp=st.tpPlans.find(t=>t.id===planId);if(tp)tp.done=true;}
+  saveData();modal='stock-detail';renderMain();
+}
+
+// ── 股票编辑 ──
+function renderStockEditModal(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const tpRowsHtml=st.tpPlans.map((tp,i)=>`
+    <div class="tp-row-item" id="tp-row-${i}">
+      <div class="tp-row-label">${tp.done?'✓ 已完成':'计划'} ${i+1}</div>
+      <div class="tp-row-fields">
+        <input class="tp-row-input" id="tp-price-${i}" type="number" inputmode="decimal" step="0.001" value="${tp.price}" placeholder="价格" style="width:80px">
+        <input class="tp-row-input" id="tp-qty-${i}" type="number" inputmode="numeric" step="100" value="${tp.qty}" placeholder="股数" style="width:70px">
+        <input class="tp-row-input" id="tp-note-${i}" value="${tp.note||''}" placeholder="备注" style="flex:1">
+        <button class="tp-row-del" onclick="removeTpRow(${i})">×</button>
+      </div>
+    </div>`).join('');
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">编辑 · ${st.name}</div>
+    <div class="msec">基本信息</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">名称</span><input id="e-name" value="${st.name}"></div>
+      <div class="mfield"><span class="mflbl">代码/简称</span><input id="e-code" value="${st.code||''}"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="e-note" value="${st.note||''}"></div>
+    </div>
+    <div class="msec">止盈止损设置</div>
+    <div class="minfo">基于当前均价 ${fmtY(c.avgCost)} 自动计算价格</div>
+    <div class="mfields">
+      <div class="mfield">
+        <span class="mflbl">止盈线</span>
+        <input id="e-tp" type="number" inputmode="decimal" step="1" value="${st.tpPct||20}" oninput="previewLines()">
+        <span class="mfield-note">% → <b id="e-tp-price" style="color:#4caf50">${fmtY(c.tpPrice)}</b></span>
+      </div>
+      <div class="mfield">
+        <span class="mflbl">止损线</span>
+        <input id="e-sl" type="number" inputmode="decimal" step="1" value="${Math.abs(st.slPct||15)}" oninput="previewLines()">
+        <span class="mfield-note">% → <b id="e-sl-price" style="color:#ef5350">${fmtY(c.slPrice)}</b></span>
+      </div>
+    </div>
+    <div class="msec">止盈计划</div>
+    <div id="tp-rows">${tpRowsHtml}</div>
+    <button class="add-tp-btn" onclick="addTpRow()">+ 添加止盈计划</button>
+    <button class="msub" onclick="submitStockEdit('${st.id}')">保存</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function previewLines(){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  const c=calcStock(st);
+  const tpPct=parseFloat(document.getElementById('e-tp')?.value)||20;
+  const slPct=parseFloat(document.getElementById('e-sl')?.value)||15;
+  const tpEl=document.getElementById('e-tp-price');
+  const slEl=document.getElementById('e-sl-price');
+  if(tpEl)tpEl.textContent=fmtY(c.avgCost*(1+tpPct/100));
+  if(slEl)slEl.textContent=fmtY(c.avgCost*(1-slPct/100));
+}
+let tmpTpPlans=null;
+function removeTpRow(i){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  if(!tmpTpPlans)tmpTpPlans=[...st.tpPlans];
+  tmpTpPlans.splice(i,1);
+  const container=document.getElementById('tp-rows');
+  if(container)container.innerHTML=tmpTpPlans.map((tp,i)=>`
+    <div class="tp-row-item">
+      <div class="tp-row-label">${tp.done?'✓ 已完成':'计划'} ${i+1}</div>
+      <div class="tp-row-fields">
+        <input class="tp-row-input" id="tp-price-${i}" type="number" inputmode="decimal" step="0.001" value="${tp.price}" placeholder="价格" style="width:80px">
+        <input class="tp-row-input" id="tp-qty-${i}" type="number" inputmode="numeric" step="100" value="${tp.qty}" placeholder="股数" style="width:70px">
+        <input class="tp-row-input" id="tp-note-${i}" value="${tp.note||''}" placeholder="备注" style="flex:1">
+        <button class="tp-row-del" onclick="removeTpRow(${i})">×</button>
+      </div>
+    </div>`).join('');
+}
+function addTpRow(){
+  const container=document.getElementById('tp-rows');if(!container)return;
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===editId);if(!st)return;
+  if(!tmpTpPlans)tmpTpPlans=[...st.tpPlans];
+  const i=tmpTpPlans.length;
+  tmpTpPlans.push({id:genId(),price:0,qty:0,note:'',done:false});
+  container.innerHTML+=`<div class="tp-row-item">
+    <div class="tp-row-label">计划 ${i+1}</div>
+    <div class="tp-row-fields">
+      <input class="tp-row-input" id="tp-price-${i}" type="number" inputmode="decimal" step="0.001" placeholder="价格" style="width:80px">
+      <input class="tp-row-input" id="tp-qty-${i}" type="number" inputmode="numeric" step="100" placeholder="股数" style="width:70px">
+      <input class="tp-row-input" id="tp-note-${i}" placeholder="备注" style="flex:1">
+      <button class="tp-row-del" onclick="removeTpRow(${i})">×</button>
+    </div>
+  </div>`;
+}
+function submitStockEdit(stId){
+  const st=STOCK_ACCOUNT.stocks.find(s=>s.id===stId);if(!st)return;
+  const c=calcStock(st);
+  st.name=document.getElementById('e-name')?.value.trim()||st.name;
+  st.code=document.getElementById('e-code')?.value.trim()||'';
+  st.note=document.getElementById('e-note')?.value.trim()||'';
+  st.tpPct=parseFloat(document.getElementById('e-tp')?.value)||20;
+  st.slPct=-(Math.abs(parseFloat(document.getElementById('e-sl')?.value)||15));
+  // 读取止盈计划
+  const plans=tmpTpPlans||st.tpPlans;
+  const newPlans=[];
+  plans.forEach((tp,i)=>{
+    const price=parseFloat(document.getElementById(`tp-price-${i}`)?.value)||tp.price;
+    const qty=parseFloat(document.getElementById(`tp-qty-${i}`)?.value)||tp.qty;
+    const note=document.getElementById(`tp-note-${i}`)?.value.trim()||tp.note||'';
+    if(price>0||tp.done)newPlans.push({...tp,price,qty,note});
+  });
+  st.tpPlans=newPlans;
+  tmpTpPlans=null;
+  saveData();modal='stock-detail';renderMain();
+}
+function deleteStock(stId){
+  if(!confirm('确认删除这只股票及所有记录？'))return;
+  STOCK_ACCOUNT.stocks=STOCK_ACCOUNT.stocks.filter(s=>s.id!==stId);
+  saveData();modal=null;editId=null;renderMain();
+}
+
+// ── 新增股票 ──
+function renderStockAddModal(){
+  const ov=mkOv();
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">添加股票</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">名称</span><input id="n-name" placeholder="如：光伏龙头ETF"></div>
+      <div class="mfield"><span class="mflbl">代码</span><input id="n-code" placeholder="如：sh516160"></div>
+      <div class="mfield"><span class="mflbl">止盈线</span><input id="n-tp" type="number" value="20"><span class="mfield-note">%</span></div>
+      <div class="mfield"><span class="mflbl">止损线</span><input id="n-sl" type="number" value="15"><span class="mfield-note">%（自动取负）</span></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="n-note" placeholder="投资逻辑"></div>
+    </div>
+    <button class="msub" onclick="submitAddStock()">添加（再录入买入记录）</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function submitAddStock(){
+  const name=document.getElementById('n-name')?.value.trim();
+  if(!name){alert('请填写名称');return;}
+  const st={
+    id:genId(),code:document.getElementById('n-code')?.value.trim()||'',
+    name,buyRecords:[],sellRecords:[],tpPlans:[],
+    tpPct:parseFloat(document.getElementById('n-tp')?.value)||20,
+    slPct:-(Math.abs(parseFloat(document.getElementById('n-sl')?.value)||15)),
+    note:document.getElementById('n-note')?.value.trim()||'',
+  };
+  STOCK_ACCOUNT.stocks.push(st);
+  saveData();editId=st.id;modal='stock-detail';renderMain();
+}
+
+// ── 账户资金编辑 ──
+function renderAccountEditModal(){
+  const acc=calcAccount();const ov=mkOv();
+  const depRows=STOCK_ACCOUNT.deposits.map((d,i)=>`
+    <div class="buy-item">
+      <span class="buy-date">${d.date}</span>
+      <span class="buy-qty" style="color:#4caf50">+${fmtY(d.amount)}</span>
+      <span style="flex:1;color:#445;font-size:11px">${d.note||''}</span>
+      <button onclick="deleteDeposit(${i})" style="background:none;border:none;color:#445;cursor:pointer;font-size:14px">×</button>
+    </div>`).join('');
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">股票账户资金</div>
+    <div class="minfo">初始资金 ${fmtY(acc.initial)} · 追加 ${fmtY(acc.deposited)}<br>当前可用 <b style="color:#e8eaf0">${fmtY(acc.available)}</b> · 持仓成本 <b style="color:#ff9800">${fmtY(acc.holdCost)}</b></div>
+    <div class="msec">修改初始资金</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">初始资金</span><input id="a-init" type="number" inputmode="decimal" value="${acc.initial}"></div>
+    </div>
+    <div class="msec">追加资金</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">追加金额</span><input id="a-dep" type="number" inputmode="decimal" step="100" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">日期</span><input id="a-date" type="date" value="${todayStr()}"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="a-note" placeholder="如：追加操作资金"></div>
+    </div>
+    <button class="msub green" onclick="submitDeposit()">确认追加</button>
+    ${STOCK_ACCOUNT.deposits.length?`<div class="msec">追加记录</div><div class="buy-list">${depRows}</div>`:''}
+    <button class="msub" style="margin-top:8px" onclick="saveInitial()">保存初始资金</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function submitDeposit(){
+  const amt=parseFloat(document.getElementById('a-dep')?.value);
+  const date=document.getElementById('a-date')?.value||todayStr();
+  const note=document.getElementById('a-note')?.value.trim()||'';
+  if(!amt||amt<=0){alert('请填写追加金额');return;}
+  STOCK_ACCOUNT.deposits.push({date,amount:amt,note});
+  saveData();modal='account-edit';renderMain();
+}
+function deleteDeposit(i){
+  if(!confirm('确认删除这条追加记录？'))return;
+  STOCK_ACCOUNT.deposits.splice(i,1);
+  saveData();modal='account-edit';renderMain();
+}
+function saveInitial(){
+  const v=parseFloat(document.getElementById('a-init')?.value);
+  if(v>0)STOCK_ACCOUNT.initialCapital=v;
+  saveData();modal=null;renderMain();
+}
+
+// ── 投资定投详情 ──
+function openItemDetail(id){modal='item-detail';editId=id;renderMain()}
+function openAddInv(){modal='item-add';editId=null;renderMain()}
+
+function renderItemDetailModal(){
   const item=ITEMS.find(i=>i.id===editId);if(!item)return;
+  const gi=GROUP_INFO[item.group]||GROUP_INFO.fund;
   const totalInv=getTotalInvested(item);
   const remain=getRemain(item);
   const pct=getPct(item);
   const done=isCompleted(item);
   const recs=(item.records||[]).slice().reverse();
   const recsHtml=recs.length?recs.map((r,ri)=>`
-    <div class="rec-item">
-      <span>${r.date}</span>
-      <span style="color:#4caf50;font-weight:600">+¥${Number(r.amount).toFixed(2)}</span>
-      <span style="color:#445;flex:1;text-align:center">${r.note||''}</span>
-      <button class="rec-del" onclick="deleteRecord('${item.id}',${(item.records||[]).length-1-ri})">×</button>
-    </div>`).join(''):`<div class="no-rec">还没有定投记录</div>`;
+    <div class="buy-item">
+      <span class="buy-date">${r.date}</span>
+      <span class="buy-qty" style="color:#4caf50">+${fmtY(r.amount)}</span>
+      <span style="flex:1;color:#445">${r.note||''}</span>
+      <button onclick="deleteInvRecord('${item.id}',${(item.records||[]).length-1-ri})" style="background:none;border:none;color:#445;cursor:pointer;font-size:14px">×</button>
+    </div>`).join(''):`<div class="empty-hint">还没有定投记录</div>`;
   const ov=mkOv();
   ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">${item.name}</div>
     <div class="msub-title">${item.platform}${item.note?' · '+item.note:''}</div>
-    <div class="minfo">
-      已投入 <b>¥${fmtN(totalInv,2)}</b> ／ 目标 <b>¥${fmtN(item.target,0)}</b><br>
-      ${done?'<span style="color:#4caf50;font-weight:600">✓ 已达标！</span>':`还差 <b style="color:#ff9800">¥${fmtN(remain,2)}</b>，完成 ${pct}%`}
-    </div>
-    ${item.group!=='stock'?`
+    <div class="minfo">已投入 <b style="color:#e8eaf0">${fmtY(totalInv)}</b> / 目标 <b style="color:#e8eaf0">${fmtY(item.target)}</b><br>${done?'<span style="color:#4caf50">✓ 已达标！</span>':`还差 <b style="color:#ff9800">${fmtY(remain)}</b>，完成 ${pct}%`}</div>
     <div class="msec">记录本次定投</div>
     <div class="mfields">
-      <div class="mfield"><span class="mflbl">实际金额</span><input id="r-amt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="本次实际买入金额（元）"></div>
+      <div class="mfield"><span class="mflbl">金额</span><input id="r-amt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="本次实际金额"></div>
       <div class="mfield"><span class="mflbl">日期</span><input id="r-date" type="date" value="${todayStr()}"></div>
-      <div class="mfield"><span class="mflbl">备注</span><input id="r-note" placeholder="可选，如：动态加倍"></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="r-note" placeholder="可选"></div>
     </div>
-    <button class="msub green" onclick="submitRecord('${item.id}')">✓ 记录定投</button>`:''}
+    <button class="msub green" onclick="submitInvRecord('${item.id}')">✓ 记录定投</button>
     <div class="msec">历史记录（${(item.records||[]).length}笔）</div>
-    <div class="rec-list">${recsHtml}</div>
-    <button class="msub gray" onclick="openEditModal('${item.id}')">编辑基本信息</button>
-    <button class="mdel" onclick="deleteItem('${item.id}')">删除此项目</button>
+    <div class="buy-list">${recsHtml}</div>
+    <button class="msub gray" onclick="modal='item-edit';renderMain()">编辑基本信息</button>
+    <button class="mdel" onclick="deleteInvItem('${item.id}')">删除此项目</button>
   </div>`;
   document.body.appendChild(ov);
 }
-
-function submitRecord(itemId){
+function submitInvRecord(itemId){
   const amt=parseFloat(document.getElementById('r-amt')?.value);
   const date=document.getElementById('r-date')?.value||todayStr();
   const note=document.getElementById('r-note')?.value.trim()||'';
-  if(isNaN(amt)||amt<=0){alert('请填写本次买入金额');return;}
+  if(!amt||amt<=0){alert('请填写金额');return;}
   const idx=ITEMS.findIndex(i=>i.id===itemId);if(idx<0)return;
   if(!ITEMS[idx].records)ITEMS[idx].records=[];
   ITEMS[idx].records.push({date,amount:amt,note});
-  saveData();modal='detail';renderMain();
+  saveData();modal='item-detail';renderMain();
 }
-function deleteRecord(itemId,recIdx){
-  if(!confirm('确认删除这条记录？'))return;
+function deleteInvRecord(itemId,recIdx){
+  if(!confirm('确认删除？'))return;
   const idx=ITEMS.findIndex(i=>i.id===itemId);if(idx<0)return;
   ITEMS[idx].records.splice(recIdx,1);
-  saveData();modal='detail';renderMain();
+  saveData();modal='item-detail';renderMain();
 }
-function openEditModal(id){modal='edit';editId=id;renderMain()}
+function deleteInvItem(id){
+  if(!confirm('确认删除这个项目？'))return;
+  ITEMS=ITEMS.filter(i=>i.id!==id);
+  saveData();modal=null;editId=null;renderMain();
+}
 
-function renderEditModal(){
+function renderItemEditModal(){
   const item=ITEMS.find(i=>i.id===editId);if(!item)return;
   const ov=mkOv();
-  const groupOpts=Object.entries(GROUP_INFO).map(([k,v])=>`<option value="${k}" ${item.group===k?'selected':''}>${v.icon} ${v.label}</option>`).join('');
+  const groupOpts=Object.entries(GROUP_INFO).filter(([k])=>k!=='stock').map(([k,v])=>`<option value="${k}" ${item.group===k?'selected':''}>${v.icon} ${v.label}</option>`).join('');
   ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">编辑 · ${item.name}</div>
     <div class="mfields">
       <div class="mfield"><span class="mflbl">名称</span><input id="e-name" value="${item.name}"></div>
       <div class="mfield"><span class="mflbl">分组</span><select id="e-group">${groupOpts}</select></div>
-      <div class="mfield"><span class="mflbl">目标金额</span><input id="e-target" type="number" min="0" step="1" value="${item.target}"></div>
-      <div class="mfield"><span class="mflbl">初始已投</span><input id="e-invested" type="number" min="0" step="0.01" value="${item.invested}"></div>
-      <div class="mfield"><span class="mflbl">基准月投</span><input id="e-monthly" type="number" min="0" step="1" value="${item.monthly}"></div>
+      <div class="mfield"><span class="mflbl">目标金额</span><input id="e-target" type="number" value="${item.target}"></div>
+      <div class="mfield"><span class="mflbl">初始已投</span><input id="e-invested" type="number" value="${item.invested}"></div>
+      <div class="mfield"><span class="mflbl">基准月投</span><input id="e-monthly" type="number" value="${item.monthly}"></div>
       <div class="mfield"><span class="mflbl">平台</span><input id="e-platform" value="${item.platform}"></div>
       <div class="mfield"><span class="mflbl">备注</span><input id="e-note" value="${item.note||''}"></div>
     </div>
-    <button class="msub" onclick="submitEdit('${item.id}')">保存修改</button>
+    <button class="msub" onclick="submitItemEdit('${item.id}')">保存</button>
   </div>`;
   document.body.appendChild(ov);
 }
-function submitEdit(id){
+function submitItemEdit(id){
   const idx=ITEMS.findIndex(i=>i.id===id);if(idx<0)return;
-  const name=document.getElementById('e-name')?.value.trim();
-  const group=document.getElementById('e-group')?.value;
-  const target=parseFloat(document.getElementById('e-target')?.value);
-  const invested=parseFloat(document.getElementById('e-invested')?.value);
-  const monthly=parseFloat(document.getElementById('e-monthly')?.value)||0;
-  const platform=document.getElementById('e-platform')?.value.trim()||'';
-  const note=document.getElementById('e-note')?.value.trim()||'';
-  if(!name||isNaN(target)||isNaN(invested)){alert('请填写完整信息');return;}
-  ITEMS[idx]={...ITEMS[idx],name,group,target,invested,monthly,platform,note};
-  saveData();modal=null;editId=null;renderMain();
-}
-function deleteItem(id){
-  if(!confirm('确认删除这个项目及其所有记录？'))return;
-  ITEMS=ITEMS.filter(i=>i.id!==id);
+  ITEMS[idx]={...ITEMS[idx],
+    name:document.getElementById('e-name')?.value.trim()||ITEMS[idx].name,
+    group:document.getElementById('e-group')?.value||ITEMS[idx].group,
+    target:parseFloat(document.getElementById('e-target')?.value)||ITEMS[idx].target,
+    invested:parseFloat(document.getElementById('e-invested')?.value)||0,
+    monthly:parseFloat(document.getElementById('e-monthly')?.value)||0,
+    platform:document.getElementById('e-platform')?.value.trim()||'',
+    note:document.getElementById('e-note')?.value.trim()||'',
+  };
   saveData();modal=null;editId=null;renderMain();
 }
 
-function renderAddModal(){
+function renderItemAddModal(){
   const ov=mkOv();
-  const groupOpts=Object.entries(GROUP_INFO).map(([k,v])=>`<option value="${k}">${v.icon} ${v.label}</option>`).join('');
+  const groupOpts=Object.entries(GROUP_INFO).filter(([k])=>k!=='stock').map(([k,v])=>`<option value="${k}">${v.icon} ${v.label}</option>`).join('');
   ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">新增投资项目</div>
     <div class="mfields">
       <div class="mfield"><span class="mflbl">名称</span><input id="n-name" placeholder="如：纳斯达克100"></div>
       <div class="mfield"><span class="mflbl">分组</span><select id="n-group">${groupOpts}</select></div>
-      <div class="mfield"><span class="mflbl">目标金额</span><input id="n-target" type="number" min="0" step="1" placeholder="0"></div>
-      <div class="mfield"><span class="mflbl">已投入</span><input id="n-invested" type="number" min="0" step="0.01" placeholder="当前已投入金额"></div>
-      <div class="mfield"><span class="mflbl">基准月投</span><input id="n-monthly" type="number" min="0" step="1" placeholder="每月基准定投额"></div>
-      <div class="mfield"><span class="mflbl">平台</span><input id="n-platform" placeholder="如：支付宝、理财通"></div>
-      <div class="mfield"><span class="mflbl">备注</span><input id="n-note" placeholder="基金名称、定投日等"></div>
+      <div class="mfield"><span class="mflbl">目标金额</span><input id="n-target" type="number" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">已投入</span><input id="n-invested" type="number" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">基准月投</span><input id="n-monthly" type="number" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">平台</span><input id="n-platform" placeholder="支付宝、理财通..."></div>
+      <div class="mfield"><span class="mflbl">备注</span><input id="n-note" placeholder="基金名称、定投日..."></div>
     </div>
-    <button class="msub" onclick="submitAdd()">添加</button>
+    <button class="msub" onclick="submitAddInv()">添加</button>
   </div>`;
   document.body.appendChild(ov);
 }
-function submitAdd(){
+function submitAddInv(){
   const name=document.getElementById('n-name')?.value.trim();
-  const group=document.getElementById('n-group')?.value;
   const target=parseFloat(document.getElementById('n-target')?.value);
-  const invested=parseFloat(document.getElementById('n-invested')?.value)||0;
-  const monthly=parseFloat(document.getElementById('n-monthly')?.value)||0;
-  const platform=document.getElementById('n-platform')?.value.trim()||'';
-  const note=document.getElementById('n-note')?.value.trim()||'';
-  if(!name||isNaN(target)||target<=0){alert('请填写名称和目标金额');return;}
-  ITEMS.push({id:genId(),group,name,target,invested,monthly,platform,note,records:[]});
+  if(!name||!target){alert('请填写名称和目标金额');return;}
+  ITEMS.push({id:genId(),group:document.getElementById('n-group')?.value||'fund',name,
+    target,invested:parseFloat(document.getElementById('n-invested')?.value)||0,
+    monthly:parseFloat(document.getElementById('n-monthly')?.value)||0,
+    platform:document.getElementById('n-platform')?.value.trim()||'',
+    note:document.getElementById('n-note')?.value.trim()||'',records:[]});
   saveData();modal=null;renderMain();
 }
 
+// ── 数据备份 ──
 function renderDataModal(){
   const ov=mkOv();
   ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">数据备份</div>
-    <div class="minfo">导出后保存到微信文件助手或云盘<br>换设备或清除浏览器缓存时可以恢复</div>
+    <div class="minfo">导出后保存到微信文件助手或云盘，换设备或清缓存时恢复</div>
     <div class="data-btns">
-      <button class="data-btn export" onclick="exportData()">📤 导出数据（JSON）</button>
+      <button class="data-btn export" onclick="exportData()">📤 导出数据</button>
       <button class="data-btn import" onclick="document.getElementById('imp-file').click()">📥 导入数据</button>
       <input type="file" id="imp-file" accept=".json" style="display:none" onchange="importData(event)">
-      <button class="data-btn danger" onclick="resetData()">🗑 恢复默认初始数据</button>
+      <button class="data-btn danger" onclick="resetData()">🗑 恢复默认数据</button>
     </div>
   </div>`;
   document.body.appendChild(ov);
@@ -355,11 +959,10 @@ function renderDataModal(){
 function exportData(){
   const data=ld();
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   const d=new Date();
   a.download=`财务总览备份_${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}.json`;
-  a.click();URL.revokeObjectURL(url);
+  a.click();URL.revokeObjectURL(a.href);
 }
 function importData(e){
   const file=e.target.files[0];if(!file)return;
@@ -367,20 +970,21 @@ function importData(e){
   reader.onload=ev=>{
     try{
       const data=JSON.parse(ev.target.result);
-      if(!data.items){alert('文件格式不对，请选择正确的备份文件');return;}
-      sv(data);loadData();modal=null;renderMain();alert('✓ 导入成功！');
-    }catch(err){alert('导入失败，请检查文件');}
+      if(!data.items&&!data.stockAccount){alert('文件格式不对');return;}
+      localStorage.setItem(SK,ev.target.result);
+      loadData();modal=null;renderMain();alert('✓ 导入成功');
+    }catch(err){alert('导入失败');}
   };
   reader.readAsText(file);
 }
 function resetData(){
-  if(!confirm('确认恢复默认数据？当前数据将被清除！'))return;
+  if(!confirm('确认恢复默认数据？'))return;
   ITEMS=JSON.parse(JSON.stringify(DEFAULT_ITEMS));
+  STOCK_ACCOUNT=JSON.parse(JSON.stringify(DEFAULT_STOCK_ACCOUNT));
   saveData();modal=null;renderMain();
 }
 
-loadData();
-renderMain();
+loadData();renderMain();
 </script>
 </body>
 </html>

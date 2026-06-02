@@ -14,12 +14,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .topbar-title{font-size:16px;font-weight:700;color:#1a1a1a}
 .topbar-month{font-size:12px;color:#888;margin-left:4px}
 .settbtn{font-size:11px;color:#378ADD;background:none;border:1px solid #a8cdf0;border-radius:8px;padding:4px 10px;cursor:pointer}
-.scroll-body{flex:1;padding:12px 12px 32px;overflow-y:auto}
-
-/* 提醒横幅 */
+.scroll-body{flex:1;padding:12px 12px 32px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .alert-banner{background:#FFF3E0;border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;font-size:12px;color:#E65100;font-weight:500}
-
-/* 净余卡片 */
 .hero-card{background:#fff;border-radius:16px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-start}
 .hero-lbl{font-size:11px;color:#888;margin-bottom:4px;font-weight:500;letter-spacing:.03em}
@@ -33,15 +29,11 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .mp-row{display:flex;justify-content:space-between;font-size:11px;color:#aaa;margin-bottom:5px}
 .mp-bar{height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden}
 .mp-fill{height:100%;border-radius:3px;background:#378ADD;transition:width .5s}
-
-/* 区块标题 */
 .section-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 2px 8px;margin-top:6px}
 .section-title{font-size:12px;font-weight:700;color:#888;letter-spacing:.05em}
 .section-btn{font-size:11px;color:#378ADD;background:none;border:none;cursor:pointer;padding:2px 0}
-
-/* 固定账单卡片 */
 .bill-card{background:#fff;border-radius:14px;margin-bottom:7px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.bill-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid #f5f5f5;cursor:pointer;transition:background .1s}
+.bill-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:.5px solid #f5f5f5;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .bill-item:last-child{border-bottom:none}
 .bill-item:active{background:#f9f9f9}
 .bill-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
@@ -51,30 +43,33 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .bill-due.urgent{color:#e65100}
 .bill-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .bill-amt{font-size:15px;font-weight:700;color:#1a1a1a}
-.bill-status{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;cursor:pointer}
+.bill-status{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .bill-status.paid{background:#e8f5e9;color:#2e7d32}
 .bill-status.unpaid{background:#fff3e0;color:#e65100}
-
-/* 水电追踪卡片 */
-.utility-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:7px;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer}
+/* 水电卡片 */
+.utility-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:7px;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;-webkit-tap-highlight-color:transparent}
 .utility-card:active{background:#f9f9f9}
-.uc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.uc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .uc-left{display:flex;align-items:center;gap:10px}
-.uc-icon{width:36px;height:36px;border-radius:10px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:16px}
+.uc-icon{width:36px;height:36px;border-radius:10px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.uc-info{}
 .uc-name{font-size:14px;font-weight:500;color:#1a1a1a}
 .uc-sub{font-size:11px;color:#aaa;margin-top:2px}
-.uc-balance{font-size:18px;font-weight:700}
+.uc-balance{font-size:20px;font-weight:700}
 .uc-balance.ok{color:#2e7d32}
 .uc-balance.warn{color:#e65100}
 .uc-balance.low{color:#c62828}
-.uc-detail{display:flex;gap:0;border-top:.5px solid #f5f5f5;padding-top:10px}
-.uc-d-item{flex:1;text-align:center;border-right:.5px solid #f5f5f5}
-.uc-d-item:last-child{border-right:none}
-.uc-dl{font-size:10px;color:#aaa;margin-bottom:3px}
-.uc-dv{font-size:13px;font-weight:600;color:#1a1a1a}
-.uc-dv.warn{color:#e65100}
-
-/* 浮动预算卡片 */
+.uc-bar-wrap{margin:8px 0 6px}
+.uc-bar-bg{height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden}
+.uc-bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.uc-stats{display:flex;border-top:.5px solid #f5f5f5;padding-top:8px;gap:0}
+.uc-stat{flex:1;text-align:center;border-right:.5px solid #f5f5f5}
+.uc-stat:last-child{border-right:none}
+.uc-sl{font-size:10px;color:#aaa;margin-bottom:2px}
+.uc-sv{font-size:12px;font-weight:600;color:#1a1a1a}
+.uc-sv.warn{color:#e65100}
+.uc-note{font-size:11px;color:#aaa;margin-top:6px;text-align:center;padding-top:6px;border-top:.5px solid #f5f5f5}
+/* 浮动预算 */
 .budget-card{background:#fff;border-radius:14px;margin-bottom:7px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .budget-item{padding:12px 14px;border-bottom:.5px solid #f5f5f5}
 .budget-item:last-child{border-bottom:none}
@@ -91,25 +86,25 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
 .bi-bar-bg{height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden}
 .bi-bar-fill{height:100%;border-radius:3px;transition:width .4s}
 .bi-detail{font-size:11px;color:#aaa;margin-top:5px;display:flex;justify-content:space-between}
-
 /* 模态框 */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;flex-direction:column;justify-content:flex-end;z-index:100}
 .modal-sheet{background:#fff;border-radius:20px 20px 0 0;padding:18px 16px 32px;max-height:88%;overflow-y:auto}
 .mhandle{width:32px;height:4px;border-radius:2px;background:#e0e0e0;margin:0 auto 14px}
-.mtitle{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:14px}
-.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.mtitle{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px}
+.msub-title{font-size:12px;color:#aaa;margin-bottom:14px}
+.mfields{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .mfield{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f7f7f7;border-radius:10px;border:.5px solid #e8e8e8}
 .mflbl{font-size:11px;color:#aaa;width:60px;flex-shrink:0}
 .mfield input,.mfield select{flex:1;background:none;border:none;outline:none;font-size:13px;color:#1a1a1a;font-family:inherit}
-.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.msub{width:100%;height:44px;border-radius:12px;border:none;background:#378ADD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;-webkit-tap-highlight-color:transparent}
 .msub.green{background:#2e7d32}
-.msub.orange{background:#e65100}
-.mdel{width:100%;height:38px;border-radius:10px;border:none;background:#ffebee;color:#c62828;font-size:13px;cursor:pointer}
+.mdel{width:100%;height:38px;border-radius:10px;border:none;background:#ffebee;color:#c62828;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .msec-title{font-size:12px;font-weight:600;color:#aaa;margin:12px 0 8px;letter-spacing:.04em}
 .mpaid-row{display:flex;gap:8px;margin-bottom:14px}
-.mpaid-btn{flex:1;height:40px;border-radius:10px;border:1.5px solid #e8e8e8;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:#888}
+.mpaid-btn{flex:1;height:40px;border-radius:10px;border:1.5px solid #e8e8e8;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:#888;-webkit-tap-highlight-color:transparent}
 .mpaid-btn.sel-paid{border-color:#2e7d32;background:#e8f5e9;color:#2e7d32}
 .mpaid-btn.sel-unpaid{border-color:#e65100;background:#fff3e0;color:#e65100}
+.minfo-box{background:#f0f7ff;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#1565C0;line-height:1.6}
 .empty-hint{text-align:center;color:#bbb;font-size:12px;padding:20px 0}
 </style>
 </head>
@@ -123,184 +118,154 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC'
     </div>
     <button class="settbtn" onclick="openSettings()">设置</button>
   </div>
-  <div class="scroll-body" id="scroll-body">
-    <div id="main-content"></div>
-  </div>
+  <div class="scroll-body"><div id="main-content"></div></div>
 </div>
 
 <script>
-// ─── 数据 key ───
-const SK = 'monthly_v1';
-const DIARY_SK = 'bav7'; // 记账日记的数据
+const SK='monthly_v1';
+const DIARY_SK='bav7';
 
-// ─── 工具函数 ───
-function ld(key){ try{ return JSON.parse(localStorage.getItem(key)||'{}') }catch(e){ return {} } }
-function sv(d){ localStorage.setItem(SK, JSON.stringify(d)) }
-function pad2(n){ return String(n).padStart(2,'0') }
-function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate()) }
-function monthKey(){ const d=new Date(); return d.getFullYear()+'-'+pad2(d.getMonth()+1) }
-function fmt(n,dec=0){ return '¥'+Number(Math.abs(n)).toFixed(dec) }
-function daysInMonth(){ const d=new Date(); return new Date(d.getFullYear(),d.getMonth()+1,0).getDate() }
-function todayDay(){ return new Date().getDate() }
-function daysLeftInMonth(){ return daysInMonth()-todayDay() }
+function ld(key){try{return JSON.parse(localStorage.getItem(key)||'{}')}catch(e){return{}}}
+function sv(d){localStorage.setItem(SK,JSON.stringify(d))}
+function pad2(n){return String(n).padStart(2,'0')}
+function todayStr(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate())}
+function monthKey(){const d=new Date();return d.getFullYear()+'-'+pad2(d.getMonth()+1)}
+function fmt(n,dec=0){return'¥'+Number(Math.abs(n)).toFixed(dec)}
+function daysInMonth(){const d=new Date();return new Date(d.getFullYear(),d.getMonth()+1,0).getDate()}
+function todayDay(){return new Date().getDate()}
 
-// ─── 默认配置 ───
-const DEFAULT_SETTINGS = {
-  // 固定账单
-  bills: [
-    { id:'rent',   name:'房租',   amount:1200, dueDay:15, icon:'🏠', iconBg:'#E3F2FD' },
-    { id:'park',   name:'停车费', amount:330,  dueDay:15, icon:'🚗', iconBg:'#FFF3E0' },
-    { id:'phone',  name:'电话费', amount:100,  dueDay:15, icon:'📱', iconBg:'#F3E5F5' },
+const DEFAULT_SETTINGS={
+  bills:[
+    {id:'rent',  name:'房租',  amount:1200,dueDay:15,icon:'🏠',iconBg:'#E3F2FD'},
+    {id:'park',  name:'停车费',amount:330, dueDay:15,icon:'🚗',iconBg:'#FFF3E0'},
+    {id:'phone', name:'电话费',amount:100, dueDay:15,icon:'📱',iconBg:'#F3E5F5'},
   ],
-  // 水电默认配置
-  utility: {
-    monthlyAvg: 350,  // 月均消耗
-    balance: 250,     // 当前余额（用户手动更新）
-    lastUpdate: '',
+  utility:{
+    monthlyAvg:300,   // 月均消耗（元）
+    balance:250,      // 当前账户余额
+    lastUpdate:'',
+    note:'多余余额可转入现金安全垫',
   },
-  // 浮动预算
-  budgets: [
-    { id:'food',      name:'伙食费', icon:'🍜', amount:1500, diaryCategory:'餐饮' },
-    { id:'transport', name:'车油费', icon:'🚗', amount:350,  diaryCategory:'交通' },
-    { id:'pocket',    name:'零花',   icon:'🎯', amount:170,  diaryCategory:'零花' },
+  budgets:[
+    {id:'life', name:'生活费',icon:'🛒',amount:0,diaryCategory:'餐饮',dynDays:true},
+    {id:'pocket',name:'零花', icon:'🎯',amount:170,diaryCategory:'零花',dynDays:false},
   ],
-  // 结算日
-  settleDay: 16,
-  // 发薪日提醒提前天数
-  alertDays: 3,
+  dailyLife:50,    // 生活费日单价
+  settleDay:16,
+  alertDays:3,
 };
 
-// ─── 状态 ───
-let CFG = {};
-let BILLS_STATUS = {}; // { [monthKey]: { [billId]: { paid, paidDate, actualAmount } } }
-let modal = null;
-let editTarget = null;
+let CFG={};
+let BILLS_STATUS={};
+let modal=null;
+let editTarget=null;
 
 function loadData(){
-  const s = ld(SK);
-  // 合并默认设置（保留用户已改的）
-  CFG = {
-    bills: s.bills || DEFAULT_SETTINGS.bills,
-    utility: Object.assign({}, DEFAULT_SETTINGS.utility, s.utility||{}),
-    budgets: s.budgets || DEFAULT_SETTINGS.budgets,
-    settleDay: s.settleDay || DEFAULT_SETTINGS.settleDay,
-    alertDays: s.alertDays || DEFAULT_SETTINGS.alertDays,
+  const s=ld(SK);
+  CFG={
+    bills:s.bills||DEFAULT_SETTINGS.bills,
+    utility:Object.assign({},DEFAULT_SETTINGS.utility,s.utility||{}),
+    budgets:s.budgets||DEFAULT_SETTINGS.budgets,
+    dailyLife:s.dailyLife||DEFAULT_SETTINGS.dailyLife,
+    settleDay:s.settleDay||DEFAULT_SETTINGS.settleDay,
+    alertDays:s.alertDays||DEFAULT_SETTINGS.alertDays,
   };
-  BILLS_STATUS = s.billsStatus || {};
+  BILLS_STATUS=s.billsStatus||{};
 }
 function saveData(){
-  const s = ld(SK);
-  s.bills = CFG.bills;
-  s.utility = CFG.utility;
-  s.budgets = CFG.budgets;
-  s.settleDay = CFG.settleDay;
-  s.alertDays = CFG.alertDays;
-  s.billsStatus = BILLS_STATUS;
-  sv(s);
+  const s=ld(SK);
+  s.bills=CFG.bills;s.utility=CFG.utility;
+  s.budgets=CFG.budgets;s.dailyLife=CFG.dailyLife;
+  s.settleDay=CFG.settleDay;s.alertDays=CFG.alertDays;
+  s.billsStatus=BILLS_STATUS;sv(s);
 }
 
-// ─── 读取记账日记数据 ───
+// 生活费按本月实际天数动态计算
+function getLifeAmount(){
+  return (CFG.dailyLife||50)*daysInMonth();
+}
+
 function getDiarySpending(){
-  const diary = ld(DIARY_SK);
-  const records = diary.records || [];
-  const mk = monthKey();
-  // 本月所有支出记录
-  const monthRecs = records.filter(r => r.type==='expense' && r.date && r.date.startsWith(mk));
-  // 按分类汇总
-  const byCategory = {};
-  monthRecs.forEach(r => {
-    byCategory[r.cat] = (byCategory[r.cat]||0) + r.amount;
-  });
+  const diary=ld(DIARY_SK);
+  const records=diary.records||[];
+  const mk=monthKey();
+  const monthRecs=records.filter(r=>r.type==='expense'&&r.date&&r.date.startsWith(mk));
+  const byCategory={};
+  monthRecs.forEach(r=>{byCategory[r.cat]=(byCategory[r.cat]||0)+r.amount});
   return byCategory;
 }
 
-// ─── 计算本月账单状态 ───
 function getBillStatus(billId){
-  const mk = monthKey();
-  if(!BILLS_STATUS[mk]) BILLS_STATUS[mk] = {};
-  return BILLS_STATUS[mk][billId] || { paid: false, paidDate:'', actualAmount: null };
+  const mk=monthKey();
+  if(!BILLS_STATUS[mk])BILLS_STATUS[mk]={};
+  return BILLS_STATUS[mk][billId]||{paid:false,paidDate:'',actualAmount:null};
 }
-function setBillStatus(billId, status){
-  const mk = monthKey();
-  if(!BILLS_STATUS[mk]) BILLS_STATUS[mk] = {};
-  BILLS_STATUS[mk][billId] = status;
-  saveData();
+function setBillStatus(billId,status){
+  const mk=monthKey();
+  if(!BILLS_STATUS[mk])BILLS_STATUS[mk]={};
+  BILLS_STATUS[mk][billId]=status;saveData();
 }
 
-// ─── 提醒逻辑 ───
+function getBudgetAmount(b){
+  if(b.dynDays)return getLifeAmount();
+  return b.amount;
+}
+
 function getAlerts(){
-  const alerts = [];
-  const today = todayDay();
-  const alertDays = CFG.alertDays || 3;
-  CFG.bills.forEach(bill => {
-    const status = getBillStatus(bill.id);
+  const alerts=[];const today=todayDay();const alertDays=CFG.alertDays||3;
+  CFG.bills.forEach(bill=>{
+    const status=getBillStatus(bill.id);
     if(!status.paid){
-      const daysUntil = bill.dueDay - today;
-      if(daysUntil >= 0 && daysUntil <= alertDays){
-        alerts.push(`${bill.name} ¥${bill.amount} 还有 ${daysUntil===0?'今天':daysUntil+'天'} 到期`);
-      } else if(daysUntil < 0){
-        alerts.push(`${bill.name} ¥${bill.amount} 已逾期 ${Math.abs(daysUntil)} 天`);
-      }
+      const daysUntil=bill.dueDay-today;
+      if(daysUntil>=0&&daysUntil<=alertDays)alerts.push(`${bill.name} ¥${bill.amount} 还有 ${daysUntil===0?'今天':daysUntil+'天'} 到期`);
+      else if(daysUntil<0)alerts.push(`${bill.name} ¥${bill.amount} 已逾期 ${Math.abs(daysUntil)} 天`);
     }
   });
   // 水电余额预警
-  const util = CFG.utility;
-  if(util.balance > 0 && util.monthlyAvg > 0){
-    const daysLeft = Math.floor(util.balance / (util.monthlyAvg / 30));
-    if(daysLeft <= 10){
-      alerts.push(`水电余额仅剩 ${fmt(util.balance)} 预计还能用 ${daysLeft} 天`);
-    }
+  const util=CFG.utility;
+  if(util.balance>0&&util.monthlyAvg>0){
+    const dLeft=Math.floor(util.balance/(util.monthlyAvg/30));
+    if(dLeft<=10)alerts.push(`水电余额仅剩 ${fmt(util.balance)} 预计还能用 ${dLeft} 天`);
   }
   return alerts;
 }
 
-// ─── 汇总计算 ───
 function getSummary(){
-  const spending = getDiarySpending();
-  const mk = monthKey();
-  // 固定账单总额
-  const totalFixed = CFG.bills.reduce((s,b)=>{
-    const st = getBillStatus(b.id);
-    return s + (st.actualAmount != null ? st.actualAmount : b.amount);
-  },0);
-  const paidFixed = CFG.bills.reduce((s,b)=>{
-    const st = getBillStatus(b.id);
-    if(!st.paid) return s;
-    return s + (st.actualAmount != null ? st.actualAmount : b.amount);
-  },0);
-  const unpaidFixed = totalFixed - paidFixed;
-  // 浮动预算已花
-  const totalBudget = CFG.budgets.reduce((s,b)=>s+b.amount, 0);
-  const totalSpent = CFG.budgets.reduce((s,b)=>s+(spending[b.diaryCategory]||0), 0);
-  // 月总预算（固定+浮动）
-  const monthTotal = totalFixed + totalBudget + (CFG.utility.monthlyAvg||0);
-  const monthSpent = paidFixed + totalSpent;
-  const monthRemain = monthTotal - monthSpent - unpaidFixed;
-  return { totalFixed, paidFixed, unpaidFixed, totalBudget, totalSpent, monthTotal, monthSpent, monthRemain };
+  const spending=getDiarySpending();
+  const totalFixed=CFG.bills.reduce((s,b)=>{const st=getBillStatus(b.id);return s+(st.actualAmount!=null?st.actualAmount:b.amount)},0);
+  const paidFixed=CFG.bills.reduce((s,b)=>{const st=getBillStatus(b.id);if(!st.paid)return s;return s+(st.actualAmount!=null?st.actualAmount:b.amount)},0);
+  const unpaidFixed=totalFixed-paidFixed;
+  const totalBudget=CFG.budgets.reduce((s,b)=>s+getBudgetAmount(b),0);
+  const totalSpent=CFG.budgets.reduce((s,b)=>s+(spending[b.diaryCategory]||0),0);
+  const util=CFG.utility;
+  const monthTotal=totalFixed+totalBudget+util.monthlyAvg;
+  const monthSpent=paidFixed+totalSpent;
+  const monthRemain=monthTotal-monthSpent-unpaidFixed;
+  return{totalFixed,paidFixed,unpaidFixed,totalBudget,totalSpent,monthTotal,monthSpent,monthRemain};
 }
 
-// ─── 渲染主界面 ───
 function renderMain(){
-  const today = todayDay();
-  const dim = daysInMonth();
-  const pctDay = Math.round(today/dim*100);
-  const spending = getDiarySpending();
-  const summary = getSummary();
-  const alerts = getAlerts();
-  const util = CFG.utility;
-  const daysLeftUtil = util.monthlyAvg>0 ? Math.floor(util.balance/(util.monthlyAvg/30)) : 999;
-  const utilStatus = daysLeftUtil>20?'ok':daysLeftUtil>10?'warn':'low';
+  const today=todayDay();const dim=daysInMonth();
+  const pctDay=Math.round(today/dim*100);
+  const spending=getDiarySpending();
+  const summary=getSummary();
+  const alerts=getAlerts();
+  const util=CFG.utility;
 
-  // 月份标签
-  const d = new Date();
-  document.getElementById('month-label').textContent = `${d.getMonth()+1}月`;
+  // 水电余额状态
+  const daysLeftUtil=util.monthlyAvg>0?Math.floor(util.balance/(util.monthlyAvg/30)):999;
+  const utilStatus=daysLeftUtil>20?'ok':daysLeftUtil>10?'warn':'low';
+  // 本月预计消耗 vs 余额
+  const thisMonthConsume=util.monthlyAvg; // 月均就是本月预计消耗
+  const afterThisMonth=util.balance-thisMonthConsume;
 
-  // 提醒横幅
-  let alertHtml = alerts.map(a=>`<div class="alert-banner">⚠️ ${a}</div>`).join('');
+  const d=new Date();
+  document.getElementById('month-label').textContent=`${d.getMonth()+1}月`;
 
-  // 总览卡片
-  const remainColor = summary.monthRemain>0?'good':summary.monthRemain>-200?'warn':'bad';
-  const heroHtml = `
+  let alertHtml=alerts.map(a=>`<div class="alert-banner">⚠️ ${a}</div>`).join('');
+
+  const remainColor=summary.monthRemain>0?'good':summary.monthRemain>-200?'warn':'bad';
+  const heroHtml=`
     <div class="hero-card">
       <div class="hero-row">
         <div>
@@ -321,21 +286,15 @@ function renderMain(){
     </div>`;
 
   // 固定账单
-  let billsHtml = CFG.bills.map(bill=>{
-    const st = getBillStatus(bill.id);
-    const amt = st.actualAmount != null ? st.actualAmount : bill.amount;
-    const daysUntil = bill.dueDay - today;
-    const dueStr = st.paid ? `已付 ${st.paidDate||''}` :
-      daysUntil<0 ? `逾期 ${Math.abs(daysUntil)} 天` :
-      daysUntil===0 ? '今天到期！' :
-      `${bill.dueDay}号付 · 还有${daysUntil}天`;
-    const dueClass = (!st.paid && daysUntil<=3) ? 'urgent' : '';
-    return `<div class="bill-item" onclick="openBillEdit('${bill.id}')">
+  let billsHtml=CFG.bills.map(bill=>{
+    const st=getBillStatus(bill.id);
+    const amt=st.actualAmount!=null?st.actualAmount:bill.amount;
+    const daysUntil=bill.dueDay-today;
+    const dueStr=st.paid?`已付 ${st.paidDate||''}`:daysUntil<0?`逾期 ${Math.abs(daysUntil)} 天`:daysUntil===0?'今天到期！':`${bill.dueDay}号付 · 还有${daysUntil}天`;
+    const dueClass=(!st.paid&&daysUntil<=3)?'urgent':'';
+    return`<div class="bill-item" onclick="openBillEdit('${bill.id}')">
       <div class="bill-icon" style="background:${bill.iconBg||'#f0f0f5'}">${bill.icon||'💰'}</div>
-      <div class="bill-body">
-        <div class="bill-name">${bill.name}</div>
-        <div class="bill-due ${dueClass}">${dueStr}</div>
-      </div>
+      <div class="bill-body"><div class="bill-name">${bill.name}</div><div class="bill-due ${dueClass}">${dueStr}</div></div>
       <div class="bill-right">
         <div class="bill-amt">${fmt(amt)}</div>
         <div class="bill-status ${st.paid?'paid':'unpaid'}" onclick="event.stopPropagation();toggleBillPaid('${bill.id}')">${st.paid?'✓ 已付':'待付'}</div>
@@ -343,135 +302,110 @@ function renderMain(){
     </div>`;
   }).join('');
 
-  // 水电追踪
-  const utilHtml = `
+  // 水电追踪卡片
+  // 进度条：当前余额相对于"安全储备量"（3个月消耗）
+  const safeReserve=util.monthlyAvg*3;
+  const barPct=safeReserve>0?Math.min(100,Math.round(util.balance/safeReserve*100)):100;
+  const barColor=barPct>60?'#43a047':barPct>30?'#EF9F27':'#e53935';
+  const utilHtml=`
     <div class="utility-card" onclick="openUtilityEdit()">
       <div class="uc-top">
         <div class="uc-left">
           <div class="uc-icon">💡</div>
-          <div>
-            <div class="uc-name">水电余额</div>
-            <div class="uc-sub">月均消耗 ${fmt(util.monthlyAvg)}${util.lastUpdate?' · 更新于'+util.lastUpdate:''}</div>
+          <div class="uc-info">
+            <div class="uc-name">水电账户余额</div>
+            <div class="uc-sub">月均消耗 ${fmt(util.monthlyAvg)}${util.lastUpdate?' · 更新'+util.lastUpdate:''}</div>
           </div>
         </div>
         <div class="uc-balance ${utilStatus}">${fmt(util.balance)}</div>
       </div>
-      <div class="uc-detail">
-        <div class="uc-d-item">
-          <div class="uc-dl">预计可用</div>
-          <div class="uc-dv ${utilStatus==='low'?'warn':''}">${daysLeftUtil>999?'充足':daysLeftUtil+'天'}</div>
+      <div class="uc-bar-wrap">
+        <div class="uc-bar-bg"><div class="uc-bar-fill" style="width:${barPct}%;background:${barColor}"></div></div>
+      </div>
+      <div class="uc-stats">
+        <div class="uc-stat">
+          <div class="uc-sl">预计可用</div>
+          <div class="uc-sv ${utilStatus==='low'?'warn':''}">${daysLeftUtil>999?'充足':daysLeftUtil+'天'}</div>
         </div>
-        <div class="uc-d-item">
-          <div class="uc-dl">建议充值日</div>
-          <div class="uc-dv">${daysLeftUtil>999?'暂不需要':getRechargeDate(daysLeftUtil)}</div>
+        <div class="uc-stat">
+          <div class="uc-sl">本月预计消耗</div>
+          <div class="uc-sv">${fmt(thisMonthConsume)}</div>
         </div>
-        <div class="uc-d-item">
-          <div class="uc-dl">月均消耗</div>
-          <div class="uc-dv">${fmt(util.monthlyAvg)}</div>
+        <div class="uc-stat">
+          <div class="uc-sl">月底预计余额</div>
+          <div class="uc-sv" style="color:${afterThisMonth>=0?'#2e7d32':'#e65100'}">${afterThisMonth>=0?'':'-'}${fmt(Math.abs(afterThisMonth))}</div>
         </div>
       </div>
+      ${afterThisMonth>0?`<div class="uc-note">💰 月底预计剩余 ${fmt(afterThisMonth)}，可转入现金安全垫</div>`:''}
     </div>`;
 
   // 浮动预算
-  let budgetsHtml = CFG.budgets.map(b=>{
-    const spent = spending[b.diaryCategory] || 0;
-    const remain = b.amount - spent;
-    const pct = b.amount>0 ? Math.min(100, Math.round(spent/b.amount*100)) : 0;
-    const remainClass = remain>b.amount*0.3?'good':remain>0?'warn':'over';
-    const barColor = pct>100?'#c62828':pct>80?'#e65100':'#378ADD';
-    const dayAvg = today>0 ? (spent/today).toFixed(1) : 0;
-    const predictEnd = today>0 ? Math.round(spent/today*daysInMonth()) : 0;
-    return `<div class="budget-item">
+  let budgetsHtml=CFG.budgets.map(b=>{
+    const amount=getBudgetAmount(b);
+    const spent=spending[b.diaryCategory]||0;
+    const remain=amount-spent;
+    const pct=amount>0?Math.min(100,Math.round(spent/amount*100)):0;
+    const remainClass=remain>amount*0.3?'good':remain>0?'warn':'over';
+    const barColor2=pct>100?'#c62828':pct>80?'#e65100':'#378ADD';
+    const dayAvg=today>0?(spent/today).toFixed(1):0;
+    const predictEnd=today>0?Math.round(spent/today*dim):0;
+    const amtNote=b.dynDays?`${CFG.dailyLife}元/天×${dim}天`:`月额度`;
+    return`<div class="budget-item">
       <div class="bi-top">
-        <div class="bi-left">
-          <span class="bi-icon">${b.icon}</span>
-          <span class="bi-name">${b.name}</span>
-        </div>
+        <div class="bi-left"><span class="bi-icon">${b.icon}</span><span class="bi-name">${b.name}</span></div>
         <div class="bi-right">
           <div class="bi-remain ${remainClass}">${remain>=0?'剩 ':'-'}${fmt(Math.abs(remain))}</div>
-          <div class="bi-total">月额度 ${fmt(b.amount)} · 已花 ${fmt(spent)}</div>
+          <div class="bi-total">${amtNote} ${fmt(amount)} · 已花 ${fmt(spent)}</div>
         </div>
       </div>
-      <div class="bi-bar-bg"><div class="bi-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
+      <div class="bi-bar-bg"><div class="bi-bar-fill" style="width:${pct}%;background:${barColor2}"></div></div>
       <div class="bi-detail">
         <span>日均 ¥${dayAvg}</span>
-        <span>按此速度月末预计花 ${fmt(predictEnd)}${predictEnd>b.amount?' ⚠️超支':''}</span>
+        <span>月末预计花 ${fmt(predictEnd)}${predictEnd>amount?' ⚠️超支':''}</span>
       </div>
     </div>`;
   }).join('');
 
-  document.getElementById('main-content').innerHTML = `
+  document.getElementById('main-content').innerHTML=`
     ${alertHtml}
     ${heroHtml}
-    <div class="section-hdr">
-      <span class="section-title">固定账单</span>
-      <button class="section-btn" onclick="openAddBill()">+ 新增</button>
-    </div>
+    <div class="section-hdr"><span class="section-title">固定账单</span><button class="section-btn" onclick="openAddBill()">+ 新增</button></div>
     <div class="bill-card">${billsHtml}</div>
-    <div class="section-hdr">
-      <span class="section-title">水电追踪</span>
-    </div>
+    <div class="section-hdr"><span class="section-title">水电追踪</span></div>
     ${utilHtml}
-    <div class="section-hdr">
-      <span class="section-title">浮动预算</span>
-      <span style="font-size:10px;color:#bbb">联动记账日记</span>
-    </div>
-    <div class="budget-card">${budgetsHtml}</div>
-  `;
+    <div class="section-hdr"><span class="section-title">浮动预算</span><span style="font-size:10px;color:#bbb">联动记账日记</span></div>
+    <div class="budget-card">${budgetsHtml}</div>`;
   checkModal();
 }
 
-function getRechargeDate(daysLeft){
-  const d = new Date();
-  d.setDate(d.getDate() + Math.max(0, daysLeft-5));
-  return (d.getMonth()+1)+'月'+d.getDate()+'日前';
-}
-
-// ─── 一键切换账单状态 ───
 function toggleBillPaid(billId){
-  const st = getBillStatus(billId);
-  if(!st.paid){
-    setBillStatus(billId, { paid:true, paidDate:todayStr(), actualAmount:st.actualAmount });
-  } else {
-    setBillStatus(billId, { paid:false, paidDate:'', actualAmount:st.actualAmount });
-  }
+  const st=getBillStatus(billId);
+  if(!st.paid)setBillStatus(billId,{paid:true,paidDate:todayStr(),actualAmount:st.actualAmount});
+  else setBillStatus(billId,{paid:false,paidDate:'',actualAmount:st.actualAmount});
   renderMain();
 }
 
-// ─── 模态框 ───
 function checkModal(){
   document.querySelectorAll('.modal-overlay').forEach(e=>e.remove());
-  if(modal==='bill-edit') renderBillEditModal();
-  else if(modal==='bill-add') renderBillAddModal();
-  else if(modal==='utility') renderUtilityModal();
-  else if(modal==='settings') renderSettingsModal();
+  if(modal==='bill-edit')renderBillEditModal();
+  else if(modal==='bill-add')renderBillAddModal();
+  else if(modal==='utility')renderUtilityModal();
+  else if(modal==='settings')renderSettingsModal();
 }
 function mkOverlay(){
-  const ov=document.createElement('div');
-  ov.className='modal-overlay';
-  ov.addEventListener('click',e=>{ if(e.target===ov){ modal=null; editTarget=null; renderMain(); } });
+  const ov=document.createElement('div');ov.className='modal-overlay';
+  ov.addEventListener('click',e=>{if(e.target===ov){modal=null;editTarget=null;renderMain()}});
   return ov;
 }
-
-function openBillEdit(billId){
-  modal='bill-edit'; editTarget=billId; renderMain();
-}
-function openAddBill(){
-  modal='bill-add'; editTarget=null; renderMain();
-}
-function openUtilityEdit(){
-  modal='utility'; renderMain();
-}
-function openSettings(){
-  modal='settings'; renderMain();
-}
+function openBillEdit(id){modal='bill-edit';editTarget=id;renderMain()}
+function openAddBill(){modal='bill-add';editTarget=null;renderMain()}
+function openUtilityEdit(){modal='utility';renderMain()}
+function openSettings(){modal='settings';renderMain()}
 
 function renderBillEditModal(){
-  const bill = CFG.bills.find(b=>b.id===editTarget);
-  if(!bill) return;
-  const st = getBillStatus(bill.id);
-  const ov = mkOverlay();
-  ov.innerHTML = `<div class="modal-sheet">
+  const bill=CFG.bills.find(b=>b.id===editTarget);if(!bill)return;
+  const st=getBillStatus(bill.id);const ov=mkOverlay();
+  ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">${bill.name}</div>
     <div class="msec-title">付款状态</div>
@@ -480,131 +414,127 @@ function renderBillEditModal(){
       <button class="mpaid-btn ${st.paid?'sel-paid':''}" onclick="setBillPaid('${bill.id}',true)">✓ 已付</button>
     </div>
     <div class="mfields">
-      <div class="mfield"><span class="mflbl">本月金额</span><input id="b-amt" type="number" min="0" step="0.01" value="${st.actualAmount!=null?st.actualAmount:bill.amount}" placeholder="${bill.amount}"></div>
+      <div class="mfield"><span class="mflbl">本月金额</span><input id="b-amt" type="number" inputmode="decimal" min="0" step="0.01" value="${st.actualAmount!=null?st.actualAmount:bill.amount}"></div>
       <div class="mfield"><span class="mflbl">付款日期</span><input id="b-date" type="date" value="${st.paidDate||todayStr()}"></div>
     </div>
     <button class="msub" onclick="saveBillEdit('${bill.id}')">保存</button>
     <div class="msec-title">账单设置</div>
     <div class="mfields">
       <div class="mfield"><span class="mflbl">账单名称</span><input id="b-name" value="${bill.name}"></div>
-      <div class="mfield"><span class="mflbl">默认金额</span><input id="b-default" type="number" min="0" step="0.01" value="${bill.amount}"></div>
-      <div class="mfield"><span class="mflbl">付款日</span><input id="b-due" type="number" min="1" max="31" value="${bill.dueDay}"> <span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
+      <div class="mfield"><span class="mflbl">默认金额</span><input id="b-default" type="number" inputmode="decimal" min="0" step="0.01" value="${bill.amount}"></div>
+      <div class="mfield"><span class="mflbl">付款日</span><input id="b-due" type="number" inputmode="numeric" min="1" max="31" value="${bill.dueDay}"><span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
     </div>
     <button class="msub" style="background:#888" onclick="saveBillConfig('${bill.id}')">保存账单设置</button>
     <button class="mdel" onclick="deleteBill('${bill.id}')">删除此账单</button>
   </div>`;
   document.body.appendChild(ov);
 }
-
-function setBillPaid(billId, paid){
-  const st = getBillStatus(billId);
-  const newSt = {...st, paid, paidDate: paid ? todayStr() : ''};
-  setBillStatus(billId, newSt);
-  // 刷新modal里的按钮状态
-  document.querySelectorAll('.mpaid-btn').forEach((b,i)=>{
-    b.className = 'mpaid-btn ' + (i===0&&!paid?'sel-unpaid':i===1&&paid?'sel-paid':'');
-  });
+function setBillPaid(billId,paid){
+  const st=getBillStatus(billId);
+  setBillStatus(billId,{...st,paid,paidDate:paid?todayStr():''});
+  document.querySelectorAll('.mpaid-btn').forEach((b,i)=>{b.className='mpaid-btn '+(i===0&&!paid?'sel-unpaid':i===1&&paid?'sel-paid':'')});
 }
 function saveBillEdit(billId){
-  const amt = parseFloat(document.getElementById('b-amt')?.value);
-  const date = document.getElementById('b-date')?.value||'';
-  const st = getBillStatus(billId);
-  setBillStatus(billId, {...st, actualAmount: amt||null, paidDate: date});
-  modal=null; editTarget=null; renderMain();
+  const amt=parseFloat(document.getElementById('b-amt')?.value);
+  const date=document.getElementById('b-date')?.value||'';
+  const st=getBillStatus(billId);
+  setBillStatus(billId,{...st,actualAmount:amt||null,paidDate:date});
+  modal=null;editTarget=null;renderMain();
 }
 function saveBillConfig(billId){
-  const idx = CFG.bills.findIndex(b=>b.id===billId);
-  if(idx<0) return;
-  CFG.bills[idx].name = document.getElementById('b-name')?.value.trim()||CFG.bills[idx].name;
-  CFG.bills[idx].amount = parseFloat(document.getElementById('b-default')?.value)||CFG.bills[idx].amount;
-  CFG.bills[idx].dueDay = parseInt(document.getElementById('b-due')?.value)||CFG.bills[idx].dueDay;
-  saveData(); modal=null; editTarget=null; renderMain();
+  const idx=CFG.bills.findIndex(b=>b.id===billId);if(idx<0)return;
+  CFG.bills[idx].name=document.getElementById('b-name')?.value.trim()||CFG.bills[idx].name;
+  CFG.bills[idx].amount=parseFloat(document.getElementById('b-default')?.value)||CFG.bills[idx].amount;
+  CFG.bills[idx].dueDay=parseInt(document.getElementById('b-due')?.value)||CFG.bills[idx].dueDay;
+  saveData();modal=null;editTarget=null;renderMain();
 }
 function deleteBill(billId){
-  if(!confirm('确认删除这个账单？')) return;
-  CFG.bills = CFG.bills.filter(b=>b.id!==billId);
-  saveData(); modal=null; editTarget=null; renderMain();
+  if(!confirm('确认删除这个账单？'))return;
+  CFG.bills=CFG.bills.filter(b=>b.id!==billId);
+  saveData();modal=null;editTarget=null;renderMain();
 }
 
 function renderBillAddModal(){
-  const ov = mkOverlay();
-  ov.innerHTML = `<div class="modal-sheet">
+  const ov=mkOverlay();
+  ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">新增固定账单</div>
     <div class="mfields">
       <div class="mfield"><span class="mflbl">账单名称</span><input id="nb-name" placeholder="如：宽带费"></div>
-      <div class="mfield"><span class="mflbl">每月金额</span><input id="nb-amt" type="number" min="0" step="0.01" placeholder="0"></div>
-      <div class="mfield"><span class="mflbl">每月几号付</span><input id="nb-due" type="number" min="1" max="31" placeholder="15"> <span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
-      <div class="mfield"><span class="mflbl">图标</span><input id="nb-icon" placeholder="输入emoji，如 📺" maxlength="2"></div>
+      <div class="mfield"><span class="mflbl">每月金额</span><input id="nb-amt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0"></div>
+      <div class="mfield"><span class="mflbl">每月几号付</span><input id="nb-due" type="number" inputmode="numeric" min="1" max="31" placeholder="15"><span style="font-size:12px;color:#aaa;margin-left:4px">号</span></div>
+      <div class="mfield"><span class="mflbl">图标</span><input id="nb-icon" placeholder="emoji，如 📺" maxlength="2"></div>
     </div>
     <button class="msub" onclick="submitAddBill()">添加</button>
   </div>`;
   document.body.appendChild(ov);
 }
 function submitAddBill(){
-  const name = document.getElementById('nb-name')?.value.trim();
-  const amt = parseFloat(document.getElementById('nb-amt')?.value);
-  const due = parseInt(document.getElementById('nb-due')?.value)||15;
-  const icon = document.getElementById('nb-icon')?.value||'💰';
-  if(!name||!amt||amt<=0){ alert('请填写名称和金额'); return; }
-  CFG.bills.push({ id:'bill_'+Date.now(), name, amount:amt, dueDay:due, icon, iconBg:'#F5F5F5' });
-  saveData(); modal=null; renderMain();
+  const name=document.getElementById('nb-name')?.value.trim();
+  const amt=parseFloat(document.getElementById('nb-amt')?.value);
+  const due=parseInt(document.getElementById('nb-due')?.value)||15;
+  const icon=document.getElementById('nb-icon')?.value||'💰';
+  if(!name||!amt||amt<=0){alert('请填写名称和金额');return;}
+  CFG.bills.push({id:'bill_'+Date.now(),name,amount:amt,dueDay:due,icon,iconBg:'#F5F5F5'});
+  saveData();modal=null;renderMain();
 }
 
 function renderUtilityModal(){
-  const util = CFG.utility;
-  const ov = mkOverlay();
-  ov.innerHTML = `<div class="modal-sheet">
+  const util=CFG.utility;const ov=mkOverlay();
+  ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
-    <div class="mtitle">水电余额追踪</div>
+    <div class="mtitle">更新水电余额</div>
+    <div class="minfo-box">充值后在这里更新余额，系统自动重新计算可用天数和月底预计剩余</div>
     <div class="mfields">
-      <div class="mfield"><span class="mflbl">当前余额</span><input id="u-bal" type="number" min="0" step="0.01" value="${util.balance}" placeholder="账户当前剩余金额"></div>
-      <div class="mfield"><span class="mflbl">月均消耗</span><input id="u-avg" type="number" min="0" step="0.01" value="${util.monthlyAvg}" placeholder="350"></div>
+      <div class="mfield"><span class="mflbl">当前余额</span><input id="u-bal" type="number" inputmode="decimal" min="0" step="0.01" value="${util.balance}" placeholder="账户余额"></div>
+      <div class="mfield"><span class="mflbl">月均消耗</span><input id="u-avg" type="number" inputmode="decimal" min="0" step="1" value="${util.monthlyAvg}" placeholder="300"></div>
     </div>
-    <button class="msub green" onclick="submitUtility()">更新余额</button>
-    <div style="font-size:11px;color:#aaa;text-align:center;margin-top:8px">充值后更新余额，系统自动重新估算可用天数</div>
+    <button class="msub green" onclick="submitUtility()">更新</button>
   </div>`;
   document.body.appendChild(ov);
 }
 function submitUtility(){
-  const bal = parseFloat(document.getElementById('u-bal')?.value);
-  const avg = parseFloat(document.getElementById('u-avg')?.value);
-  if(bal==null||isNaN(bal)){ alert('请填写当前余额'); return; }
-  CFG.utility.balance = bal;
-  if(avg>0) CFG.utility.monthlyAvg = avg;
-  CFG.utility.lastUpdate = todayStr();
-  saveData(); modal=null; renderMain();
+  const bal=parseFloat(document.getElementById('u-bal')?.value);
+  const avg=parseFloat(document.getElementById('u-avg')?.value);
+  if(isNaN(bal)){alert('请填写当前余额');return;}
+  CFG.utility.balance=bal;
+  if(avg>0)CFG.utility.monthlyAvg=avg;
+  CFG.utility.lastUpdate=todayStr();
+  saveData();modal=null;renderMain();
 }
 
 function renderSettingsModal(){
-  const ov = mkOverlay();
-  ov.innerHTML = `<div class="modal-sheet">
+  const ov=mkOverlay();
+  ov.innerHTML=`<div class="modal-sheet">
     <div class="mhandle"></div>
     <div class="mtitle">设置</div>
-    <div class="msec-title">浮动预算额度</div>
+    <div class="msec-title">生活费</div>
     <div class="mfields">
-      ${CFG.budgets.map((b,i)=>`<div class="mfield"><span class="mflbl">${b.icon} ${b.name}</span><input id="budget-${i}" type="number" min="0" step="1" value="${b.amount}"><span style="font-size:12px;color:#aaa;margin-left:4px">元/月</span></div>`).join('')}
+      <div class="mfield"><span class="mflbl">日单价</span><input id="s-daily" type="number" inputmode="decimal" min="0" step="1" value="${CFG.dailyLife||50}"><span style="font-size:12px;color:#aaa;margin-left:4px">元/天（自动×当月天数）</span></div>
+    </div>
+    <div class="msec-title">零花钱</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">月额度</span><input id="s-pocket" type="number" inputmode="decimal" min="0" step="1" value="${CFG.budgets.find(b=>b.id==='pocket')?.amount||170}"><span style="font-size:12px;color:#aaa;margin-left:4px">元/月</span></div>
     </div>
     <div class="msec-title">提醒设置</div>
     <div class="mfields">
-      <div class="mfield"><span class="mflbl">提前提醒</span><input id="s-alert" type="number" min="1" max="14" value="${CFG.alertDays}"><span style="font-size:12px;color:#aaa;margin-left:4px">天</span></div>
+      <div class="mfield"><span class="mflbl">提前提醒</span><input id="s-alert" type="number" inputmode="numeric" min="1" max="14" value="${CFG.alertDays}"><span style="font-size:12px;color:#aaa;margin-left:4px">天</span></div>
     </div>
-    <button class="msub" onclick="saveSettings()">保存设置</button>
+    <button class="msub" onclick="saveSettings()">保存</button>
   </div>`;
   document.body.appendChild(ov);
 }
 function saveSettings(){
-  CFG.budgets.forEach((b,i)=>{
-    const v = parseFloat(document.getElementById(`budget-${i}`)?.value);
-    if(v>0) b.amount = v;
-  });
-  CFG.alertDays = parseInt(document.getElementById('s-alert')?.value)||3;
-  saveData(); modal=null; renderMain();
+  const daily=parseFloat(document.getElementById('s-daily')?.value);
+  if(daily>0)CFG.dailyLife=daily;
+  const pocket=parseFloat(document.getElementById('s-pocket')?.value);
+  const pIdx=CFG.budgets.findIndex(b=>b.id==='pocket');
+  if(pIdx>=0&&pocket>=0)CFG.budgets[pIdx].amount=pocket;
+  CFG.alertDays=parseInt(document.getElementById('s-alert')?.value)||3;
+  saveData();modal=null;renderMain();
 }
 
-// ─── 启动 ───
-loadData();
-renderMain();
+loadData();renderMain();
 </script>
 </body>
 </html>
