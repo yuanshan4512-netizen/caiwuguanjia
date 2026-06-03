@@ -358,15 +358,8 @@ function nextMonth(mk){const[y,m]=mk.split('-').map(Number);return m===12?`${y+1
 function isCurrentMonth(mk){const d=new Date();return mk===d.getFullYear()+'-'+pad2(d.getMonth()+1)}
 
 const STEPS=[
-  {id:'purpose',e:'👋',t:'你好！先聊两句~',s:'你用这个 app 主要想干嘛？',type:'choice',opts:[{k:'budget',t:'控制预算',s:'想知道钱花哪了，还剩多少'},{k:'record',t:'纯粹记录',s:'只想留个账，不被预算管'}]},
-  {id:'budget',e:'💰',t:'每天预算是多少？',s:'比如每天 50 元，没花完会自动滚到明天',type:'amount',skip:a=>a.purpose==='record'},
-  {id:'settleDay',e:'📅',t:'每月几号重新结算？',s:'填 1-31，比如工资日是 15 号，就填 15',type:'settle',skip:a=>a.purpose==='record'},
-  {id:'carryover',e:'🎯',t:'结算日后结余怎么处理？',s:'到了结算日，上一周期剩下的钱是否继续保留',type:'choice',opts:[{k:'yes',t:'继承到下个周期',s:'省下来都是我的'},{k:'no',t:'清零重来',s:'每期全新开始'}],skip:a=>a.purpose==='record'},
-  {id:'prevBalance',e:'↪',t:'有上周期剩余要带入吗？',s:'比如上个月还剩 21.7 元，可以加到本周期累计可用里',type:'prev',skip:a=>a.purpose==='record'||a.carryover!=='yes'},
-  {id:'income_merge',e:'💼',t:'收入并入可用余额吗？',s:'兼职/工资赚的要算进去吗？',type:'choice',opts:[{k:'yes',t:'要，一起算',s:'赚多少用多少'},{k:'no',t:'分开记',s:'收入单独看'}],skip:a=>a.purpose==='record'},
-  {id:'extra',e:'🎁',t:'有固定零花钱吗？',s:'比如每月家里给的',type:'extra',skip:a=>a.purpose==='record'},
-  {id:'show_reimb',e:'🧾',t:'报销记录显示在流水里吗？',s:'报销卡片里一定会显示',type:'choice',opts:[{k:'yes',t:'显示',s:'和支出收入混在一起'},{k:'no',t:'不显示',s:'只在报销卡片里看'}]},
-  {id:'decimals',e:'🔢',t:'金额显示精度？',s:'随时可以改',type:'choice',opts:[{k:'0',t:'整数',s:'¥50'},{k:'2',t:'两位小数',s:'¥50.00'}]},
+  {id:'budget',e:'💰',t:'每天预算是多少？',s:'比如每天 50 元，超支或节余会自动滚入下一天',type:'amount'},
+  {id:'settleDay',e:'📅',t:'每月几号重新结算？',s:'一般填发薪日，比如 15 号',type:'settle'},
 ];
 function vis(){return STEPS.filter(s=>!(s.skip&&s.skip(qAns)))}
 
@@ -413,13 +406,39 @@ function qNext(){
 function qBack(){if(qStep>0){qStep--;renderQuiz()}}
 function showSummary(){
   const a=qAns;
-  const rows=a.purpose==='budget'?`<div class="sumrow"><span class="sumk">每日预算</span><span class="sumv">¥${a.budget}/天</span></div><div class="sumrow"><span class="sumk">结算日</span><span class="sumv">每月 ${a.settleDay||1} 号</span></div><div class="sumrow"><span class="sumk">结余继承</span><span class="sumv">${a.carryover==='yes'?'继承':'清零'}</span></div>${a.hasPrevBalance?`<div class="sumrow"><span class="sumk">上周期剩余</span><span class="sumv">¥${a.prevBalance}</span></div>`:''}<div class="sumrow"><span class="sumk">收入并入余额</span><span class="sumv">${a.income_merge==='yes'?'是':'否'}</span></div>${a.hasExtra?`<div class="sumrow"><span class="sumk">月零花钱</span><span class="sumv">¥${a.extraAmount}</span></div>`:''}<div class="sumrow"><span class="sumk">报销在流水</span><span class="sumv">${a.show_reimb==='yes'?'是':'否'}</span></div><div class="sumrow"><span class="sumk">金额精度</span><span class="sumv">${a.decimals==='2'?'两位小数':'整数'}</span></div>`:`<div class="sumrow"><span class="sumk">模式</span><span class="sumv">纯记录</span></div>`;
-  document.getElementById('quiz-screen').innerHTML=`<div class="quiz-wrap"><div style="font-size:38px;text-align:center;margin-bottom:8px">🎉</div><div class="qtitle" style="text-align:center;margin-bottom:4px">设置好啦！</div><div class="qsub" style="text-align:center;margin-bottom:14px">随时右上角重新设置</div><div class="sumcard">${rows}</div><button class="finbtn" onclick="finishQ()">开始记账 →</button></div>`;
+  const rows=`<div class="sumrow"><span class="sumk">每日预算</span><span class="sumv">¥${a.budget}/天</span></div>
+    <div class="sumrow"><span class="sumk">结算日</span><span class="sumv">每月 ${a.settleDay||1} 号</span></div>
+    <div class="sumrow"><span class="sumk">结余继承</span><span class="sumv">开启（省下来的归你）</span></div>
+    <div class="sumrow"><span class="sumk">收入并入余额</span><span class="sumv">开启</span></div>`;
+  document.getElementById('quiz-screen').innerHTML=`<div class="quiz-wrap">
+    <div style="font-size:38px;text-align:center;margin-bottom:8px">🎉</div>
+    <div class="qtitle" style="text-align:center;margin-bottom:4px">设置好啦！</div>
+    <div class="qsub" style="text-align:center;margin-bottom:14px">零花钱、报销显示等更多设置<br>可以在右上角「设置」里修改</div>
+    <div class="sumcard">${rows}</div>
+    <button class="finbtn" onclick="finishQ()">开始记账 →</button>
+  </div>`;
 }
 function finishQ(){
-  const state=ld();state.settings=qAns;state.setupDone=true;
-  if(!state.records)state.records=[];if(!state.reimbs)state.reimbs=[];
-  sv(state);ST=qAns;RC=state.records;RM=state.reimbs;showApp();
+  const state=ld();
+  // 合并默认设置，只覆盖用户填的两个字段
+  state.settings={
+    purpose:'budget',
+    budget:qAns.budget||50,
+    settleDay:qAns.settleDay||1,
+    carryover:'yes',
+    hasPrevBalance:false,
+    prevBalance:0,
+    income_merge:'yes',
+    hasExtra:false,
+    extraAmount:0,
+    show_reimb:'no',
+    decimals:'2',
+  };
+  state.setupDone=true;
+  if(!state.records)state.records=[];
+  if(!state.reimbs)state.reimbs=[];
+  sv(state);ST=state.settings;RC=state.records;RM=state.reimbs;
+  showApp();
 }
 
 function loadState(){const s=ld();ST=s.settings||{};RC=s.records||[];RM=s.reimbs||[]}
@@ -503,9 +522,49 @@ function periodBounds(asOf=todayStr()){
   return{start:dateStr(start),end:dateStr(end),settleDay:sd};
 }
 // 计算指定周期的结余（用于跨周期继承）
+// ─── 预算历史（按周期隔离）───
+// 格式：[{from:'2026-01-01', daily:50, extra:170}]
+// from 是该设置生效的第一天（即某个周期的开始日）
+function getBudgetHistory(){
+  const s=ld();return s.budgetHistory||[];
+}
+function saveBudgetHistory(hist){
+  const s=ld();s.budgetHistory=hist;sv(s);
+}
+// 获取某个周期开始日期对应的日预算和零花钱
+function getSettingsForPeriod(periodStart){
+  const hist=getBudgetHistory();
+  // 找最近的一条 from <= periodStart
+  const match=hist.filter(h=>h.from<=periodStart).sort((a,b)=>b.from.localeCompare(a.from))[0];
+  if(match)return{daily:match.daily,extra:match.extra};
+  // 没有历史记录，用当前设置
+  return{daily:parseFloat(ST.budget)||50,extra:ST.hasExtra?(parseFloat(ST.extraAmount)||0):0};
+}
+// 修改预算时记录历史
+function applyBudgetChange(daily,extra,fromDate){
+  const hist=getBudgetHistory();
+  // 如果同一天已有记录就覆盖
+  const idx=hist.findIndex(h=>h.from===fromDate);
+  if(idx>=0)hist[idx]={from:fromDate,daily,extra};
+  else hist.push({from:fromDate,daily,extra});
+  hist.sort((a,b)=>a.from.localeCompare(b.from));
+  saveBudgetHistory(hist);
+  // 同步更新当前ST
+  ST.budget=daily;ST.hasExtra=extra>0;ST.extraAmount=extra;
+  const s=ld();s.settings=ST;sv(s);
+}
+// 初始化预算历史（首次运行时把当前设置写入）
+function initBudgetHistory(){
+  const hist=getBudgetHistory();
+  if(!hist.length){
+    const daily=parseFloat(ST.budget)||50;
+    const extra=ST.hasExtra?(parseFloat(ST.extraAmount)||0):0;
+    saveBudgetHistory([{from:'2026-01-01',daily,extra}]);
+  }
+}
+
 function calcPeriodBalance(periodStart,periodEnd){
-  const daily=parseFloat(ST.budget)||0;
-  const extra=ST.hasExtra?(parseFloat(ST.extraAmount)||0):0;
+  const{daily,extra}=getSettingsForPeriod(periodStart);
   const days=Math.max(1,daysBetween(periodStart,periodEnd));
   const recs=RC.filter(r=>r.date>=periodStart&&r.date<=periodEnd);
   const spent=recs.filter(r=>r.type==='expense').reduce((a,r)=>a+r.amount,0);
@@ -533,8 +592,7 @@ function autoCarryOver(currentPeriodStart){
   return Math.max(0,prevBalance);// 超支不继承（负数按0处理）
 }
 function calcPeriodBalanceWithCarry(periodStart,periodEnd,carry){
-  const daily=parseFloat(ST.budget)||0;
-  const extra=ST.hasExtra?(parseFloat(ST.extraAmount)||0):0;
+  const{daily,extra}=getSettingsForPeriod(periodStart);
   const days=Math.max(1,daysBetween(periodStart,periodEnd));
   const recs=RC.filter(r=>r.date>=periodStart&&r.date<=periodEnd);
   const spent=recs.filter(r=>r.type==='expense').reduce((a,r)=>a+r.amount,0);
@@ -545,8 +603,8 @@ function calcPeriodBalanceWithCarry(periodStart,periodEnd,carry){
 }
 function budgetState(asOf=todayStr()){
   if(ST.purpose==='record')return null;
-  const p=periodBounds(asOf);const daily=parseFloat(ST.budget)||0;
-  const extra=ST.hasExtra?(parseFloat(ST.extraAmount)||0):0;
+  const p=periodBounds(asOf);
+  const{daily,extra}=getSettingsForPeriod(p.start);
   // 自动计算上期继承结余
   const previous=autoCarryOver(p.start);
   const start=p.start;
@@ -679,6 +737,7 @@ function openReimbDetail(){
 
 function showApp(){
   destroyCharts();
+  initBudgetHistory();// 确保预算历史已初始化
   document.getElementById('quiz-screen').style.display='none';
   document.getElementById('detail-screen').style.display='none';
   document.getElementById('app-screen').style.display='flex';
@@ -810,7 +869,7 @@ function renderApp(){
   const compareText=wc.diff===0?'与上周持平':wc.diff>0?`↑ 比上周多 ${fmtN(Math.abs(wc.diff))}`:`↓ 比上周少 ${fmtN(Math.abs(wc.diff))}`;
 
   document.getElementById('app-screen').innerHTML=`
-    <div class="appbar"><a href="../" style="font-size:20px;text-decoration:none;color:#888;margin-right:8px">←</a><div class="apptitle">记账日记</div><div class="app-actions"><button class="settbtn" onclick="openDataCenter()">数据</button><button class="settbtn" onclick="openSettings()">设置</button></div></div>
+    <div class="appbar"><a href="../" style="font-size:20px;text-decoration:none;color:#888;margin-right:8px">←</a><div class="apptitle">记账日记</div><div class="app-actions"><button class="settbtn" onclick="openDetail('report')">统计</button><button class="settbtn" onclick="openDataCenter()">数据</button><button class="settbtn" onclick="openSettings()">设置</button></div></div>
     <div class="scroll-body">
       <div class="cards-grid">
         <div class="card" onclick="openDetail('cal')">
@@ -846,7 +905,7 @@ function renderApp(){
         </div>
       </div>
       <div class="report-card" onclick="openDetail('report')">
-        <div class="rc-title">📊 本周概览</div>
+        <div class="rc-title">📊 月度概览</div>
         <div class="rc-grid">
           <div class="rc-item"><div class="rc-v out">${fmtN(wc.thisWk)}</div><div class="rc-l">本周支出</div></div>
           <div class="rc-item"><div class="rc-v neu">${fmtN(ms.dayAvg)}</div><div class="rc-l">日均花销</div></div>
@@ -884,23 +943,22 @@ function renderApp(){
 function switchMonth(dir){
   const cur=getViewMonth();
   if(dir==='prev'){
-    // 检查是否有更早记录
-    const pm=prevMonth(cur);
-    const hasPrev=RC.some(r=>r.date&&r.date.startsWith(pm))||RM.some(r=>r.date&&r.date.startsWith(pm));
     const hasAnyPrev=RC.some(r=>r.date&&r.date<cur)||RM.some(r=>r.date&&r.date<cur);
     if(!hasAnyPrev)return;
-    viewMonth=pm;
+    viewMonth=prevMonth(cur);
   }else{
     if(isCurrentMonth(cur))return;
     const nm=nextMonth(cur);
     viewMonth=isCurrentMonth(nm)?null:nm;
   }
-  // 切换月份时重置选中日期为该月第一天
-  const[y,m]=getViewMonth().split('-').map(Number);
-  if(isCurrentMonth(getViewMonth())){selDate=todayStr();}
-  else{selDate=`${y}-${String(m).padStart(2,'0')}-01`;}
-  detailSel=selDate;
-  showApp();
+  // 切换月份时重置选中日期
+  const vm=getViewMonth();
+  const[y,m]=vm.split('-').map(Number);
+  if(isCurrentMonth(vm)){selDate=todayStr();detailSel=todayStr();}
+  else{const d=`${y}-${String(m).padStart(2,'0')}-01`;selDate=d;detailSel=d;}
+  // 关键修复：在详情页时停留在详情页，不跳回主页
+  if(detailView)renderDetail();
+  else showApp();
 }
 function selDay(ds){selDate=ds;showApp()}
 function openDetail(view){
@@ -1044,58 +1102,86 @@ function renderDetail(){
     ${alerts.map(r=>`<div class="reimb-alert">⚠️ <b>${r.name}</b> 还有 ${daysLeft(r.deadline)} 天截止</div>`).join('')}
     <div class="reimb-list">${shown.map(r=>`<div class="reimb-item" onclick="openReimbEdit(${r.ts})"><div class="ri-top"><span class="ri-name${r.reimbursed?' done':''}">${r.name}</span><span class="ri-amt">${fmtN(r.amount)}</span></div><div class="ri-bot">${r.hasInvoice?`<span class="rbadge inv">有发票·${r.invoiceStatus||'未开'}</span>`:`<span class="rbadge noinv">无发票</span>`}${r.reimbursed?`<span class="rbadge done">已报销</span>`:''}${r.deadline?`<span class="ri-dl">截止 ${r.deadline}${daysLeft(r.deadline)!=null?' ('+daysLeft(r.deadline)+'天)':''}</span>`:''}</div></div>`).join('')}${!shown.length?`<div style="text-align:center;color:#bbb;font-size:12px;padding:24px">${reimbFilter==='done'?'还没有已报销记录':'这个分类下还没有记录'}</div>`:''}</div>`;
   } else if(detailView==='report'){
-    title='统计报告';
-    const trend=get7DayTrend();const wc=getWeekCompare();const catStats=getCatStats();
-    const ms=getMonthStats();const total=catStats.reduce((a,c)=>a+c.total,0);
-    const maxTrend=Math.max(...trend.map(d=>d.spent),1);
-    const trendBars=trend.map(d=>{
-      const h=Math.max(4,Math.round(d.spent/maxTrend*60));
-      const isToday=d.date===todayStr();
-      return`<div class="trend-bar-wrap"><div style="height:${h}px;width:100%;background:${isToday?'#378ADD':'#BBDEFB'};border-radius:4px 4px 0 0"></div><div style="font-size:9px;color:#aaa;margin-top:3px">${d.label}</div><div style="font-size:8px;color:#bbb">${d.spent>0?Math.round(d.spent):'—'}</div></div>`;
-    }).join('');
-    body=`
-      <div class="report-card">
-        <div class="rc-title">近7天支出趋势</div>
-        <div style="display:flex;align-items:flex-end;gap:4px;height:70px">${trendBars}</div>
-        <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:12px;color:#888">本周合计 ${fmtN(wc.thisWk)}</span>
-          <span class="rc-compare ${wc.diff>0?'up':wc.diff<0?'down':'flat'}">${wc.diff===0?'与上周持平':wc.diff>0?'↑ 多 '+fmtN(Math.abs(wc.diff)):'↓ 少 '+fmtN(Math.abs(wc.diff))}</span>
-        </div>
-      </div>
-      <div class="report-card">
-        <div class="rc-title">本月汇总</div>
-        <div class="rc-grid">
-          <div class="rc-item"><div class="rc-v out">${fmtN(ms.totalSpent)}</div><div class="rc-l">总支出</div></div>
-          <div class="rc-item"><div class="rc-v neu">${fmtN(ms.dayAvg)}</div><div class="rc-l">日均花销</div></div>
-          <div class="rc-item"><div class="rc-v" style="color:#1a1a1a">${ms.todayDay}天</div><div class="rc-l">已过天数</div></div>
-        </div>
-        ${ms.maxDay?`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:4px">消费最多：${ms.maxDay[0]} 花了 ${fmtN(ms.maxDay[1])}</div>`:''}
-      </div>
-      <div class="report-card">
-        <div class="rc-title">支出分类 Top 5</div>
-        <div class="top-cats">${catStats.slice(0,5).map((c,i)=>{
-          const m=getCatMeta(c.cat,'expense');
-          return`<div class="top-cat-row">
-            <span class="top-cat-icon">${m.i}</span>
-            <span class="top-cat-name">${c.cat}</span>
-            <div class="top-cat-bar-bg"><div class="top-cat-bar" style="width:${total>0?Math.round(c.total/total*100):0}%;background:${PIE_COLORS[i%9]}"></div></div>
-            <span class="top-cat-amt">${fmtN(c.total)}</span>
-          </div>`;
-        }).join('')}${!catStats.length?`<div style="text-align:center;color:#bbb;font-size:12px;padding:12px">暂无支出记录</div>`:''}</div>
-      </div>
-      <div class="report-card">
-        <div class="rc-title">各分类日均花销</div>
-        <div class="top-cats">${catStats.slice(0,5).map((c,i)=>{
-          const m=getCatMeta(c.cat,'expense');
-          return`<div class="top-cat-row">
-            <span class="top-cat-icon">${m.i}</span>
-            <span class="top-cat-name">${c.cat}</span>
-            <span style="font-size:11px;color:#aaa;flex:1">日均 ${fmtN(c.dayAvg)}</span>
-            <span class="top-cat-amt" style="color:#aaa">最大 ${fmtN(c.max)}</span>
-          </div>`;
-        }).join('')}</div>
+    title='统计报告';inputHtml='';
+    // 月报
+    // 月份选择
+    const allMs=getAllMonths();const rMk=window._reportMk||getViewMonth();
+    const[rY,rM]=rMk.split('-').map(Number);
+    const msR=getMonthStats(rMk);
+    const catStatsR=getCatStats(rMk);
+    const totalR=catStatsR.reduce((a,cv)=>a+cv.total,0);
+    const wc=getWeekCompare();const trend=get7DayTrend();const maxTrend=Math.max(...trend.map(d=>d.spent),1);
+    // 上月对比
+    const prevMk=prevMonth(rMk);const msP=getMonthStats(prevMk);
+    const diffSpent=msR.totalSpent-msP.totalSpent;
+    const diffIncome=msR.totalIncome-msP.totalIncome;
+    // 报销汇总
+    const pendReimb=RM.filter(r=>!r.reimbursed&&r.date&&r.date.startsWith(rMk));
+    const doneReimb=RM.filter(r=>r.reimbursed&&r.date&&r.date.startsWith(rMk));
+    const pendAmt=pendReimb.reduce((a,r)=>a+r.amount,0);
+    const doneAmt=doneReimb.reduce((a,r)=>a+r.amount,0);
+    // 月报告
+    const monthBarDays=[];
+    const[bY,bM]=rMk.split('-').map(Number);
+    for(let d=1;d<=msR.daysInMonth;d++)monthBarDays.push(`${bY}-${pad2(bM)}-${pad2(d)}`);
+    const dayMap2={};RC.filter(r=>r.date&&r.date.startsWith(rMk)&&r.type==='expense').forEach(r=>{dayMap2[r.date]=(dayMap2[r.date]||0)+r.amount});
+    const monthMax=Math.max(...Object.values(dayMap2),1);
+    const monthBars=monthBarDays.map(ds=>{
+      const amt=dayMap2[ds]||0;const h=amt>0?Math.max(3,Math.round(amt/monthMax*48)):1;
+      const isToday=ds===todayStr();
+      return`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:1px">
+        <div style="height:${h}px;width:100%;background:${isToday?'#378ADD':amt>0?'#BBDEFB':'#f0f0f0'};border-radius:2px 2px 0 0;min-height:1px"></div>
       </div>`;
-    inputHtml='';
+    }).join('');
+    // 7天趋势条
+    const trendBars=trend.map(d=>{
+      const h=Math.max(4,Math.round(d.spent/maxTrend*50));const isToday=d.date===todayStr();
+      return`<div class="trend-bar-wrap"><div style="height:${h}px;width:100%;background:${isToday?'#378ADD':'#BBDEFB'};border-radius:3px 3px 0 0"></div><div style="font-size:9px;color:#aaa;margin-top:2px">${d.label}</div><div style="font-size:8px;color:#bbb">${d.spent>0?Math.round(d.spent):'—'}</div></div>`;
+    }).join('');
+    // 月份选择器
+    const mkOpts=allMs.map(m=>{const[y,mo]=m.split('-').map(Number);return`<option value="${m}" ${m===rMk?'selected':''}>${y}年${mo}月</option>`}).join('');
+    {
+      body=`${modeSel}
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <select onchange="window._reportMk=this.value;renderDetail()" style="flex:1;height:36px;border-radius:10px;border:1px solid #e8e8e8;background:#fff;font-size:13px;color:#1a1a1a;padding:0 10px;outline:none">${mkOpts}</select>
+        </div>
+        <div class="report-card">
+          <div class="rc-title">${rY}年${rM}月 · 每日支出分布</div>
+          <div style="display:flex;align-items:flex-end;gap:1px;height:52px;margin-bottom:4px">${monthBars}</div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:#bbb"><span>1日</span><span>${rM}月${msR.daysInMonth}日</span></div>
+        </div>
+        <div class="report-card">
+          <div class="rc-title">汇总</div>
+          <div class="rc-grid">
+            <div class="rc-item"><div class="rc-v out">${fmtN(msR.totalSpent)}</div><div class="rc-l">总支出</div></div>
+            <div class="rc-item"><div class="rc-v in">${fmtN(msR.totalIncome)}</div><div class="rc-l">总收入</div></div>
+            <div class="rc-item"><div class="rc-v neu">${fmtN(msR.dayAvg)}</div><div class="rc-l">日均花销</div></div>
+          </div>
+          ${msP.totalSpent>0?`<div style="margin-top:8px;text-align:center"><span class="rc-compare ${diffSpent>0?'up':'down'}">${diffSpent>0?'↑':'↓'} 比上月${diffSpent>0?'多':'少'} ${fmtN(Math.abs(diffSpent))}</span></div>`:''}
+          ${msR.maxDay?`<div style="font-size:11px;color:#aaa;text-align:center;margin-top:6px">消费最多：${msR.maxDay[0].slice(5)} 花了 ${fmtN(msR.maxDay[1])}</div>`:''}
+        </div>
+        <div class="report-card">
+          <div class="rc-title">支出分类</div>
+          <div class="top-cats">${catStatsR.map((cv,i)=>{
+            const m=getCatMeta(cv.cat,'expense');
+            return`<div class="top-cat-row">
+              <span class="top-cat-icon">${m.i}</span>
+              <span class="top-cat-name">${cv.cat}</span>
+              <div class="top-cat-bar-bg"><div class="top-cat-bar" style="width:${totalR>0?Math.round(cv.total/totalR*100):0}%;background:${PIE_COLORS[i%9]}"></div></div>
+              <span class="top-cat-amt">${fmtN(cv.total)}</span>
+            </div>`;
+          }).join('')}${!catStatsR.length?`<div style="text-align:center;color:#bbb;font-size:12px;padding:12px">暂无记录</div>`:''}</div>
+        </div>
+        <div class="report-card">
+          <div class="rc-title">报销汇总（${rM}月）</div>
+          <div class="rc-grid">
+            <div class="rc-item"><div class="rc-v" style="color:#185FA5">${fmtN(pendAmt)}</div><div class="rc-l">待报销</div></div>
+            <div class="rc-item"><div class="rc-v in">${fmtN(doneAmt)}</div><div class="rc-l">已报销</div></div>
+            <div class="rc-item"><div class="rc-v neu">${pendReimb.length+doneReimb.length}</div><div class="rc-l">共${pendReimb.length+doneReimb.length}笔</div></div>
+          </div>
+          ${pendReimb.length?`<div style="font-size:11px;color:#e65100;margin-top:6px;text-align:center">还有 ${pendReimb.length} 笔待报销</div>`:`<div style="font-size:11px;color:#2e7d32;margin-top:6px;text-align:center">✓ 本月报销已全部完成</div>`}
+        </div>`;
+    }
   }
 
   ds.innerHTML=`<div class="detail-bar"><button class="back-btn" onclick="showApp()">←</button><div class="detail-title">${title}</div></div><div class="detail-body">${body}</div>${inputHtml}`;
@@ -1111,17 +1197,22 @@ function renderDetail(){
   }
   checkModal();
 }
-function detailSelDay(ds){detailSel=ds;selDate=ds;renderDetail()}
+function detailSelDay(ds){
+  detailSel=ds;selDate=ds;
+  // 切换月份时同步 viewMonth
+  if(ds&&ds.length>=7){
+    const mk=ds.slice(0,7);
+    if(!isCurrentMonth(mk))viewMonth=mk;
+    else viewMonth=null;
+  }
+  renderDetail();// 停留在详情页，不跳回主页
+}
 function detailSwitchMonth(dir){
-  switchMonth(dir);// 复用主页月份切换
-  // 重置详情选中日期
-  const vm=getViewMonth();
-  if(isCurrentMonth(vm))detailSel=todayStr();
-  else{const[y,m]=vm.split('-').map(Number);detailSel=`${y}-${String(m).padStart(2,'0')}-01`;}
-  renderDetail();
+  // switchMonth 内部已经处理了 detailView 判断，直接调用即可
+  switchMonth(dir);
 }
 function openExtraEdit(){
-  modal='extra-edit';detailView?renderDetail():showApp();
+  modal='settings-panel';detailView?renderDetail():showApp();
 }
 function checkModal(){
   document.getElementById('shell').querySelectorAll('.modal-overlay').forEach(e=>e.remove());
@@ -1131,6 +1222,91 @@ function checkModal(){
   else if(modal==='reimb-edit')renderReimbEditModal();
   else if(modal==='data')renderDataModal();
   else if(modal==='extra-edit')renderExtraEditModal();
+  else if(modal==='settings-panel')renderSettingsPanel();
+}
+function renderSettingsPanel(){
+  const ov=mkOverlay();
+  const hist=getBudgetHistory();
+  const curDaily=parseFloat(ST.budget)||50;
+  const curExtra=ST.hasExtra?(parseFloat(ST.extraAmount)||0):0;
+  const histRows=hist.slice().reverse().slice(0,5).map(h=>`
+    <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:.5px solid #e8e8e8;font-size:12px">
+      <span style="color:#888">${h.from} 起</span>
+      <span style="color:#1a1a1a">日预算 ¥${h.daily} · 零花 ¥${h.extra}</span>
+    </div>`).join('');
+  const p=periodBounds(todayStr());
+  ov.innerHTML=`<div class="modal-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">设置</div>
+    <div class="msec-title" style="font-size:12px;font-weight:600;color:#aaa;margin-bottom:8px">预算设置</div>
+    <div style="background:#f0f7ff;border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:#1565C0;line-height:1.7">
+      修改后从<b>下个周期</b>（${p.end} 之后）生效<br>历史周期数据不受影响
+    </div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">日预算</span><input id="s-daily" type="number" inputmode="decimal" step="1" value="${curDaily}"><span style="font-size:11px;color:#aaa;margin-left:4px">元/天</span></div>
+      <div class="mfield"><span class="mflbl">月零花钱</span><input id="s-extra" type="number" inputmode="decimal" step="1" value="${curExtra}"><span style="font-size:11px;color:#aaa;margin-left:4px">元/月（0=关闭）</span></div>
+    </div>
+    <button class="msub" onclick="saveSettingsPanel()" style="margin-bottom:6px">保存（下周期生效）</button>
+    <button class="msub" style="background:#e65100;margin-bottom:14px" onclick="saveSettingsPanelNow()">立即生效（影响本周期）</button>
+    ${hist.length?`<div class="msec-title" style="font-size:12px;font-weight:600;color:#aaa;margin-bottom:6px">历史预算记录</div><div>${histRows}</div>`:''}
+    <div class="msec-title" style="font-size:12px;font-weight:600;color:#aaa;margin:12px 0 8px">其他设置</div>
+    <div class="mfields">
+      <div class="mfield"><span class="mflbl">结算日</span><input id="s-settle" type="number" inputmode="numeric" min="1" max="31" value="${ST.settleDay||1}"><span style="font-size:11px;color:#aaa;margin-left:4px">号</span></div>
+      <div class="mfield"><span class="mflbl">结余继承</span>
+        <select id="s-carry">
+          <option value="yes" ${ST.carryover==='yes'?'selected':''}>继承到下个周期</option>
+          <option value="no" ${ST.carryover!=='yes'?'selected':''}>清零重来</option>
+        </select>
+      </div>
+      <div class="mfield"><span class="mflbl">收入并入</span>
+        <select id="s-income">
+          <option value="yes" ${ST.income_merge==='yes'?'selected':''}>并入可用余额</option>
+          <option value="no" ${ST.income_merge!=='yes'?'selected':''}>单独记录</option>
+        </select>
+      </div>
+      <div class="mfield"><span class="mflbl">报销流水</span>
+        <select id="s-reimb">
+          <option value="yes" ${ST.show_reimb==='yes'?'selected':''}>显示在流水里</option>
+          <option value="no" ${ST.show_reimb!=='yes'?'selected':''}>只在报销卡查看</option>
+        </select>
+      </div>
+      <div class="mfield"><span class="mflbl">金额精度</span>
+        <select id="s-dec">
+          <option value="0" ${ST.decimals==='0'?'selected':''}>整数 ¥50</option>
+          <option value="2" ${(ST.decimals||'2')==='2'?'selected':''}>两位小数 ¥50.00</option>
+        </select>
+      </div>
+    </div>
+    <button class="msub" onclick="saveOtherSettings()">保存其他设置</button>
+  </div>`;
+  document.getElementById('shell').appendChild(ov);
+}
+function saveSettingsPanel(){
+  // 下个周期生效
+  const p=periodBounds(todayStr());
+  const daily=parseFloat(document.getElementById('s-daily')?.value)||50;
+  const extra=parseFloat(document.getElementById('s-extra')?.value)||0;
+  // 找下个周期开始日
+  const nextStart=new Date(p.end+'T00:00:00');nextStart.setDate(nextStart.getDate()+1);
+  applyBudgetChange(daily,extra,dateStr(nextStart));
+  modal=null;showToast('已保存，下个周期生效');detailView?renderDetail():showApp();
+}
+function saveSettingsPanelNow(){
+  // 立即生效（当前周期）
+  const p=periodBounds(todayStr());
+  const daily=parseFloat(document.getElementById('s-daily')?.value)||50;
+  const extra=parseFloat(document.getElementById('s-extra')?.value)||0;
+  applyBudgetChange(daily,extra,p.start);
+  modal=null;showToast('已立即生效');detailView?renderDetail():showApp();
+}
+function saveOtherSettings(){
+  ST.settleDay=parseInt(document.getElementById('s-settle')?.value)||1;
+  ST.carryover=document.getElementById('s-carry')?.value||'yes';
+  ST.income_merge=document.getElementById('s-income')?.value||'yes';
+  ST.show_reimb=document.getElementById('s-reimb')?.value||'no';
+  ST.decimals=document.getElementById('s-dec')?.value||'2';
+  const s=ld();s.settings=ST;sv(s);
+  modal=null;showToast('设置已保存');detailView?renderDetail():showApp();
 }
 function renderExtraEditModal(){
   const ov=mkOverlay();
@@ -1160,7 +1336,7 @@ function openEdit(ts){mTs=ts;modal='edit';const r=RC.find(r=>r.ts===ts);if(!r)re
 function openReimbAdd(){modal='reimb-add';mTs=null;tmpR={hasInvoice:false,invoiceStatus:'未开',reimbursed:false,deadline:'',cat:'其他'};detailView?renderDetail():showApp()}
 function openReimbEdit(ts){mTs=ts;modal='reimb-edit';const r=RM.find(r=>r.ts===ts);if(!r)return;tmpR={hasInvoice:r.hasInvoice||false,invoiceStatus:r.invoiceStatus||'未开',reimbursed:r.reimbursed||false,deadline:r.deadline||'',cat:r.cat||'其他'};detailView?renderDetail():showApp()}
 function openDataCenter(){modal='data';detailView?renderDetail():showApp()}
-function openSettings(){qStep=0;qAns=Object.assign({},ST||{});modal=null;detailView=null;showQuiz()}
+function openSettings(){modal='settings-panel';detailView?renderDetail():showApp()}
 function renderDataModal(){
   const c=dataCounts();const ov=mkOverlay();
   ov.innerHTML=`<div class="modal-sheet"><div class="mhandle"></div><div class="mtitle">数据备份与恢复</div>
@@ -1280,9 +1456,14 @@ function quickAdd(inputId='qi-app'){
 }
 
 const s=ld();
-if(s.setupDone&&s.settings?.purpose==='budget'&&!s.settings.settleDay){qAns={...s.settings,budget:'',settleDay:1};RC=s.records||[];RM=s.reimbs||[];showQuiz();}
-else if(s.setupDone){ST=s.settings||{};RC=s.records||[];RM=s.reimbs||[];showApp();}
-else{showQuiz();}
+if(s.setupDone){
+  ST=s.settings||{purpose:'budget',budget:50,settleDay:1,carryover:'yes',income_merge:'yes',hasExtra:false,extraAmount:0,show_reimb:'no',decimals:'2'};
+  RC=s.records||[];RM=s.reimbs||[];
+  showApp();
+}else{
+  // 首次进入，显示简短问卷
+  qStep=0;qAns={};showQuiz();
+}
 </script>
 </body>
 </html>

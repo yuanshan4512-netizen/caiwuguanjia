@@ -135,23 +135,14 @@ function daysInMonth(){const d=new Date();return new Date(d.getFullYear(),d.getM
 function todayDay(){return new Date().getDate()}
 
 const DEFAULT_SETTINGS={
-  bills:[
-    {id:'rent',  name:'房租',  amount:1200,dueDay:15,icon:'🏠',iconBg:'#E3F2FD'},
-    {id:'park',  name:'停车费',amount:330, dueDay:15,icon:'🚗',iconBg:'#FFF3E0'},
-    {id:'phone', name:'电话费',amount:100, dueDay:15,icon:'📱',iconBg:'#F3E5F5'},
-  ],
-  utility:{
-    monthlyAvg:300,   // 月均消耗（元）
-    balance:250,      // 当前账户余额
-    lastUpdate:'',
-    note:'多余余额可转入现金安全垫',
-  },
+  bills:[],// 无默认账单，用户自行添加
+  utility:{monthlyAvg:300,balance:0,lastUpdate:'',note:''},
   budgets:[
     {id:'life', name:'生活费',icon:'🛒',amount:0,diaryCategory:'餐饮',dynDays:true},
-    {id:'pocket',name:'零花', icon:'🎯',amount:170,diaryCategory:'零花',dynDays:false},
+    {id:'pocket',name:'零花', icon:'🎯',amount:0,diaryCategory:'零花',dynDays:false},
   ],
-  dailyLife:50,    // 生活费日单价
-  settleDay:16,
+  dailyLife:50,
+  settleDay:1,
   alertDays:3,
 };
 

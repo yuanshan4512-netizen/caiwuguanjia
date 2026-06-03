@@ -171,57 +171,13 @@ const GROUP_INFO={
 };
 
 // ── 默认数据 ──
-const DEFAULT_ITEMS=[
-  {id:'f1',group:'fund',name:'沪深300',target:11650,invested:5595,monthly:865,platform:'支付宝',note:'华泰柏瑞沪深300，每月16日',records:[]},
-  {id:'f2',group:'fund',name:'中证500',target:11650,invested:5681.5,monthly:865,platform:'支付宝',note:'南方中证500，每月16日',records:[]},
-  {id:'f3',group:'fund',name:'中证红利',target:27200,invested:10960,monthly:2320,platform:'支付宝',note:'易方达中证红利，每月16日',records:[]},
-  {id:'f4',group:'fund',name:'永赢科技',target:7000,invested:2410,monthly:600,platform:'理财通',note:'每月16日',records:[]},
-  {id:'f5',group:'fund',name:'景顺长城',target:7000,invested:2920,monthly:600,platform:'理财通',note:'每月16日',records:[]},
-  {id:'f6',group:'fund',name:'工银瑞信',target:7000,invested:3160,monthly:600,platform:'理财通',note:'每月16日',records:[]},
-  {id:'g1',group:'gold',name:'黄金积存金',target:25500,invested:11123.7,monthly:2050,platform:'工商银行',note:'积存金，每月16日',records:[]},
-  {id:'s1',group:'saving',name:'现金安全垫',target:25000,invested:20500,monthly:500,platform:'支付宝',note:'支持4-5个月生活',records:[]},
-  {id:'s2',group:'saving',name:'Pocket3 + 内存卡',target:3500,invested:3500,monthly:500,platform:'微信定期',note:'618活动已达标',records:[]},
-  {id:'s3',group:'saving',name:'阿勒泰滑雪',target:16000,invested:1500,monthly:0,platform:'微信定期',note:'Pocket3完成后每月500转入',records:[]},
-];
+const DEFAULT_ITEMS=[];// 无默认数据，用户自行添加
 
-// 股票账户默认数据
+// 股票账户默认数据（空）
 const DEFAULT_STOCK_ACCOUNT={
-  initialCapital:10000,   // 初始资金
-  deposits:[],            // 追加资金记录 [{date,amount,note}]
-  stocks:[
-    {
-      id:'st1',code:'通信ETF',name:'通信ETF',
-      buyRecords:[
-        {id:'b1',date:'2026-03-10',price:1.082,qty:3000,amount:3246,note:'初始买入'}
-      ],
-      sellRecords:[
-        {id:'sl1',date:'2026-04-20',price:1.35,qty:1000,amount:1350,profit:268,note:'止盈①25%'},
-        {id:'sl2',date:'2026-06-02',price:1.64,qty:1000,amount:1640,profit:558,note:'止盈②51%'},
-      ],
-      tpPlans:[
-        {id:'tp1',price:2.164,qty:1000,note:'止盈③+100%',done:false},
-      ],
-      tpPct:100,  // 止盈百分比（最新设置）
-      slPct:-15,  // 止损百分比
-      note:'算力中心需求驱动，分批止盈',
-    },
-    {
-      id:'st2',code:'光伏ETF',name:'光伏龙头ETF',
-      buyRecords:[
-        {id:'b1',date:'2026-03-10',price:0.87,qty:3000,amount:2610,note:'初始买入'},
-        {id:'b2',date:'2026-04-01',price:0.778,qty:1500,amount:1167,note:'补仓跌8%'},
-      ],
-      sellRecords:[],
-      tpPlans:[
-        {id:'tp1',price:1.0,qty:1500,note:'止盈①',done:false},
-        {id:'tp2',price:1.1,qty:1500,note:'止盈②',done:false},
-        {id:'tp3',price:1.2,qty:1500,note:'止盈③',done:false},
-      ],
-      tpPct:20,
-      slPct:-15,
-      note:'光伏赛道，分批止盈',
-    },
-  ],
+  initialCapital:10000,
+  deposits:[],
+  stocks:[],
 };
 
 function ld(){try{return JSON.parse(localStorage.getItem(SK)||'{}')}catch(e){return{}}}
